@@ -1,35 +1,31 @@
 1. Voter Registration
 - Description: Voter registers and obtains public credentials along with an initial ballot (registration ballot), which contains a “null vote.”  
-- Actors: Voter, Registration Authority  
-- Goal: Ensure a voter’s identity and initial credentials are recorded in the append-only bulletin board.  
+- Frontend Goal: Guide users through the registration process, ensuring they understand what credentials are being generated and their purpose.
 - Edge Case: Voter may be coerced at registration but can still proceed without lying, as the initial ballot is a null vote.
+- Notes from Moodboard: Possibly use symbols to simplify the process for the user, as shown in the Swiss implementation.
 
 2. Normal Voting (Without Coercion)
 - Description: Voter casts a ballot by providing their vote along with an encrypted list of index references from their previous voting history.  
-- Actors: Voter, Voting Server  
-- Goal: Submit a legitimate vote and have it added to the voter’s Cast Ballot Record (CBR).  
+- Frontend Goal: Simple and intuitive selection menu with optional guidelines. The normal user should not be inconvenienced by the additional safety features.
 - Edge Case: Errors in index recall could lead to rejection or noise ballot generation.
+- Notes from Moodboard: Swiss implementation felt more robust.
 
 3. Coerced Voting with Deniable Revoting
 - Description: Voter submits a coerced vote, followed by a deniable vote that cancels the coerced one.  
-- Actors: Voter, Voting Server  
-- Goal: Prevent the coercer from determining whether the coerced vote was followed.  
+- Frontend Goal: If a voter wants to update their vote after coercion, the system should allow them to do so without raising suspicion. 
 - Counter-Strategy: Voter intentionally misidentifies their previous ballot indexes, prompting the Voting Server to add noise ballots that obfuscate the coerced vote.
 
 4. Flexible Vote Updating
 - Description: Voter can update their vote at any time, even at the last minute, without revealing which vote is legitimate.  
-- Actors: Voter, Voting Server  
-- Goal: Allow voters to revise their vote to reflect their true intent, maintaining coercion resistance.  
+- Frontend Goal: Ensure the UI supports multiple voting sessions while showing only the current valid vote.
 - Key Mechanism: Noise ballots ensure that the voting pattern remains hidden.
 
 5. Vote Verification
 - Description: Voter checks that their vote appears on the bulletin board as intended.  
-- Actors: Voter, Bulletin Board  
-- Goal: Verify vote inclusion and integrity without revealing vote content.  
+- Frontend Goal: Voter can check that their vote has been recorded on the bulletin board without revealing its content. 
 - Edge Case: Discrepancies between what was cast and what is seen on the bulletin board.
 
 6. Browser History and Security Management
 - Description: Voter is guided on clearing browser history to maintain secrecy and security after voting.  
-- Actors: Voter, Frontend Interface  
-- Goal: Prevent evidence of voting from being discovered by a coercer.  
+- Frontend Goal: Provide voters with instructions on clearing browser history and maintaining secrecy after voting.
 - Edge Case: Incomplete browser history clearing could expose a voter to coercion.
