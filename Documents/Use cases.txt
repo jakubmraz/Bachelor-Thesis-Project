@@ -1,4 +1,4 @@
-1. Voter Registration
+1. Voter Registration and Login
 - Description: Voter registers and obtains public credentials along with an initial ballot (registration ballot), which contains a “null vote.”  
 - Frontend Goal: Guide users through the registration process, ensuring they understand what credentials are being generated and their purpose.
 - Edge Case: Voter may be coerced at registration but can still proceed without lying, as the initial ballot is a null vote.

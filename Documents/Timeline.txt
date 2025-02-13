@@ -1,7 +1,7 @@
 By 13th February
 Goals: -Project roadmap ✅
--List of use cases
--Compilation of design inspirations
+-List of use cases ✅
+-Compilation of design inspirations ✅
 👇
 By 27th February
 Goals: -Implemented system skeleton with usable dev interface with the necessary buttons and pages
@@ -9,7 +9,7 @@ Goals: -Implemented system skeleton with usable dev interface with the necessary
 -Small survey of 2-3 people to get feedback on design implementations
 👇
 By 13th March
-Goals: -Implemented frontend for voter registration and non-coerced voting
+Goals: -Implemented frontend for non-coerced voting
 -Small survey of 2-3 people to get feedback on design implementations
 👇
 By 27th March
