@@ -1,0 +1,35 @@
+1. Voter Registration
+- Description: Voter registers and obtains public credentials along with an initial ballot (registration ballot), which contains a “null vote.”  
+- Actors: Voter, Registration Authority  
+- Goal: Ensure a voter’s identity and initial credentials are recorded in the append-only bulletin board.  
+- Edge Case: Voter may be coerced at registration but can still proceed without lying, as the initial ballot is a null vote.
+
+2. Normal Voting (Without Coercion)
+- Description: Voter casts a ballot by providing their vote along with an encrypted list of index references from their previous voting history.  
+- Actors: Voter, Voting Server  
+- Goal: Submit a legitimate vote and have it added to the voter’s Cast Ballot Record (CBR).  
+- Edge Case: Errors in index recall could lead to rejection or noise ballot generation.
+
+3. Coerced Voting with Deniable Revoting
+- Description: Voter submits a coerced vote, followed by a deniable vote that cancels the coerced one.  
+- Actors: Voter, Voting Server  
+- Goal: Prevent the coercer from determining whether the coerced vote was followed.  
+- Counter-Strategy: Voter intentionally misidentifies their previous ballot indexes, prompting the Voting Server to add noise ballots that obfuscate the coerced vote.
+
+4. Flexible Vote Updating
+- Description: Voter can update their vote at any time, even at the last minute, without revealing which vote is legitimate.  
+- Actors: Voter, Voting Server  
+- Goal: Allow voters to revise their vote to reflect their true intent, maintaining coercion resistance.  
+- Key Mechanism: Noise ballots ensure that the voting pattern remains hidden.
+
+5. Vote Verification
+- Description: Voter checks that their vote appears on the bulletin board as intended.  
+- Actors: Voter, Bulletin Board  
+- Goal: Verify vote inclusion and integrity without revealing vote content.  
+- Edge Case: Discrepancies between what was cast and what is seen on the bulletin board.
+
+6. Browser History and Security Management
+- Description: Voter is guided on clearing browser history to maintain secrecy and security after voting.  
+- Actors: Voter, Frontend Interface  
+- Goal: Prevent evidence of voting from being discovered by a coercer.  
+- Edge Case: Incomplete browser history clearing could expose a voter to coercion.
