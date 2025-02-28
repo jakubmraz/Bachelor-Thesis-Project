@@ -5,7 +5,7 @@ import { ChevronLeft } from "lucide-react"
 
 export default function Page() {
   return (
-    <div className="flex flex-col items-center space-y-8">
+    <div className="flex flex-col items-center pb-8">
       <div className="self-start">
         <Link href="/login">
           <Button variant="ghost" className="mb-6">

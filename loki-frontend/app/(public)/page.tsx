@@ -5,7 +5,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 export default function Page() {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center pt-8">
       {/* Hero Section */}
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold mb-4">Welcome to the Online Voting Portal</h1>
