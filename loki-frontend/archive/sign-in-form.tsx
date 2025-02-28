@@ -1,3 +1,4 @@
+/* Old login form code, might be useful later
 "use client"
 
 import { Button } from "@/components/ui/button"
@@ -44,3 +45,4 @@ export function SignInForm() {
     </div>
   )
 }
+*/

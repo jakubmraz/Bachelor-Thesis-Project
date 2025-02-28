@@ -5,15 +5,14 @@
 - Notes from Moodboard: Possibly use symbols to simplify the process for the user, as shown in the Swiss implementation.
 
 2. Normal Voting (Without Coercion)
-- Description: Voter casts a ballot by providing their vote along with an encrypted list of index references from their previous voting history.  
+- Description: Voter casts a ballot by providing their vote.  
 - Frontend Goal: Simple and intuitive selection menu with optional guidelines. The normal user should not be inconvenienced by the additional safety features.
-- Edge Case: Errors in index recall could lead to rejection or noise ballot generation.
 - Notes from Moodboard: Swiss implementation felt more robust.
 
 3. Coerced Voting with Deniable Revoting
 - Description: Voter submits a coerced vote, followed by a deniable vote that cancels the coerced one.  
 - Frontend Goal: If a voter wants to update their vote after coercion, the system should allow them to do so without raising suspicion. 
-- Counter-Strategy: Voter intentionally misidentifies their previous ballot indexes, prompting the Voting Server to add noise ballots that obfuscate the coerced vote.
+- Counter-Strategy: Voter lies about not having voted before (most common) / intentionally misidentifies their previous ballot indexes, prompting the Voting Server to add noise ballots that obfuscate the coerced vote.
 
 4. Flexible Vote Updating
 - Description: Voter can update their vote at any time, even at the last minute, without revealing which vote is legitimate.  
@@ -26,6 +25,8 @@
 - Edge Case: Discrepancies between what was cast and what is seen on the bulletin board.
 
 6. Browser History and Security Management
-- Description: Voter is guided on clearing browser history to maintain secrecy and security after voting.  
+- Description: Voter is guided on clearing browser history to maintain secrecy and security after voting.  + info about incognito mode (see if TS can detect incognito mode, maybe infer from cookies perfmissions, if TS can delete browser history/cookies or prompt browser to do so)
 - Frontend Goal: Provide voters with instructions on clearing browser history and maintaining secrecy after voting.
 - Edge Case: Incomplete browser history clearing could expose a voter to coercion.
+
+todo: identify and reflect on types of coercion
