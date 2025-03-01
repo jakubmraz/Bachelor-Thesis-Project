@@ -1,4 +1,6 @@
 import Link from "next/link"
+import { Home } from "lucide-react"
+import { HelpDialog } from "./help-dialog"
 
 export function TopBarPublic() {
   return (
@@ -8,10 +10,9 @@ export function TopBarPublic() {
           <div className="text-2xl font-bold">Logo goes here</div>
         </Link>
         <div className="flex items-center gap-4">
-          <Link href="/help" className="hover:bg-yellow-400 px-2 py-1 rounded-md">
-            Help
-          </Link>
-          <Link href="/" className="hover:bg-yellow-400 px-2 py-1 rounded-md">
+          <HelpDialog />
+          <Link href="/" className="hover:bg-yellow-400 px-2 py-1 rounded-md flex items-center gap-2">
+            <Home className="h-4 w-4" />
             Home
           </Link>
         </div>
