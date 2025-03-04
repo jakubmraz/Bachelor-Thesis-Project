@@ -1,52 +1,52 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowLeft, Check, Info, ArrowRight, AlertTriangle } from "lucide-react"
 import Link from "next/link"
+import { type Ballot, generateRandomBallots } from "@/lib/ballot-data"
+import { formatDateDanish, formatTimeDanish } from "@/lib/date-utils"
 
 export default function VerifyPreviousVotePage() {
-  // In a real app, these would be fetched from the server
-  // They would include both real and noise ballots
-  const previousBallots = [
-    {
-      id: "ballot-1",
-      timestamp: "2024-02-28T14:30:00Z",
-      votes: [
-        { proposal: "City Budget Allocation", choice: "Infrastructure improvements" },
-        { proposal: "Public Transportation", choice: "Electric bus fleet" },
-        { proposal: "City Park Development", choice: "Community gardens" },
-      ],
-    },
-    {
-      id: "ballot-2",
-      timestamp: "2024-02-28T15:45:00Z",
-      votes: [
-        { proposal: "City Budget Allocation", choice: "Education funding" },
-        { proposal: "Public Transportation", choice: "Bike lane network" },
-        { proposal: "City Park Development", choice: "Recreational facilities" },
-      ],
-    },
-    {
-      id: "ballot-3",
-      timestamp: "2024-02-28T16:15:00Z",
-      votes: [
-        { proposal: "City Budget Allocation", choice: "Public healthcare" },
-        { proposal: "Public Transportation", choice: "Subway line extension" },
-        { proposal: "City Park Development", choice: "Natural conservation area" },
-      ],
-    },
-  ]
-
+  const [previousBallots, setPreviousBallots] = useState<Ballot[]>([])
   const [selectedBallots, setSelectedBallots] = useState<string[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Load ballots from localStorage on component mount
+  useEffect(() => {
+    try {
+      const storedBallots = localStorage.getItem("userBallots")
+
+      if (storedBallots) {
+        // If we have ballots in localStorage, use them
+        const parsedBallots = JSON.parse(storedBallots) as Ballot[]
+
+        // Shuffle the ballots to make it less obvious which ones are the user's
+        const shuffledBallots = [...parsedBallots].sort(() => Math.random() - 0.5)
+        setPreviousBallots(shuffledBallots)
+      } else {
+        // If no ballots in localStorage, generate some default demo ballots
+        // This should only happen on first visit before using "Flush History"
+        const demoBallots = generateRandomBallots(3)
+        setPreviousBallots(demoBallots)
+
+        // Store these demo ballots for consistency
+        localStorage.setItem("userBallots", JSON.stringify(demoBallots))
+      }
+    } catch (error) {
+      console.error("Error loading ballots:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
 
   const toggleBallot = (ballotId: string) => {
     setSelectedBallots((prev) => (prev.includes(ballotId) ? prev.filter((id) => id !== ballotId) : [...prev, ballotId]))
   }
 
   return (
-    <div className="space-y-2 pb-8">
+    <div className="pt-6 pb-8 space-y-6">
       <Link href="/voting">
         <Button variant="ghost">
           <ArrowLeft className="mr-2 h-4 w-4" />
@@ -82,47 +82,49 @@ export default function VerifyPreviousVotePage() {
         </div>
       </div>
 
-      <div className="grid gap-6">
-        {previousBallots.map((ballot) => (
-          <Card
-            key={ballot.id}
-            className={`cursor-pointer transition-colors ${
-              selectedBallots.includes(ballot.id) ? "border-[#FFD700] bg-yellow-50" : "hover:border-gray-300"
-            }`}
-            onClick={() => toggleBallot(ballot.id)}
-          >
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <div
-                    className={`flex h-6 w-6 items-center justify-center rounded-full border ${
-                      selectedBallots.includes(ballot.id) ? "border-[#FFD700] bg-[#FFD700]" : "border-gray-300"
-                    }`}
-                  >
-                    {selectedBallots.includes(ballot.id) && <Check className="h-4 w-4 text-white" />}
+      {isLoading ? (
+        <div className="text-center py-8">Loading your ballot history...</div>
+      ) : (
+        <div className="grid gap-6">
+          {previousBallots.map((ballot) => (
+            <Card
+              key={ballot.id}
+              className={`cursor-pointer transition-colors ${
+                selectedBallots.includes(ballot.id) ? "border-[#FFD700] bg-yellow-50" : "hover:border-gray-300"
+              }`}
+              onClick={() => toggleBallot(ballot.id)}
+            >
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div
+                      className={`flex h-6 w-6 items-center justify-center rounded-full border ${
+                        selectedBallots.includes(ballot.id) ? "border-[#FFD700] bg-[#FFD700]" : "border-gray-300"
+                      }`}
+                    >
+                      {selectedBallots.includes(ballot.id) && <Check className="h-4 w-4 text-white" />}
+                    </div>
+                    <CardTitle className="text-lg">Ballot cast on {formatDateDanish(ballot.timestamp)}</CardTitle>
                   </div>
-                  <CardTitle className="text-lg">
-                    Ballot cast on {new Date(ballot.timestamp).toLocaleDateString()}
-                  </CardTitle>
+                  <div className="text-sm text-gray-500">{formatTimeDanish(ballot.timestamp)}</div>
                 </div>
-                <div className="text-sm text-gray-500">{new Date(ballot.timestamp).toLocaleTimeString()}</div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                {ballot.votes.map((vote, index) => (
-                  <div key={index} className="grid grid-cols-2 gap-2 text-sm">
-                    <div className="text-gray-500">{vote.proposal}</div>
-                    <div>{vote.choice}</div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  {ballot.votes.map((vote, index) => (
+                    <div key={index} className="grid grid-cols-2 gap-2 text-sm">
+                      <div className="text-gray-500">{vote.proposal}</div>
+                      <div>{vote.choice}</div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
 
-      <div className="flex justify-end gap-4 mt-8 pt-4">
+      <div className="flex justify-end gap-4 mt-8">
         <Link href="/voting/new">
           <Button className="bg-gray-900">
             Continue to Voting

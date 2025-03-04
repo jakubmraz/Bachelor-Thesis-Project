@@ -1,11 +1,38 @@
+"use client"
+
+import { useState } from "react"
 import Link from "next/link"
-import { ChevronRight } from "lucide-react"
+import { ChevronRight, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { generateRandomBallots } from "@/lib/ballot-data"
 
 export default function Page() {
+  const [debugMessage, setDebugMessage] = useState("")
+
+  // Function to flush ballot history and generate random ballots
+  const flushHistory = () => {
+    try {
+      // Clear existing ballots
+      localStorage.removeItem("userBallots")
+
+      // Generate 3 random ballots
+      const randomBallots = generateRandomBallots(3)
+
+      // Save random ballots
+      localStorage.setItem("userBallots", JSON.stringify(randomBallots))
+
+      setDebugMessage("History flushed and 3 random ballots generated")
+      setTimeout(() => setDebugMessage(""), 3000) // Clear message after 3 seconds
+    } catch (error) {
+      console.error("Error flushing history:", error)
+      setDebugMessage("Error: " + error.message)
+      setTimeout(() => setDebugMessage(""), 3000)
+    }
+  }
+
   return (
-    <div className="flex flex-col items-center pt-8">
+    <div className="flex flex-col items-center pt-8 relative min-h-[80vh]">
       {/* Hero Section */}
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold mb-4">Welcome to the Online Voting Portal</h1>
@@ -82,6 +109,24 @@ export default function Page() {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
+      </div>
+
+      {/* Debug button in bottom right corner */}
+      <div className="absolute bottom-4 right-4">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="text-gray-400 hover:text-gray-600 flex items-center gap-1"
+          onClick={flushHistory}
+        >
+          <Trash2 className="h-3 w-3" />
+          <span className="text-xs">Flush History</span>
+        </Button>
+        {debugMessage && (
+          <div className="absolute bottom-10 right-0 bg-black text-white text-xs p-2 rounded whitespace-nowrap">
+            {debugMessage}
+          </div>
+        )}
       </div>
     </div>
   )

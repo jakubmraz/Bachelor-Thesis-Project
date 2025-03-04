@@ -6,47 +6,14 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Check, ChevronRight, HelpCircle, Info, ArrowLeft } from "lucide-react"
 import Link from "next/link"
+import { ballotItems, type Ballot } from "@/lib/ballot-data"
+import { formatDateDanish, formatTimeDanish } from "@/lib/date-utils"
 
 export default function NewVotingPage() {
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({})
   const [currentStep, setCurrentStep] = useState(0)
   const [isSubmitted, setIsSubmitted] = useState(false)
-
-  const ballotItems = [
-    {
-      id: "proposal-1",
-      title: "City Budget Allocation",
-      description: "How should the city allocate its budget surplus?",
-      options: [
-        { id: "option-1-1", text: "Infrastructure improvements" },
-        { id: "option-1-2", text: "Education funding" },
-        { id: "option-1-3", text: "Public healthcare" },
-        { id: "option-1-4", text: "Environmental initiatives" },
-      ],
-    },
-    {
-      id: "proposal-2",
-      title: "Public Transportation Expansion",
-      description: "Which public transportation project should be prioritized?",
-      options: [
-        { id: "option-2-1", text: "Subway line extension" },
-        { id: "option-2-2", text: "Electric bus fleet" },
-        { id: "option-2-3", text: "Bike lane network" },
-        { id: "option-2-4", text: "High-speed rail connection" },
-      ],
-    },
-    {
-      id: "proposal-3",
-      title: "City Park Development",
-      description: "What should be the focus of the new city park development?",
-      options: [
-        { id: "option-3-1", text: "Recreational facilities" },
-        { id: "option-3-2", text: "Natural conservation area" },
-        { id: "option-3-3", text: "Community gardens" },
-        { id: "option-3-4", text: "Cultural event space" },
-      ],
-    },
-  ]
+  const [ballotTimestamp, setBallotTimestamp] = useState("")
 
   const handleOptionSelect = (proposalId: string, optionId: string) => {
     setSelectedOptions({
@@ -71,8 +38,39 @@ export default function NewVotingPage() {
   }
 
   const handleSubmit = () => {
-    // In a real application, this would send the vote to a server
-    console.log("Submitting votes:", selectedOptions)
+    // Generate timestamp for the ballot
+    const now = new Date()
+    setBallotTimestamp(now.toISOString())
+
+    // Create ballot data
+    const ballotData: Ballot = {
+      id: `ballot-${Date.now()}`,
+      timestamp: now.toISOString(),
+      votes: ballotItems.map((item) => {
+        const selectedOptionId = selectedOptions[item.id]
+        const selectedOption = item.options.find((opt) => opt.id === selectedOptionId)
+        return {
+          proposal: item.title,
+          choice: selectedOption?.text || "No selection",
+        }
+      }),
+    }
+
+    // Store in localStorage for demo purposes
+    try {
+      // Get existing ballots or initialize empty array
+      const existingBallotsString = localStorage.getItem("userBallots")
+      const existingBallots = existingBallotsString ? JSON.parse(existingBallotsString) : []
+
+      // Add new ballot
+      const updatedBallots = [...existingBallots, ballotData]
+
+      // Save back to localStorage
+      localStorage.setItem("userBallots", JSON.stringify(updatedBallots))
+    } catch (error) {
+      console.error("Error saving ballot:", error)
+    }
+
     setIsSubmitted(true)
   }
 
@@ -80,8 +78,12 @@ export default function NewVotingPage() {
   const isCurrentProposalSelected = currentProposal && selectedOptions[currentProposal.id]
   const allProposalsAnswered = ballotItems.every((item) => selectedOptions[item.id])
 
+  // Format the timestamp in the same way it appears in the verification page
+  const formattedDate = ballotTimestamp ? formatDateDanish(ballotTimestamp) : ""
+  const formattedTime = ballotTimestamp ? formatTimeDanish(ballotTimestamp) : ""
+
   return (
-    <div className="">
+    <div className="pt-6 pb-8">
       <Link href="/voting">
         <Button variant="ghost" className="mb-6">
           <ArrowLeft className="mr-2 h-4 w-4" />
@@ -90,17 +92,64 @@ export default function NewVotingPage() {
       </Link>
 
       {isSubmitted ? (
-        <div className="mt-12 flex flex-col items-center">
-          <div className="mb-8 flex h-24 w-24 items-center justify-center rounded-full bg-green-100">
-            <Check className="h-12 w-12 text-green-600" />
+        <div className="mt-6 space-y-6">
+          <div className="flex flex-col items-center">
+            <div className="mb-8 flex h-24 w-24 items-center justify-center rounded-full bg-green-100">
+              <Check className="h-12 w-12 text-green-600" />
+            </div>
+            <h1 className="mb-4 text-2xl font-bold">Vote Successfully Cast</h1>
+            <p className="mb-8 text-center text-gray-600 max-w-md">
+              Thank you for participating in the democratic process. Your vote has been recorded securely.
+            </p>
           </div>
-          <h1 className="mb-4 text-2xl font-bold">Vote Successfully Cast</h1>
-          <p className="mb-8 text-center text-gray-600">
-            Thank you for participating in the democratic process. Your vote has been recorded securely.
-          </p>
-          <Link href="/">
-            <Button size="lg">Return to Home</Button>
-          </Link>
+
+          <Card className="max-w-2xl mx-auto">
+            <CardHeader>
+              <CardTitle>Your Ballot Information</CardTitle>
+              <CardDescription>
+                This information may help you identify your ballot if you need to revote later.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="bg-gray-50 p-4 rounded-md">
+                <div className="font-medium mb-1">Ballot cast on {formattedDate}</div>
+                <div className="text-sm text-gray-500">at {formattedTime}</div>
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="font-medium">Your Selections:</h3>
+                {ballotItems.map((item) => {
+                  const selectedOptionId = selectedOptions[item.id]
+                  const selectedOption = item.options.find((opt) => opt.id === selectedOptionId)
+                  return (
+                    <div key={item.id} className="grid grid-cols-2 gap-2 text-sm border-b pb-2">
+                      <div className="text-gray-500">{item.title}</div>
+                      <div>{selectedOption?.text || "No selection"}</div>
+                    </div>
+                  )
+                })}
+              </div>
+
+              <div className="bg-yellow-50 p-4 rounded-md border border-yellow-200 mt-4">
+                <div className="flex gap-3">
+                  <Info className="h-5 w-5 text-yellow-600 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <h3 className="font-semibold mb-1">Important Privacy Notice</h3>
+                    <p className="text-sm text-gray-600">
+                      For your privacy, we recommend not saving or sharing this information unless you plan to revote.
+                      The system is designed to protect your voting privacy even if you cannot recall your previous
+                      ballot.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter className="justify-center">
+              <Link href="/logged-out">
+                <Button size="lg">Log Out and Return</Button>
+              </Link>
+            </CardFooter>
+          </Card>
         </div>
       ) : currentStep < ballotItems.length ? (
         <>
@@ -226,10 +275,10 @@ export default function NewVotingPage() {
             <div className="flex items-start gap-3">
               <HelpCircle className="mt-0.5 h-5 w-5 text-gray-500" />
               <div>
-                <h3 className="font-semibold">About revoting</h3>
+                <h3 className="font-semibold">Important Note</h3>
                 <p className="text-sm text-gray-600">
-                  This system allows you to vote again to change your vote. This however requires you to remember and later
-                  identify your previously cast votes. For your convenience, please ensure all selections reflect your intended choices.
+                  Once submitted, your vote cannot be changed. Please ensure all selections reflect your intended
+                  choices.
                 </p>
               </div>
             </div>
