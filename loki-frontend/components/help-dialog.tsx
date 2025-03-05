@@ -1,24 +1,45 @@
 "use client"
 
+import { useState, useEffect, type ReactNode } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { HelpCircle } from "lucide-react"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
-export function HelpDialog() {
+interface HelpDialogProps {
+  defaultOpenSection?: string
+  triggerText?: string
+  children?: ReactNode // Add support for custom trigger element
+}
+
+export function HelpDialog({ defaultOpenSection, triggerText = "Help", children }: HelpDialogProps) {
+  const [openSection, setOpenSection] = useState<string | undefined>(defaultOpenSection)
+  const [dialogOpen, setDialogOpen] = useState(false)
+
+  // Update the open section when the defaultOpenSection prop changes
+  useEffect(() => {
+    if (dialogOpen && defaultOpenSection) {
+      setOpenSection(defaultOpenSection)
+    }
+  }, [dialogOpen, defaultOpenSection])
+
   return (
-    <Dialog>
+    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
-        <button className="hover:bg-yellow-400 px-2 py-1 rounded-md flex items-center gap-2">
-          <HelpCircle className="h-4 w-4" />
-          Help
-        </button>
+        {children ? (
+          children
+        ) : (
+          <button className="hover:bg-yellow-400 px-2 py-1 rounded-md flex items-center gap-2">
+            <HelpCircle className="h-4 w-4" />
+            {triggerText}
+          </button>
+        )}
       </DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-visible">
+      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl">Help Center</DialogTitle>
         </DialogHeader>
         <div className="mt-4">
-          <Accordion type="single" collapsible className="w-full">
+          <Accordion type="single" collapsible className="w-full" value={openSection} onValueChange={setOpenSection}>
             <AccordionItem value="privacy">
               <AccordionTrigger>How is my privacy protected?</AccordionTrigger>
               <AccordionContent>
@@ -62,6 +83,28 @@ export function HelpDialog() {
                   </ul>
                   <p className="mt-2">
                     To change your vote, you'll need to identify your previous ballot(s) to confirm your identity.
+                  </p>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="ballot-verification">
+              <AccordionTrigger>Why do I need to verify if I've voted before?</AccordionTrigger>
+              <AccordionContent>
+                <div className="space-y-2">
+                  <p>This verification step is crucial for several security reasons:</p>
+                  <ul className="list-disc pl-6 space-y-1">
+                    <li>
+                      <strong>Identity verification:</strong> It ensures that only you can cast or change your vote.
+                    </li>
+                    <li>
+                      <strong>Anti-coercion protection:</strong> It protects you from coercion by allowing you to intentionally cast an invalid vode
+                      with plausible deniability.
+                    </li>
+                  </ul>
+                  <p className="mt-2 text-red-600 font-medium">
+                    Important: If you have voted before but claim you haven't, your new vote will not be counted.
+                    Similarly, if you haven't voted before but claim you have, you won't be able to cast a valid vote.
                   </p>
                 </div>
               </AccordionContent>

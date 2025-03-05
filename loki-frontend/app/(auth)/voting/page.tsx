@@ -1,61 +1,35 @@
 "use client"
 
-import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { HelpCircle, AlertTriangle } from "lucide-react"
+import { AlertTriangle, HelpCircle } from "lucide-react"
 import Link from "next/link"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+import { HelpDialog } from "@/components/help-dialog"
 
 export default function VotingEntryPage() {
-  const [showHelp, setShowHelp] = useState(false)
-
   return (
     <div className="space-y-6 pt-8">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold mb-2">Have you voted before?</h1>
-          <p className="text-muted-foreground">Please let us know if you have voted before in this election.</p>
+      <div>
+        <div className="flex items-center justify-between mb-2">
+          <h1 className="text-2xl font-bold">Have you voted before?</h1>
+          <HelpDialog defaultOpenSection="ballot-verification">
+            <button className="text-muted-foreground hover:text-foreground flex items-center gap-1">
+              Why is this necessary?
+              <HelpCircle className="h-4 w-4" />
+            </button>
+          </HelpDialog>
         </div>
-        <Dialog open={showHelp} onOpenChange={setShowHelp}>
-          <DialogTrigger asChild>
-            <Button variant="ghost" size="icon" className="rounded-full">
-              <HelpCircle className="h-5 w-5" />
-              <span className="sr-only">Help</span>
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-md">
-            <DialogHeader>
-              <DialogTitle>About Revoting</DialogTitle>
-              <DialogDescription asChild>
-                <div className="pt-4 space-y-4">
-                  <div>
-                    This voting system allows you to change your vote at any time. This is a security feature that
-                    protects your right to vote freely.
-                  </div>
-                  <div>
-                    If you have voted before, you'll need to identify your previous ballot(s) to confirm your identity.
-                    This ensures that only you can change your own vote.
-                  </div>
-                  <div>If this is your first time voting, you can proceed directly to the voting interface.</div>
-                  <div className="flex items-start gap-2 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
-                    <AlertTriangle className="h-5 w-5 text-yellow-600 mt-0.5 flex-shrink-0" />
-                    <div className="text-sm font-medium text-yellow-800">
-                      Important: If you misidentify your previous ballots, your new vote will not be counted. This is a
-                      security feature that protects against coerced voting.
-                    </div>
-                  </div>
-                </div>
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
+        <p className="text-muted-foreground">
+          To make sure only you can cast your vote, please let us know if you have voted before in this election.
+        </p>
+
+        <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
+          <div className="flex items-start gap-2">
+            <AlertTriangle className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
+            <div className="text-sm text-red-800">
+              Your ballot will only be counted if you provide the correct information about your voting history.
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
