@@ -32,7 +32,7 @@ export interface BallotOption {
         { id: "option-1-1", text: "Infrastructure improvements" },
         { id: "option-1-2", text: "Education funding" },
         { id: "option-1-3", text: "Public healthcare" },
-        { id: "option-1-4", text: "Environmental initiatives" },
+        { id: "option-1-4", text: "Parking lots" },
       ],
     },
     {
@@ -44,17 +44,16 @@ export interface BallotOption {
         { id: "option-2-2", text: "Electric bus fleet" },
         { id: "option-2-3", text: "Bike lane network" },
         { id: "option-2-4", text: "High-speed rail connection" },
+        { id: "option-2-5", text: "None" },
       ],
     },
     {
       id: "proposal-3",
-      title: "City Park Development",
-      description: "What should be the focus of the new city park development?",
+      title: "Presidential Election",
+      description: "Vote for the country's new president",
       options: [
-        { id: "option-3-1", text: "Recreational facilities" },
-        { id: "option-3-2", text: "Natural conservation area" },
-        { id: "option-3-3", text: "Community gardens" },
-        { id: "option-3-4", text: "Cultural event space" },
+        { id: "option-3-1", text: "James Goodman" },
+        { id: "option-3-2", text: "Mr Genocide 5000" },
       ],
     },
   ]
