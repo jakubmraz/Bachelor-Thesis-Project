@@ -35,9 +35,9 @@ export default function Page() {
         <p className="text-sm text-gray-600">Note: The actual MyID integration is out of scope for this project.</p>
       </div>
 
-      <Link href="/voting">
+      <Link href="/elections">
         <Button size="lg" className="bg-gray-900">
-          Continue to Voting
+          Continue
         </Button>
       </Link>
     </div>

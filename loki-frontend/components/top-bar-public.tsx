@@ -5,7 +5,7 @@ import { HelpDialog } from "./help-dialog"
 export function TopBarPublic() {
   return (
     <header className="border-b bg-[#FFD700]">
-      <div className="mx-auto flex max-w-[1200px] items-center justify-between px-8 py-4">
+      <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-8">
         <Link href="/" className="flex items-center gap-2">
           <div className="text-2xl font-bold">Logo goes here</div>
         </Link>

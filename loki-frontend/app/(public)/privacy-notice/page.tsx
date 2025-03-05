@@ -25,7 +25,7 @@ export default function Page() {
 
         <Card className="max-w-xl p-6 space-y-4">
           <p className="text-lg">
-            A voting booth keeps no record, but your browser does. To protect your privacy, right click this button and
+            A voting booth keeps no record, but your browser does. To protect your privacy, right click the button above and
             then click on "Open link in incognito window".
           </p>
 

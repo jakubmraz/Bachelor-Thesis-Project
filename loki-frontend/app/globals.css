@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
-}
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -68,20 +64,11 @@ body {
   }
   body {
     @apply bg-background text-foreground;
-  }
-}
-
-
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
+    font-family: var(--font-noto-sans), system-ui, sans-serif;
   }
 }
 
 html {
   overflow-y: scroll;
 }
+

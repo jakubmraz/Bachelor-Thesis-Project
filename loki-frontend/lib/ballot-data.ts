@@ -26,31 +26,29 @@ export interface BallotOption {
   export const ballotItems: BallotItem[] = [
     {
       id: "proposal-1",
-      title: "City Budget Allocation",
-      description: "How should the city allocate its budget surplus?",
+      title: "Parliamentary Election",
+      description: "Vote for the party you wish to represent you in the Parliament.",
       options: [
-        { id: "option-1-1", text: "Infrastructure improvements" },
-        { id: "option-1-2", text: "Education funding" },
-        { id: "option-1-3", text: "Public healthcare" },
-        { id: "option-1-4", text: "Parking lots" },
+        { id: "option-1-1", text: "Social Democrats" },
+        { id: "option-1-2", text: "New Liberal Party" },
+        { id: "option-1-3", text: "Green Party" },
+        { id: "option-1-4", text: "Christian Conservative Union" },
+        { id: "option-1-5", text: "CHANGE!" },
       ],
     },
     {
       id: "proposal-2",
-      title: "Public Transportation Expansion",
-      description: "Which public transportation project should be prioritized?",
+      title: "Legalisation of Fentanyl",
+      description: "Should the sale, posession, and use of fentanyl be legal for adults aged 18 and above?",
       options: [
-        { id: "option-2-1", text: "Subway line extension" },
-        { id: "option-2-2", text: "Electric bus fleet" },
-        { id: "option-2-3", text: "Bike lane network" },
-        { id: "option-2-4", text: "High-speed rail connection" },
-        { id: "option-2-5", text: "None" },
+        { id: "option-2-1", text: "Yes" },
+        { id: "option-2-2", text: "No" },
       ],
     },
     {
       id: "proposal-3",
       title: "Presidential Election",
-      description: "Vote for the country's new president",
+      description: "Vote for the country's new president.",
       options: [
         { id: "option-3-1", text: "James Goodman" },
         { id: "option-3-2", text: "Mr Genocide 5000" },
