@@ -281,10 +281,9 @@ export default function NewVotingPage() {
             <div className="flex items-start gap-3">
               <HelpCircle className="mt-0.5 h-5 w-5 text-gray-500" />
               <div>
-                <h3 className="font-semibold">Important Note</h3>
+                <h3 className="font-semibold">This is the last step</h3>
                 <p className="text-sm text-gray-600">
-                  Once submitted, your vote cannot be changed. Please ensure all selections reflect your intended
-                  choices.
+                  Please ensure all selections reflect your intended choices.
                 </p>
               </div>
             </div>
