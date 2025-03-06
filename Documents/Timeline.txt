@@ -4,22 +4,22 @@ Goals: -Project roadmap ✅
 -Compilation of design inspirations ✅
 👇
 By 27th February
-Goals: -Implemented system skeleton with usable dev interface with the necessary buttons and pages
--At least one page (initial/login page) with implemented design
--Small survey of 2-3 people to get feedback on design implementations
+Goals: -Implemented system skeleton with usable dev interface with the necessary buttons and pages ✅
+-At least one page (initial/login page) with implemented design ✅
+-Small survey of 2-3 people to get feedback on design implementations ✅
 👇
 By 13th March
-Goals: -Implemented frontend for non-coerced voting
+Goals: -Implemented frontend for non-coerced voting ✅
 -Small survey of 2-3 people to get feedback on design implementations
 👇
 By 27th March
-Goals: -Implemented frontend for deniable revoting
+Goals: -Implemented frontend for deniable revoting ✅
 -Implemented tutorial/guidance for the system
 -Small survey of 2-3 people to get feedback on design implementations
 👇
 By 3rd April
 Goals: -Implemented frontend for user vote verification
--Implemented guidance for external security management (deleting browser history, etc...)
+-Implemented guidance for external security management (deleting browser history, etc...) ✅
 👇
 By 17th April
 Goals: -Finalised UI

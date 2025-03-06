@@ -7,7 +7,7 @@ import { HelpDialog } from "@/components/help-dialog"
 
 export default function VotingEntryPage() {
   return (
-    <div className="space-y-6 pt-8">
+    <div className="space-y-6">
       <div>
         <div className="flex items-center justify-between mb-2">
           <h1 className="text-2xl font-bold">Have you voted before?</h1>

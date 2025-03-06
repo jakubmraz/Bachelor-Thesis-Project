@@ -8,12 +8,14 @@ import { Check, ChevronRight, HelpCircle, Info, ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { ballotItems, type Ballot } from "@/lib/ballot-data"
 import { formatDateDanish, formatTimeDanish } from "@/lib/date-utils"
+import { useVote } from "@/contexts/vote-context"
 
 export default function NewVotingPage() {
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({})
   const [currentStep, setCurrentStep] = useState(0)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [ballotTimestamp, setBallotTimestamp] = useState("")
+  const { setVoteSubmitted } = useVote()
 
   const handleOptionSelect = (proposalId: string, optionId: string) => {
     setSelectedOptions({
@@ -72,6 +74,8 @@ export default function NewVotingPage() {
     }
 
     setIsSubmitted(true)
+    // Update the context to hide the breadcrumb
+    setVoteSubmitted(true)
   }
 
   const currentProposal = ballotItems[currentStep]
@@ -83,13 +87,15 @@ export default function NewVotingPage() {
   const formattedTime = ballotTimestamp ? formatTimeDanish(ballotTimestamp) : ""
 
   return (
-    <div className="pt-6 pb-8">
-      <Link href="/voting">
-        <Button variant="ghost" className="mb-6">
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Previous Step
-        </Button>
-      </Link>
+    <div className="pb-8">
+      {!isSubmitted && (
+        <Link href="/voting">
+          <Button variant="ghost" className="mb-6">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Previous Step
+          </Button>
+        </Link>
+      )}
 
       {isSubmitted ? (
         <div className="mt-6 space-y-6">

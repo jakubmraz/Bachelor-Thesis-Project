@@ -3,12 +3,19 @@
 import { ChevronRight } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useVote } from "@/contexts/vote-context"
 
 export function BreadcrumbNav() {
   const pathname = usePathname()
+  const { isVoteSubmitted } = useVote()
 
   // Don't show breadcrumbs on the elections landing page
   if (pathname === "/elections") {
+    return null
+  }
+
+  // Don't show breadcrumbs on the voting/new page when a vote has been submitted
+  if (pathname === "/voting/new" && isVoteSubmitted) {
     return null
   }
 

@@ -51,7 +51,7 @@ export interface BallotOption {
       description: "Vote for the country's new president.",
       options: [
         { id: "option-3-1", text: "James Goodman" },
-        { id: "option-3-2", text: "Mr Genocide 5000" },
+        { id: "option-3-2", text: "Nancy Grubber" },
       ],
     },
   ]

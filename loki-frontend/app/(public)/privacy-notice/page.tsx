@@ -3,6 +3,8 @@ import { Card } from "@/components/ui/card"
 import { ChevronLeft } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
+import { HelpDialog } from "@/components/help-dialog"
+import { HelpCircle } from "lucide-react"
 
 export default function Page() {
   return (
@@ -10,13 +12,21 @@ export default function Page() {
       <Link href="/">
         <Button variant="ghost">
           <ChevronLeft className="mr-2 h-4 w-4" />
-          Back
+          Back to Home
         </Button>
       </Link>
 
-      <div className="flex flex-col items-center text-center space-y-8">
-        <h1 className="text-2xl font-bold">Protect Your Privacy</h1>
+      <div className="flex items-center justify-between mb-2">
+          <h1 className="text-2xl font-bold">Use Incognito Mode to Protect Your Privacy</h1>
+          <HelpDialog defaultOpenSection="incognito-mode">
+            <button className="text-muted-foreground hover:text-foreground flex items-center gap-1">
+              <HelpCircle className="h-4 w-4" />
+              Why is this necessary?
+            </button>
+          </HelpDialog>
+      </div>
 
+      <div className="flex flex-col items-center text-center space-y-8">
         <Link href="/login" className="block">
           <Button size="lg" className="bg-[#FFD700] hover:bg-[#FFED4A] text-black px-8">
             Proceed to Login
