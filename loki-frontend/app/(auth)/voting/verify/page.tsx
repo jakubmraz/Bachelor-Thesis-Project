@@ -14,27 +14,12 @@ export default function VerifyPreviousVotePage() {
   const [selectedBallot, setSelectedBallot] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  // Load ballots from localStorage on component mount
+  // Load ballots on component mount
   useEffect(() => {
     try {
-      const storedBallots = localStorage.getItem("userBallots")
-
-      if (storedBallots) {
-        // If we have ballots in localStorage, use them
-        const parsedBallots = JSON.parse(storedBallots) as Ballot[]
-
-        // Shuffle the ballots to make it less obvious which ones are the user's
-        const shuffledBallots = [...parsedBallots].sort(() => Math.random() - 0.5)
-        setPreviousBallots(shuffledBallots)
-      } else {
-        // If no ballots in localStorage, generate some default demo ballots
-        // This should only happen on first visit before using "Flush History"
-        const demoBallots = generateRandomBallots(3)
-        setPreviousBallots(demoBallots)
-
-        // Store these demo ballots for consistency
-        localStorage.setItem("userBallots", JSON.stringify(demoBallots))
-      }
+      // Generate 5 ballots, including the last cast ballot if it exists
+      const ballots = generateRandomBallots(5, true)
+      setPreviousBallots(ballots)
     } catch (error) {
       console.error("Error loading ballots:", error)
     } finally {

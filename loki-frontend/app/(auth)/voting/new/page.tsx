@@ -58,17 +58,13 @@ export default function NewVotingPage() {
       }),
     }
 
-    // Store in localStorage for demo purposes
+    // Clear any old ballot history and store only the last cast ballot
     try {
-      // Get existing ballots or initialize empty array
-      const existingBallotsString = localStorage.getItem("userBallots")
-      const existingBallots = existingBallotsString ? JSON.parse(existingBallotsString) : []
-
-      // Add new ballot
-      const updatedBallots = [...existingBallots, ballotData]
-
-      // Save back to localStorage
-      localStorage.setItem("userBallots", JSON.stringify(updatedBallots))
+      // Remove old ballot storage format
+      localStorage.removeItem("userBallots")
+      localStorage.removeItem("lastCastBallot")
+      // Save only the last cast ballot
+      localStorage.setItem("lastCastBallot", JSON.stringify(ballotData))
     } catch (error) {
       console.error("Error saving ballot:", error)
     }
@@ -281,9 +277,10 @@ export default function NewVotingPage() {
             <div className="flex items-start gap-3">
               <HelpCircle className="mt-0.5 h-5 w-5 text-gray-500" />
               <div>
-                <h3 className="font-semibold">This is the last step</h3>
+                <h3 className="font-semibold">Important Note</h3>
                 <p className="text-sm text-gray-600">
-                  Please ensure all selections reflect your intended choices.
+                  Once submitted, your vote cannot be changed. Please ensure all selections reflect your intended
+                  choices.
                 </p>
               </div>
             </div>
