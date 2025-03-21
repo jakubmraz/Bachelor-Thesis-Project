@@ -16,7 +16,7 @@ export default function Page() {
         <div>
           <h1 className="mb-4 text-2xl font-bold">Secure Login</h1>
           <p className="text-gray-600">
-            This voting portal uses biometric authentication through MyID to ensure secure and reliable voter
+            This voting portal uses biometric authentication through MitID to ensure secure and reliable voter
             identification.
           </p>
         </div>
@@ -24,16 +24,16 @@ export default function Page() {
         <Link href="/login/auth" className="block">
           <Button size="lg" className="w-full bg-gray-900 py-6 text-lg">
             <Fingerprint className="mr-2 h-5 w-5" />
-            Login with MyID
+            Login with MitID
           </Button>
         </Link>
 
         <div className="rounded-lg bg-gray-50 p-4">
           <h2 className="mb-2 font-semibold">Important Information</h2>
           <ul className="space-y-2 text-sm text-gray-600">
-            <li>• You must have MyID installed with biometric authentication enabled</li>
-            <li>• If you cannot use MyID, please visit your local voting station to vote in person</li>
-            <li>• Make sure your MyID app is up to date before proceeding</li>
+            <li>• You must have MitID installed with biometric authentication enabled</li>
+            <li>• If you cannot use MitID, please visit your local voting station to vote in person</li>
+            <li>• Make sure your MitID app is up to date before proceeding</li>
           </ul>
         </div>
       </div>
