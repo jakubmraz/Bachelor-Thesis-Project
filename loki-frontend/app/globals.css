@@ -68,7 +68,14 @@
   }
 }
 
-html {
-  overflow-y: scroll;
+/* Fix for layout shift when modals/dropdowns open */
+body {
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+/* When body has a modal open, maintain the same width */
+body[data-state="open"] {
+  width: 100vw;
 }
 

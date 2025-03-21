@@ -4,17 +4,22 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { Check, ChevronRight, HelpCircle, Info, ArrowLeft } from "lucide-react"
+import { Check, ChevronRight, HelpCircle, Info, ArrowLeft, AlertTriangle } from "lucide-react"
 import Link from "next/link"
-import { ballotItems, type Ballot } from "@/lib/ballot-data"
+import { ballotItems, type Ballot, saveUserBallot, generateBallotId } from "@/lib/ballot-data"
 import { formatDateDanish, formatTimeDanish } from "@/lib/date-utils"
 import { useVote } from "@/contexts/vote-context"
+import { BallotIdenticon } from "@/components/ballot-identicon"
+import { generateBallotHash } from "@/lib/identicon"
+import { HelpDialog } from "@/components/help-dialog"
 
 export default function NewVotingPage() {
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({})
   const [currentStep, setCurrentStep] = useState(0)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [ballotTimestamp, setBallotTimestamp] = useState("")
+  const [ballotId, setBallotId] = useState("")
+  const [identiconHash, setIdenticonHash] = useState("")
   const { setVoteSubmitted } = useVote()
 
   const handleOptionSelect = (proposalId: string, optionId: string) => {
@@ -42,12 +47,22 @@ export default function NewVotingPage() {
   const handleSubmit = () => {
     // Generate timestamp for the ballot
     const now = new Date()
-    setBallotTimestamp(now.toISOString())
+    const timestamp = now.toISOString()
+
+    // Generate a ballot ID in the reserved range for user ballots
+    const newBallotId = generateBallotId(timestamp, true)
+
+    // Generate the identicon hash
+    const hash = generateBallotHash({ timestamp, id: newBallotId })
+
+    setBallotTimestamp(timestamp)
+    setBallotId(newBallotId)
+    setIdenticonHash(hash)
 
     // Create ballot data
-    const ballotData: Ballot = {
-      id: `ballot-${Date.now()}`,
-      timestamp: now.toISOString(),
+    const ballot: Ballot = {
+      id: newBallotId,
+      timestamp: timestamp,
       votes: ballotItems.map((item) => {
         const selectedOptionId = selectedOptions[item.id]
         const selectedOption = item.options.find((opt) => opt.id === selectedOptionId)
@@ -56,15 +71,19 @@ export default function NewVotingPage() {
           choice: selectedOption?.text || "No selection",
         }
       }),
+      identiconHash: hash,
     }
 
-    // Clear any old ballot history and store only the last cast ballot
+    // Save the ballot to localStorage
     try {
-      // Remove old ballot storage format
-      localStorage.removeItem("userBallots")
-      localStorage.removeItem("lastCastBallot")
-      // Save only the last cast ballot
-      localStorage.setItem("lastCastBallot", JSON.stringify(ballotData))
+      // Save to the submitted ballots list with the exact same ID and timestamp
+      // that will be used to generate the identicon
+      saveUserBallot({
+        id: newBallotId,
+        timestamp: timestamp,
+        isSubmittedByUser: true,
+        identiconHash: hash,
+      })
     } catch (error) {
       console.error("Error saving ballot:", error)
     }
@@ -108,14 +127,42 @@ export default function NewVotingPage() {
           <Card className="max-w-2xl mx-auto">
             <CardHeader>
               <CardTitle>Your Ballot Information</CardTitle>
-              <CardDescription>
-                This information may help you identify your ballot if you need to revote later.
-              </CardDescription>
+              <div className="bg-red-50 border border-red-200 rounded-md p-3 mt-2 flex items-start gap-2">
+                <AlertTriangle className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
+                <p className="text-sm text-red-800">
+                  You will need to identify your previously cast ballots if you plan to revote. Make sure to remember
+                  this information.
+                </p>
+              </div>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="bg-gray-50 p-4 rounded-md">
-                <div className="font-medium mb-1">Ballot cast on {formattedDate}</div>
-                <div className="text-sm text-gray-500">at {formattedTime}</div>
+                <div className="flex justify-between items-center">
+                  <div>
+                    <div className="font-medium mb-1">Ballot cast on {formattedDate}</div>
+                    <div className="text-sm text-gray-500">at {formattedTime}</div>
+                  </div>
+                  <div className="flex flex-col items-center">
+                    <HelpDialog defaultOpenSection="identicon">
+                      <button className="text-xs text-blue-600 hover:text-blue-800 mb-1 flex items-center gap-1">
+                        <HelpCircle className="h-3 w-3" />
+                        <span>What's this?</span>
+                      </button>
+                    </HelpDialog>
+                    {identiconHash ? (
+                      <BallotIdenticon
+                        timestamp={ballotTimestamp}
+                        id={ballotId}
+                        size={5}
+                        cellSize={8}
+                        className=""
+                        identiconHash={identiconHash}
+                      />
+                    ) : (
+                      <div className="w-20 h-20 bg-gray-200 rounded-md"></div>
+                    )}
+                  </div>
+                </div>
               </div>
 
               <div className="space-y-4">
@@ -132,15 +179,14 @@ export default function NewVotingPage() {
                 })}
               </div>
 
-              <div className="bg-yellow-50 p-4 rounded-md border border-yellow-200 mt-4">
+              <div className="bg-gray-50 p-4 rounded-md border border-gray-200 mt-4">
                 <div className="flex gap-3">
-                  <Info className="h-5 w-5 text-yellow-600 mt-0.5 flex-shrink-0" />
+                  <Info className="h-5 w-5 text-gray-600 mt-0.5 flex-shrink-0" />
                   <div>
-                    <h3 className="font-semibold mb-1">Important Privacy Notice</h3>
+                    <h3 className="font-semibold mb-1">Remember the Visual Pattern</h3>
                     <p className="text-sm text-gray-600">
-                      For your privacy, we recommend not saving or sharing this information unless you plan to revote.
-                      The system is designed to protect your voting privacy even if you cannot recall your previous
-                      ballot.
+                      The colored pattern square will help you identify your ballot if you need to revote later. For
+                      your privacy, we recommend not saving or sharing this information.
                     </p>
                   </div>
                 </div>

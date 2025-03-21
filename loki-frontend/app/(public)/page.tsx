@@ -49,45 +49,7 @@ export default function Page() {
               </div>
             </AccordionContent>
           </AccordionItem>
-
-          <AccordionItem value="phishing">
-            <AccordionTrigger>Ensure You're on the Official Voting Site</AccordionTrigger>
-            <AccordionContent>
-              <div className="space-y-2">
-                <p>
-                  Hackers may attempt to impersonate the voting portal to steal your credentials or manipulate your
-                  vote. This is known as "phishing." To protect yourself, please verify the following:
-                </p>
-                <ul className="list-disc pl-6 space-y-1">
-                  <li>
-                    <strong>Check the web address:</strong> Make sure you are on the official voting site. The correct
-                    URL will always be <strong>https://votingwebsiteurl.dk</strong>. Avoid clicking links from emails or
-                    messages; type the URL manually if possible.
-                  </li>
-                  <li>
-                    <strong>Look for HTTPS:</strong> Depending on your browser, the address bar should provide
-                    connection informtion. This is usually found on the left of the web address under one of these
-                    icons: 🔒, <InfoIcon className="h-3 w-3 inline-block" />,{" "}
-                    <Settings2 className="h-3 w-3 inline-block" />. Clicking the icon will show you information about
-                    the website's security. If you see warnings about an insecure site, do not proceed.
-                  </li>
-                  <li>
-                    <strong>Beware of fake login methods:</strong> The voting portal <strong>only</strong> uses MyID for
-                    authentication and will never ask for your password via email or text.
-                  </li>
-                  <li>
-                    <strong>Watch out for suspicious messages:</strong> If you receive an email or message asking you to
-                    vote on a different website, it may be a phishing attempt. Contact official support if in doubt.
-                  </li>
-                </ul>
-                <p className="mt-4 text-muted-foreground">
-                  If you suspect a phishing attempt, report it immediately to the election authorities at
-                  report@governmentemail.dk.
-                </p>
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-
+          
           <AccordionItem value="coercion">
             <AccordionTrigger>Get to Know our Anti-Coercion Measures</AccordionTrigger>
             <AccordionContent>

@@ -1,0 +1,4256 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+================================================================
+File Summary
+================================================================
+
+Purpose:
+--------
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+
+File Format:
+------------
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Multiple file entries, each consisting of:
+  a. A separator line (================)
+  b. The file path (File: path/to/file)
+  c. Another separator line
+  d. The full contents of the file
+  e. A blank line
+
+Usage Guidelines:
+-----------------
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+
+Notes:
+------
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+
+Additional Info:
+----------------
+
+================================================================
+Directory Structure
+================================================================
+.gitignore
+app/(auth)/elections/page.tsx
+app/(auth)/layout.tsx
+app/(auth)/voting/new/layout.tsx
+app/(auth)/voting/new/page.tsx
+app/(auth)/voting/page.tsx
+app/(auth)/voting/verify/loading.tsx
+app/(auth)/voting/verify/page.tsx
+app/(public)/help/page.tsx
+app/(public)/layout.tsx
+app/(public)/logged-out/page.tsx
+app/(public)/login/auth/page.tsx
+app/(public)/login/page.tsx
+app/(public)/page.tsx
+app/(public)/privacy-notice/page.tsx
+app/globals.css
+app/layout.tsx
+archive/sign-in-form.tsx
+components.json
+components/ballot-identicon.tsx
+components/breadcrumb-nav.tsx
+components/help-dialog.tsx
+components/masked-input.tsx
+components/page-wrapper.tsx
+components/sign-in-form.tsx
+components/top-bar-auth.tsx
+components/top-bar-public.tsx
+components/ui/accordion.tsx
+components/ui/badge.tsx
+components/ui/button.tsx
+components/ui/calendar.tsx
+components/ui/card.tsx
+components/ui/dialog.tsx
+components/ui/dropdown-menu.tsx
+components/ui/input.tsx
+components/ui/label.tsx
+components/ui/pagination.tsx
+components/ui/popover.tsx
+components/ui/tabs.tsx
+components/ui/tooltip.tsx
+contexts/vote-context.tsx
+eslint.config.mjs
+lib/ballot-data.ts
+lib/date-utils.ts
+lib/identicon.ts
+lib/utils.ts
+next.config.ts
+package.json
+postcss.config.mjs
+public/file.svg
+public/globe.svg
+public/next.svg
+public/vercel.svg
+public/window.svg
+README.md
+tailwind.config.ts
+tsconfig.json
+
+================================================================
+Files
+================================================================
+
+================
+File: .gitignore
+================
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+================
+File: app/(auth)/elections/page.tsx
+================
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { CalendarIcon, CheckCircle2, Clock } from "lucide-react"
+
+export default function ElectionsPage() {
+  // In a real application, this would come from an API
+  const elections = [
+    {
+      id: "general-2025",
+      title: "2025 General Election",
+      description: "Vote for the parliament and the next president.",
+      startDate: "2025-03-01",
+      endDate: "2025-06-15",
+      status: "active",
+    },
+    // More elections would be listed here in a real application
+  ]
+
+  return (
+    <div className="py-8">
+      <h1 className="text-2xl font-bold mb-6">Available Elections</h1>
+      <p className="text-muted-foreground mb-8">
+        Select an election to cast or modify your vote. 
+      </p>
+
+      <div className="grid gap-6">
+        {elections.map((election) => (
+          <Card key={election.id} className="overflow-hidden">
+            <CardHeader className="pb-3">
+              <div className="flex justify-between items-start">
+                <div>
+                  <CardTitle className="text-xl">{election.title}</CardTitle>
+                  <CardDescription className="mt-1">{election.description}</CardDescription>
+                </div>
+                {election.status === "active" && (
+                  <div className="flex items-center text-sm text-green-600 bg-green-50 px-2 py-1 rounded-full">
+                    <CheckCircle2 className="h-4 w-4 mr-1" />
+                    Active
+                  </div>
+                )}
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center text-sm text-muted-foreground mb-2">
+                <CalendarIcon className="h-4 w-4 mr-2" />
+                <span>
+                  {new Date(election.startDate).toLocaleDateString()} -{" "}
+                  {new Date(election.endDate).toLocaleDateString()}
+                </span>
+              </div>
+              <div className="flex items-center text-sm text-muted-foreground">
+                <Clock className="h-4 w-4 mr-2" />
+                <span>Closes in 10 days</span>
+              </div>
+            </CardContent>
+            <CardFooter className="bg-gray-50 border-t">
+              <div className="w-full flex justify-between items-center">
+                <div className="text-sm text-muted-foreground">
+                  {election.status === "active" ? "You can vote or modify your vote until the election closes" : ""}
+                </div>
+                <Link href="/voting">
+                  <Button>Enter Election</Button>
+                </Link>
+              </div>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+================
+File: app/(auth)/layout.tsx
+================
+import type React from "react"
+import { TopBarAuth } from "@/components/top-bar-auth"
+import { PageWrapper } from "@/components/page-wrapper"
+import { BreadcrumbNav } from "@/components/breadcrumb-nav"
+import { VoteProvider } from "@/contexts/vote-context"
+
+interface AuthLayoutProps {
+  children: React.ReactNode
+  params: {
+    hideNav?: boolean
+  }
+}
+
+export default function AuthLayout({ children, params }: AuthLayoutProps) {
+  return (
+    <VoteProvider>
+      <TopBarAuth />
+      <PageWrapper>
+        {!params.hideNav && <BreadcrumbNav />}
+        {children}
+      </PageWrapper>
+    </VoteProvider>
+  )
+}
+
+================
+File: app/(auth)/voting/new/layout.tsx
+================
+import type React from "react"
+export const metadata = {
+  params: {
+    hideNav: true,
+  },
+}
+
+export default function VotingLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return children
+}
+
+================
+File: app/(auth)/voting/new/page.tsx
+================
+"use client"
+
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { Check, ChevronRight, HelpCircle, Info, ArrowLeft } from "lucide-react"
+import Link from "next/link"
+import { ballotItems, type Ballot, saveUserBallot, generateBallotId } from "@/lib/ballot-data"
+import { formatDateDanish, formatTimeDanish } from "@/lib/date-utils"
+import { useVote } from "@/contexts/vote-context"
+import { BallotIdenticon } from "@/components/ballot-identicon"
+import { generateBallotHash } from "@/lib/identicon"
+
+export default function NewVotingPage() {
+  const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({})
+  const [currentStep, setCurrentStep] = useState(0)
+  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [ballotTimestamp, setBallotTimestamp] = useState("")
+  const [ballotId, setBallotId] = useState("")
+  const [identiconHash, setIdenticonHash] = useState("")
+  const { setVoteSubmitted } = useVote()
+
+  const handleOptionSelect = (proposalId: string, optionId: string) => {
+    setSelectedOptions({
+      ...selectedOptions,
+      [proposalId]: optionId,
+    })
+  }
+
+  const handleNext = () => {
+    if (currentStep < ballotItems.length - 1) {
+      setCurrentStep(currentStep + 1)
+    } else {
+      // Show confirmation step
+      setCurrentStep(ballotItems.length)
+    }
+  }
+
+  const handlePrevious = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1)
+    }
+  }
+
+  const handleSubmit = () => {
+    // Generate timestamp for the ballot
+    const now = new Date()
+    const timestamp = now.toISOString()
+
+    // Generate a ballot ID in the reserved range for user ballots
+    const newBallotId = generateBallotId(timestamp, true)
+
+    // Generate the identicon hash
+    const hash = generateBallotHash({ timestamp, id: newBallotId })
+
+    setBallotTimestamp(timestamp)
+    setBallotId(newBallotId)
+    setIdenticonHash(hash)
+
+    // Create ballot data
+    const ballot: Ballot = {
+      id: newBallotId,
+      timestamp: timestamp,
+      votes: ballotItems.map((item) => {
+        const selectedOptionId = selectedOptions[item.id]
+        const selectedOption = item.options.find((opt) => opt.id === selectedOptionId)
+        return {
+          proposal: item.title,
+          choice: selectedOption?.text || "No selection",
+        }
+      }),
+      identiconHash: hash,
+    }
+
+    // Save the ballot to localStorage
+    try {
+      // Save to the submitted ballots list with the exact same ID and timestamp
+      // that will be used to generate the identicon
+      saveUserBallot({
+        id: newBallotId,
+        timestamp: timestamp,
+        isSubmittedByUser: true,
+        identiconHash: hash,
+      })
+
+      // Log for debugging
+      console.log("Saved ballot:", newBallotId, "with hash:", hash)
+    } catch (error) {
+      console.error("Error saving ballot:", error)
+    }
+
+    setIsSubmitted(true)
+    // Update the context to hide the breadcrumb
+    setVoteSubmitted(true)
+  }
+
+  const currentProposal = ballotItems[currentStep]
+  const isCurrentProposalSelected = currentProposal && selectedOptions[currentProposal.id]
+  const allProposalsAnswered = ballotItems.every((item) => selectedOptions[item.id])
+
+  // Format the timestamp in the same way it appears in the verification page
+  const formattedDate = ballotTimestamp ? formatDateDanish(ballotTimestamp) : ""
+  const formattedTime = ballotTimestamp ? formatTimeDanish(ballotTimestamp) : ""
+
+  return (
+    <div className="pb-8">
+      {!isSubmitted && (
+        <Link href="/voting">
+          <Button variant="ghost" className="mb-6">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Previous Step
+          </Button>
+        </Link>
+      )}
+
+      {isSubmitted ? (
+        <div className="mt-6 space-y-6">
+          <div className="flex flex-col items-center">
+            <div className="mb-8 flex h-24 w-24 items-center justify-center rounded-full bg-green-100">
+              <Check className="h-12 w-12 text-green-600" />
+            </div>
+            <h1 className="mb-4 text-2xl font-bold">Vote Successfully Cast</h1>
+            <p className="mb-8 text-center text-gray-600 max-w-md">
+              Thank you for participating in the democratic process. Your vote has been recorded securely.
+            </p>
+          </div>
+
+          <Card className="max-w-2xl mx-auto">
+            <CardHeader>
+              <CardTitle>Your Ballot Information</CardTitle>
+              <CardDescription>
+                This information may help you identify your ballot if you need to revote later.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="bg-gray-50 p-4 rounded-md flex justify-between items-center">
+                <div>
+                  <div className="font-medium mb-1">Ballot cast on {formattedDate}</div>
+                  <div className="text-sm text-gray-500">at {formattedTime}</div>
+                </div>
+                {identiconHash ? (
+                  <BallotIdenticon
+                    timestamp={ballotTimestamp}
+                    id={ballotId}
+                    size={8}
+                    cellSize={5}
+                    className="ml-4"
+                    identiconHash={identiconHash}
+                  />
+                ) : (
+                  <div className="ml-4 w-40 h-40 bg-gray-200 rounded-md"></div>
+                )}
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="font-medium">Your Selections:</h3>
+                {ballotItems.map((item) => {
+                  const selectedOptionId = selectedOptions[item.id]
+                  const selectedOption = item.options.find((opt) => opt.id === selectedOptionId)
+                  return (
+                    <div key={item.id} className="grid grid-cols-2 gap-2 text-sm border-b pb-2">
+                      <div className="text-gray-500">{item.title}</div>
+                      <div>{selectedOption?.text || "No selection"}</div>
+                    </div>
+                  )
+                })}
+              </div>
+
+              <div className="bg-yellow-50 p-4 rounded-md border border-yellow-200 mt-4">
+                <div className="flex gap-3">
+                  <Info className="h-5 w-5 text-yellow-600 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <h3 className="font-semibold mb-1">Important Privacy Notice</h3>
+                    <p className="text-sm text-gray-600">
+                      For your privacy, we recommend not saving or sharing this information unless you plan to revote.
+                      The system is designed to protect your voting privacy even if you cannot recall your previous
+                      ballot.
+                    </p>
+                    <p className="text-sm text-gray-600 mt-2">
+                      <strong>Remember the visual pattern</strong> of your ballot to help you identify it later.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter className="justify-center">
+              <Link href="/logged-out">
+                <Button size="lg">Log Out and Return</Button>
+              </Link>
+            </CardFooter>
+          </Card>
+        </div>
+      ) : currentStep < ballotItems.length ? (
+        <>
+          <div className="mb-6 flex items-center justify-between">
+            <h1 className="text-2xl font-bold">Cast Your Vote</h1>
+            <div className="text-sm text-gray-500">
+              Question {currentStep + 1} of {ballotItems.length}
+            </div>
+          </div>
+
+          <div className="mb-4 h-2 w-full overflow-hidden rounded-full bg-gray-200">
+            <div
+              className="h-full bg-[#FFD700]"
+              style={{ width: `${((currentStep + 1) / ballotItems.length) * 100}%` }}
+            ></div>
+          </div>
+
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle>{currentProposal.title}</CardTitle>
+              <CardDescription>{currentProposal.description}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-4">
+                {currentProposal.options.map((option) => (
+                  <div
+                    key={option.id}
+                    className={`flex cursor-pointer items-center rounded-lg border p-4 transition-colors hover:bg-gray-50 ${
+                      selectedOptions[currentProposal.id] === option.id
+                        ? "border-[#FFD700] bg-yellow-50"
+                        : "border-gray-200"
+                    }`}
+                    onClick={() => handleOptionSelect(currentProposal.id, option.id)}
+                  >
+                    <div
+                      className={`mr-4 flex h-6 w-6 items-center justify-center rounded-full border ${
+                        selectedOptions[currentProposal.id] === option.id
+                          ? "border-[#FFD700] bg-[#FFD700]"
+                          : "border-gray-300"
+                      }`}
+                    >
+                      {selectedOptions[currentProposal.id] === option.id && <Check className="h-4 w-4 text-white" />}
+                    </div>
+                    <span className="text-lg">{option.text}</span>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+            <CardFooter className="flex justify-between">
+              <Button variant="outline" onClick={handlePrevious} disabled={currentStep === 0}>
+                Previous
+              </Button>
+              <Button onClick={handleNext} disabled={!isCurrentProposalSelected}>
+                {currentStep === ballotItems.length - 1 ? "Review" : "Next"}
+                <ChevronRight className="ml-2 h-4 w-4" />
+              </Button>
+            </CardFooter>
+          </Card>
+
+          <div className="rounded-lg bg-gray-50 p-4">
+            <div className="flex items-start gap-3">
+              <Info className="mt-0.5 h-5 w-5 text-gray-500" />
+              <div>
+                <h3 className="font-semibold">Voting Information</h3>
+                <p className="text-sm text-gray-600">
+                  Your vote is anonymous and secure. You can navigate between questions using the buttons below each
+                  question.
+                </p>
+              </div>
+            </div>
+          </div>
+        </>
+      ) : (
+        // Review step
+        <div>
+          <h1 className="mb-6 text-2xl font-bold">Review Your Votes</h1>
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle>Confirm Your Selections</CardTitle>
+              <CardDescription>Please review your votes before final submission</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Accordion type="single" collapsible className="w-full">
+                {ballotItems.map((item, index) => {
+                  const selectedOption = item.options.find((option) => option.id === selectedOptions[item.id])
+                  return (
+                    <AccordionItem key={item.id} value={item.id}>
+                      <AccordionTrigger className="hover:no-underline">
+                        <div className="flex items-center gap-4 text-left">
+                          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#FFD700] text-xs font-bold text-black">
+                            {index + 1}
+                          </div>
+                          <div>
+                            <div className="font-medium">{item.title}</div>
+                            <div className="text-sm font-normal text-gray-500">Selected: {selectedOption?.text}</div>
+                          </div>
+                        </div>
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <div className="pl-10">
+                          <p className="mb-2 text-gray-600">{item.description}</p>
+                          <Button variant="outline" size="sm" onClick={() => setCurrentStep(index)} className="mt-2">
+                            Change selection
+                          </Button>
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  )
+                })}
+              </Accordion>
+            </CardContent>
+            <CardFooter className="flex justify-between">
+              <Button variant="outline" onClick={() => setCurrentStep(ballotItems.length - 1)}>
+                Back to Questions
+              </Button>
+              <Button onClick={handleSubmit} disabled={!allProposalsAnswered} className="bg-gray-900 hover:bg-gray-800">
+                Submit Vote
+              </Button>
+            </CardFooter>
+          </Card>
+
+          <div className="rounded-lg bg-gray-50 p-4">
+            <div className="flex items-start gap-3">
+              <HelpCircle className="mt-0.5 h-5 w-5 text-gray-500" />
+              <div>
+                <h3 className="font-semibold">Important Note</h3>
+                <p className="text-sm text-gray-600">
+                  Once submitted, your vote cannot be changed. Please ensure all selections reflect your intended
+                  choices.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+================
+File: app/(auth)/voting/page.tsx
+================
+"use client"
+
+import { Button } from "@/components/ui/button"
+import { AlertTriangle, HelpCircle } from "lucide-react"
+import Link from "next/link"
+import { HelpDialog } from "@/components/help-dialog"
+
+export default function VotingEntryPage() {
+  return (
+    <div className="space-y-6">
+      <div>
+        <div className="flex items-center justify-between mb-2">
+          <h1 className="text-2xl font-bold">Have you voted before?</h1>
+          <HelpDialog defaultOpenSection="ballot-verification">
+            <button className="text-muted-foreground hover:text-foreground flex items-center gap-1">
+              <HelpCircle className="h-4 w-4" />
+              Why is this necessary?
+            </button>
+          </HelpDialog>
+        </div>
+        <p className="text-muted-foreground">
+          To make sure only you can cast your vote, please let us know if you have voted before in this election.
+        </p>
+
+        <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
+          <div className="flex items-start gap-2">
+            <AlertTriangle className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
+            <div className="text-sm text-red-800">
+              Your ballot will only be counted if you provide the correct information about your voting history.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <Link href="/voting/new" className="block">
+          <Button
+            variant="outline"
+            className="w-full h-32 flex flex-col items-center justify-center gap-2 text-left p-4"
+          >
+            <div className="font-semibold">No, this is my first vote</div>
+            <div className="text-sm text-muted-foreground">I haven't voted in this election yet</div>
+          </Button>
+        </Link>
+        <Link href="/voting/verify" className="block">
+          <Button
+            variant="outline"
+            className="w-full h-32 flex flex-col items-center justify-center gap-2 text-left p-4"
+          >
+            <div className="font-semibold">Yes, I've voted before</div>
+            <div className="text-sm text-muted-foreground">I want to verify my previous ballot and revote</div>
+          </Button>
+        </Link>
+      </div>
+
+      <p className="text-sm text-center text-muted-foreground">
+        Choose "Yes" if you want to change a vote you've already cast
+      </p>
+    </div>
+  )
+}
+
+================
+File: app/(auth)/voting/verify/loading.tsx
+================
+export default function Loading() {
+    return null
+  }
+
+================
+File: app/(auth)/voting/verify/page.tsx
+================
+"use client"
+
+import { useState, useEffect, useMemo } from "react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { ArrowLeft, Check, ArrowRight, AlertTriangle, HelpCircle, Filter, X, Clock } from "lucide-react"
+import Link from "next/link"
+import { type PublicBallot, generateRandomPublicBallots } from "@/lib/ballot-data"
+import { formatDateDanish, formatTimeDanish } from "@/lib/date-utils"
+import { HelpDialog } from "@/components/help-dialog"
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuCheckboxItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+  DropdownMenuLabel,
+  DropdownMenuGroup,
+} from "@/components/ui/dropdown-menu"
+import { Badge } from "@/components/ui/badge"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { BallotIdenticon } from "@/components/ballot-identicon"
+
+export default function VerifyPreviousVotePage() {
+  const [previousBallots, setPreviousBallots] = useState<PublicBallot[]>([])
+  const [selectedBallotIds, setSelectedBallotIds] = useState<string[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [page, setPage] = useState(1)
+  const [selectedDates, setSelectedDates] = useState<string[]>([])
+  const [selectedHours, setSelectedHours] = useState<string[]>([])
+  const [activeTab, setActiveTab] = useState("all")
+
+  const ITEMS_PER_PAGE = 8
+
+  // Load ballots on component mount
+  useEffect(() => {
+    try {
+      // Clear any legacy storage
+      localStorage.removeItem("lastCastBallot")
+
+      console.log("[VERIFY PAGE] Loading ballots...")
+
+      // Generate 800 ballots as a simulation (in reality there would be ~1000 for a 48h election)
+      // Include user ballots
+      const ballots = generateRandomPublicBallots(800, true)
+
+      // Log only user ballots
+      const userBallots = ballots.filter((b) => b.isSubmittedByUser)
+      if (userBallots.length > 0) {
+        console.log("[VERIFY PAGE] User ballots found:", userBallots.length)
+        userBallots.forEach((ballot) => {
+          console.log(`[VERIFY PAGE] User ballot: ID=${ballot.id}, Hash=${ballot.identiconHash}`)
+        })
+      } else {
+        console.log("[VERIFY PAGE] No user ballots found")
+      }
+
+      setPreviousBallots(ballots)
+    } catch (error) {
+      console.error("[VERIFY PAGE] Error loading ballots:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
+
+  // Switch to "all" tab if no ballots are selected
+  useEffect(() => {
+    if (selectedBallotIds.length === 0 && activeTab === "selected") {
+      setActiveTab("all")
+    }
+  }, [selectedBallotIds, activeTab])
+
+  // Extract unique dates from ballots
+  const availableDates = useMemo(() => {
+    const dates = new Set<string>()
+    previousBallots.forEach((ballot) => {
+      const date = formatDateDanish(ballot.timestamp)
+      dates.add(date)
+    })
+    return Array.from(dates).sort((a, b) => {
+      // Sort dates in descending order (newest first)
+      const [dayA, monthA, yearA] = a.split("-").map(Number)
+      const [dayB, monthB, yearB] = b.split("-").map(Number)
+      if (yearA !== yearB) return yearB - yearA
+      if (monthA !== monthB) return monthB - monthA
+      return dayB - dayA
+    })
+  }, [previousBallots])
+
+  // Extract unique hour ranges from ballots
+  const availableHours = useMemo(() => {
+    const hours = new Map<string, number>()
+
+    previousBallots.forEach((ballot) => {
+      const date = new Date(ballot.timestamp)
+      const hour = date.getHours()
+
+      // Create hour ranges (e.g., "07:00 - 08:59", "09:00 - 10:59", etc.)
+      const hourGroup = Math.floor(hour / 2)
+      const startHour = hourGroup * 2
+      const endHour = startHour + 1
+
+      const hourRange = `${startHour.toString().padStart(2, "0")}:00 - ${endHour.toString().padStart(2, "0")}:59`
+
+      hours.set(hourRange, (hours.get(hourRange) || 0) + 1)
+    })
+
+    // Sort by hour (chronologically)
+    return Array.from(hours.entries()).sort((a, b) => {
+      const hourA = Number.parseInt(a[0].split(":")[0])
+      const hourB = Number.parseInt(b[0].split(":")[0])
+      return hourA - hourB
+    })
+  }, [previousBallots])
+
+  // Filter ballots based on selected dates and hours
+  const filteredBallots = useMemo(() => {
+    return previousBallots.filter((ballot) => {
+      // Check if ballot matches selected dates
+      const ballotDate = formatDateDanish(ballot.timestamp)
+      const matchesDate = selectedDates.length === 0 || selectedDates.includes(ballotDate)
+
+      // Check if ballot matches selected hours
+      const date = new Date(ballot.timestamp)
+      const hour = date.getHours()
+      const hourGroup = Math.floor(hour / 2)
+      const startHour = hourGroup * 2
+      const endHour = startHour + 1
+      const hourRange = `${startHour.toString().padStart(2, "0")}:00 - ${endHour.toString().padStart(2, "0")}:59`
+
+      const matchesHour = selectedHours.length === 0 || selectedHours.includes(hourRange)
+
+      return matchesDate && matchesHour
+    })
+  }, [previousBallots, selectedDates, selectedHours])
+
+  // Paginated ballots
+  const paginatedBallots = useMemo(() => {
+    const startIndex = (page - 1) * ITEMS_PER_PAGE
+    return filteredBallots.slice(startIndex, startIndex + ITEMS_PER_PAGE)
+  }, [filteredBallots, page])
+
+  // Get selected ballots data
+  const selectedBallotsData = useMemo(() => {
+    return previousBallots.filter((ballot) => selectedBallotIds.includes(ballot.id))
+  }, [previousBallots, selectedBallotIds])
+
+  // Total pages
+  const totalPages = Math.max(1, Math.ceil(filteredBallots.length / ITEMS_PER_PAGE))
+
+  const toggleBallot = (ballotId: string) => {
+    // Find the ballot for logging - but only log user ballots
+    const ballot = previousBallots.find((b) => b.id === ballotId)
+    if (ballot && ballot.isSubmittedByUser) {
+      console.log(`[BALLOT SELECTION] Toggling user ballot: ${ballotId}`)
+      console.log(`[BALLOT SELECTION] Hash: ${ballot.identiconHash}`)
+    }
+
+    setSelectedBallotIds((prev) => {
+      if (prev.includes(ballotId)) {
+        return prev.filter((id) => id !== ballotId)
+      } else {
+        return [...prev, ballotId]
+      }
+    })
+  }
+
+  const toggleDateFilter = (date: string) => {
+    setSelectedDates((prev) => {
+      if (prev.includes(date)) {
+        return prev.filter((d) => d !== date)
+      } else {
+        return [...prev, date]
+      }
+    })
+    setPage(1) // Reset to first page when filters change
+  }
+
+  const toggleHourFilter = (hourRange: string) => {
+    setSelectedHours((prev) => {
+      if (prev.includes(hourRange)) {
+        return prev.filter((h) => h !== hourRange)
+      } else {
+        return [...prev, hourRange]
+      }
+    })
+    setPage(1) // Reset to first page when filters change
+  }
+
+  const clearFilters = () => {
+    setSelectedDates([])
+    setSelectedHours([])
+    setPage(1)
+  }
+
+  const hasActiveFilters = selectedDates.length > 0 || selectedHours.length > 0
+
+  return (
+    <div className="pb-8 space-y-6">
+      <Link href="/voting">
+        <Button variant="ghost">
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back
+        </Button>
+      </Link>
+
+      <div>
+        <div className="flex items-center justify-between mb-2">
+          <h1 className="text-2xl font-bold">Identify Your Previous Valid Ballots</h1>
+          <HelpDialog defaultOpenSection="last-valid-ballot">
+            <button className="text-muted-foreground hover:text-foreground flex items-center gap-1">
+              <HelpCircle className="h-4 w-4" />
+              Why is this necessary?
+            </button>
+          </HelpDialog>
+        </div>
+        <p className="text-muted-foreground mb-4">
+          Please select ALL ballots that match your previous valid votes. This step helps ensure the security of your
+          vote and protects against coercion.
+        </p>
+
+        <div className="rounded-lg border-2 border-red-200 bg-red-50 p-4 mb-6">
+          <div className="flex gap-3">
+            <AlertTriangle className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
+            <div>
+              <h3 className="font-semibold text-red-900 mb-1">Important Security Notice</h3>
+              <p className="text-sm text-red-800">
+                If you fail to identify all your previous valid ballots, your new vote will not be counted. This is a
+                security feature that protects against coerced voting.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {isLoading ? (
+        <div className="text-center py-8">Loading your ballot history...</div>
+      ) : (
+        <>
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="all">All Ballots</TabsTrigger>
+              <TabsTrigger value="selected" disabled={selectedBallotIds.length === 0}>
+                Selected ({selectedBallotIds.length})
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="all" className="space-y-4 mt-4">
+              <div className="flex flex-wrap items-center gap-3">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" className="gap-2">
+                      <Filter className="h-4 w-4" />
+                      {selectedDates.length > 0 ? `Dates (${selectedDates.length})` : "Filter by Date"}
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56">
+                    <DropdownMenuLabel>Select Dates</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    {availableDates.map((date) => (
+                      <DropdownMenuCheckboxItem
+                        key={date}
+                        checked={selectedDates.includes(date)}
+                        onCheckedChange={() => toggleDateFilter(date)}
+                      >
+                        {date}
+                      </DropdownMenuCheckboxItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" className="gap-2">
+                      <Clock className="h-4 w-4" />
+                      {selectedHours.length > 0 ? `Hours (${selectedHours.length})` : "Filter by Time"}
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56">
+                    <DropdownMenuLabel>Select Time Ranges</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuGroup>
+                      {availableHours.map(([hourRange, count]) => (
+                        <DropdownMenuCheckboxItem
+                          key={hourRange}
+                          checked={selectedHours.includes(hourRange)}
+                          onCheckedChange={() => toggleHourFilter(hourRange)}
+                        >
+                          <div className="flex justify-between w-full">
+                            <span>{hourRange}</span>
+                            <span className="text-muted-foreground text-xs">({count})</span>
+                          </div>
+                        </DropdownMenuCheckboxItem>
+                      ))}
+                    </DropdownMenuGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
+                {hasActiveFilters && (
+                  <Button variant="ghost" onClick={clearFilters} className="gap-2">
+                    <X className="h-4 w-4" />
+                    Clear Filters
+                  </Button>
+                )}
+
+                <div className="ml-auto">
+                  <HelpDialog defaultOpenSection="many-ballots">
+                    <button className="text-muted-foreground hover:text-foreground flex items-center gap-1">
+                      <HelpCircle className="h-4 w-4" />
+                      Why am I seeing so many ballots?
+                    </button>
+                  </HelpDialog>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap gap-2 mt-2">
+                {selectedDates.map((date) => (
+                  <Badge key={date} variant="secondary" className="gap-1">
+                    {date}
+                    <X className="h-3 w-3 cursor-pointer" onClick={() => toggleDateFilter(date)} />
+                  </Badge>
+                ))}
+
+                {selectedHours.map((hourRange) => (
+                  <Badge key={hourRange} variant="secondary" className="gap-1">
+                    {hourRange}
+                    <X className="h-3 w-3 cursor-pointer" onClick={() => toggleHourFilter(hourRange)} />
+                  </Badge>
+                ))}
+              </div>
+
+              <Card className="bg-gray-50 border-gray-200">
+                <CardContent className="p-3">
+                  <div className="flex justify-between items-center">
+                    <div className="text-sm text-muted-foreground">
+                      Showing {paginatedBallots.length} of {filteredBallots.length} ballots
+                    </div>
+                    <div className="text-sm font-medium">
+                      {selectedBallotIds.length} ballot{selectedBallotIds.length !== 1 ? "s" : ""} selected
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {filteredBallots.length === 0 ? (
+                <Card>
+                  <CardContent className="flex flex-col items-center justify-center p-6">
+                    <div className="text-muted-foreground mb-2">No ballots match your filters</div>
+                    <Button variant="outline" onClick={clearFilters}>
+                      Clear all filters
+                    </Button>
+                  </CardContent>
+                </Card>
+              ) : (
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {paginatedBallots.map((ballot) => (
+                    <Card
+                      key={ballot.id}
+                      className={`cursor-pointer transition-colors ${
+                        selectedBallotIds.includes(ballot.id)
+                          ? "border-[#FFD700] bg-yellow-50"
+                          : "hover:border-gray-300"
+                      }`}
+                      onClick={() => toggleBallot(ballot.id)}
+                    >
+                      <CardHeader className="p-3">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div
+                              className={`flex h-5 w-5 items-center justify-center rounded-full border ${
+                                selectedBallotIds.includes(ballot.id)
+                                  ? "border-[#FFD700] bg-[#FFD700]"
+                                  : "border-gray-300"
+                              }`}
+                            >
+                              {selectedBallotIds.includes(ballot.id) && <Check className="h-3 w-3 text-white" />}
+                            </div>
+                            <div className="text-sm">
+                              <span className="font-medium">{formatDateDanish(ballot.timestamp)}</span>
+                              <span className="text-gray-500 ml-2">{formatTimeDanish(ballot.timestamp)}</span>
+                            </div>
+                          </div>
+                          <BallotIdenticon
+                            timestamp={ballot.timestamp}
+                            id={ballot.id}
+                            size={5}
+                            cellSize={4}
+                            identiconHash={ballot.identiconHash}
+                          />
+                        </div>
+                      </CardHeader>
+                    </Card>
+                  ))}
+                </div>
+              )}
+
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      onClick={() => setPage((p) => Math.max(1, p - 1))}
+                      className={page <= 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                    />
+                  </PaginationItem>
+
+                  <PaginationItem className="flex items-center">
+                    <span className="text-sm">
+                      Page {page} of {totalPages}
+                    </span>
+                  </PaginationItem>
+
+                  <PaginationItem>
+                    <PaginationNext
+                      onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                      className={page >= totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </TabsContent>
+
+            <TabsContent value="selected" className="space-y-4 mt-4">
+              {selectedBallotsData.length > 0 ? (
+                <div className="space-y-4">
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {selectedBallotsData.map((ballot) => (
+                      <Card key={ballot.id} className="border-[#FFD700] bg-yellow-50">
+                        <CardHeader className="p-3">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              <div className="flex h-5 w-5 items-center justify-center rounded-full border border-[#FFD700] bg-[#FFD700]">
+                                <Check className="h-3 w-3 text-white" />
+                              </div>
+                              <div className="text-sm">
+                                <span className="font-medium">{formatDateDanish(ballot.timestamp)}</span>
+                                <span className="text-gray-500 ml-2">{formatTimeDanish(ballot.timestamp)}</span>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <BallotIdenticon
+                                timestamp={ballot.timestamp}
+                                id={ballot.id}
+                                size={5}
+                                cellSize={4}
+                                identiconHash={ballot.identiconHash}
+                              />
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-8 w-8 p-0"
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  toggleBallot(ballot.id)
+                                }}
+                              >
+                                <X className="h-4 w-4" />
+                                <span className="sr-only">Remove</span>
+                              </Button>
+                            </div>
+                          </div>
+                        </CardHeader>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <Card>
+                  <CardContent className="flex flex-col items-center justify-center p-6">
+                    <div className="text-muted-foreground mb-2">No ballots selected</div>
+                    <Button variant="outline" onClick={() => setActiveTab("all")}>
+                      Go to All Ballots
+                    </Button>
+                  </CardContent>
+                </Card>
+              )}
+            </TabsContent>
+          </Tabs>
+
+          <div className="flex justify-end mt-8">
+            <Link href="/voting/new">
+              <Button className="bg-gray-900">
+                Continue to Voting
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
+================
+File: app/(public)/help/page.tsx
+================
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
+import { ChevronLeft } from "lucide-react"
+
+export default function Page() {
+  return (
+    <div className="space-y-8">
+      <Link href="/">
+        <Button variant="ghost" className="mb-6">
+          <ChevronLeft className="mr-2 h-4 w-4" />
+          Back to Home
+        </Button>
+      </Link>
+
+      <div>
+        <h1 className="text-2xl font-bold mb-4">Help Center</h1>
+        <div className="prose prose-gray max-w-none">
+          <h2>Frequently Asked Questions</h2>
+          <h3>About MyID Authentication</h3>
+          <p>
+            MyID is a secure authentication method that uses biometric verification to ensure your identity. You must
+            have the MyID app installed on your smartphone with biometric authentication enabled.
+          </p>
+
+          <h3>Voting Process</h3>
+          <p>
+            Once authenticated, you will be guided through the voting process step by step. Make sure to review your
+            choices before submitting your final vote.
+          </p>
+
+          <h3>Technical Requirements</h3>
+          <p>
+            - A modern web browser (Chrome, Firefox, Safari)
+            <br />- JavaScript enabled
+            <br />- Stable internet connection
+            <br />- MyID app installed and configured
+          </p>
+
+          <h3>Need Additional Help?</h3>
+          <p>
+            If you cannot use MyID or experience any issues, please visit your local voting station where staff will
+            assist you with the voting process.
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+================
+File: app/(public)/layout.tsx
+================
+import type React from "react"
+import { TopBarPublic } from "@/components/top-bar-public"
+import { PageWrapper } from "@/components/page-wrapper"
+
+export default function PublicLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <>
+      <TopBarPublic />
+      <PageWrapper>{children}</PageWrapper>
+    </>
+  )
+}
+
+================
+File: app/(public)/logged-out/page.tsx
+================
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
+
+export default function Page() {
+  return (
+    <div className="flex flex-col items-center justify-center space-y-6 pt-12">
+      <h1 className="text-2xl font-bold">Successfully Logged Out</h1>
+      <p className="text-gray-600">Thank you for using the online voting portal.</p>
+      <Link href="/">
+        <Button size="lg">Return to Front Page</Button>
+      </Link>
+    </div>
+  )
+}
+
+================
+File: app/(public)/login/auth/page.tsx
+================
+import { Button } from "@/components/ui/button"
+import Image from "next/image"
+import Link from "next/link"
+import { ChevronLeft } from "lucide-react"
+
+export default function Page() {
+  return (
+    <div className="flex flex-col items-center pb-8">
+      <div className="self-start">
+        <Link href="/login">
+          <Button variant="ghost" className="mb-6">
+            <ChevronLeft className="mr-2 h-4 w-4" />
+            Back
+          </Button>
+        </Link>
+      </div>
+
+      <div className="text-center max-w-xl">
+        <h1 className="text-2xl font-bold mb-4">MyID Authentication</h1>
+        <p className="text-gray-600 mb-8">
+          This page would embed a MyID window to guide the user through authentication. Akin to MitID.
+        </p>
+      </div>
+
+      <div className="border border-dashed border-gray-300 rounded-lg p-4 w-full max-w-md aspect-[4/5] relative bg-gray-50">
+        <Image
+          src="/mitID_demo.png?height=500&width=400"
+          alt="MitID widget placeholder"
+          fill
+          className="object-contain p-4"
+        />
+      </div>
+
+      <div className="rounded-lg bg-gray-50 p-4 max-w-md w-full text-center">
+        <p className="text-sm text-gray-600">Note: The actual MyID integration is out of scope for this project.</p>
+      </div>
+
+      <Link href="/elections">
+        <Button size="lg" className="bg-gray-900">
+          Continue
+        </Button>
+      </Link>
+    </div>
+  )
+}
+
+================
+File: app/(public)/login/page.tsx
+================
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { ChevronLeft, Fingerprint } from "lucide-react"
+
+export default function Page() {
+  return (
+    <>
+      <Link href="/">
+        <Button variant="ghost" className="mb-6">
+          <ChevronLeft className="mr-2 h-4 w-4" />
+          Back to Home
+        </Button>
+      </Link>
+
+      <div className="space-y-8">
+        <div>
+          <h1 className="mb-4 text-2xl font-bold">Secure Login</h1>
+          <p className="text-gray-600">
+            This voting portal uses biometric authentication through MyID to ensure secure and reliable voter
+            identification.
+          </p>
+        </div>
+
+        <Link href="/login/auth" className="block">
+          <Button size="lg" className="w-full bg-gray-900 py-6 text-lg">
+            <Fingerprint className="mr-2 h-5 w-5" />
+            Login with MyID
+          </Button>
+        </Link>
+
+        <div className="rounded-lg bg-gray-50 p-4">
+          <h2 className="mb-2 font-semibold">Important Information</h2>
+          <ul className="space-y-2 text-sm text-gray-600">
+            <li>• You must have MyID installed with biometric authentication enabled</li>
+            <li>• If you cannot use MyID, please visit your local voting station to vote in person</li>
+            <li>• Make sure your MyID app is up to date before proceeding</li>
+          </ul>
+        </div>
+      </div>
+    </>
+  )
+}
+
+================
+File: app/(public)/page.tsx
+================
+"use client"
+import Link from "next/link"
+import { ChevronRight, InfoIcon, Settings2 } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+
+export default function Page() {
+  return (
+    <div className="flex flex-col items-center pt-8 relative min-h-[80vh]">
+      {/* Hero Section */}
+      <div className="text-center mb-12">
+        <h1 className="text-4xl font-bold mb-4">Welcome to the Online Voting Portal</h1>
+        <p className="text-lg text-gray-600 mb-8">
+          Your secure platform for participating in democratic decision-making
+        </p>
+        <div className="flex justify-center">
+          <Link href="/privacy-notice">
+            <Button size="lg" className="bg-[#FFD700] hover:bg-[#FFED4A] text-black">
+              <span>Login to Vote</span>
+              <ChevronRight className="ml-2 h-4 w-4" />
+            </Button>
+          </Link>
+        </div>
+      </div>
+
+      {/* Information Section */}
+      <div className="w-full max-w-2xl">
+        <h2 className="text-2xl font-semibold mb-4">Before You Vote:</h2>
+        <Accordion type="single" collapsible className="w-full">
+          <AccordionItem value="privacy">
+            <AccordionTrigger>Ensure You're in a Private Environment</AccordionTrigger>
+            <AccordionContent>
+              <div className="space-y-2">
+                <p>For your security and voting privacy, please ensure:</p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>You are in a private space where no one can observe your screen</li>
+                  <li>No one is watching over your shoulder</li>
+                  <li>
+                    Your computer's activity is not being monitored or recorded (e.g., by workplace monitoring software
+                    or screen recording tools)
+                  </li>
+                  <li>You are not in a public space or using a public computer</li>
+                  <li>You are not connected via an insecure or public Wi-Fi connection</li>
+                </ul>
+                <p className="mt-4 text-muted-foreground">
+                  Your vote is private and should remain so. Take precautions to ensure no one can influence or observe
+                  your voting choices.
+                </p>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="phishing">
+            <AccordionTrigger>Ensure You're on the Official Voting Site</AccordionTrigger>
+            <AccordionContent>
+              <div className="space-y-2">
+                <p>
+                  Hackers may attempt to impersonate the voting portal to steal your credentials or manipulate your
+                  vote. This is known as "phishing." To protect yourself, please verify the following:
+                </p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>
+                    <strong>Check the web address:</strong> Make sure you are on the official voting site. The correct
+                    URL will always be <strong>https://votingwebsiteurl.dk</strong>. Avoid clicking links from emails or
+                    messages; type the URL manually if possible.
+                  </li>
+                  <li>
+                    <strong>Look for HTTPS:</strong> Depending on your browser, the address bar should provide
+                    connection informtion. This is usually found on the left of the web address under one of these
+                    icons: 🔒, <InfoIcon className="h-3 w-3 inline-block" />,{" "}
+                    <Settings2 className="h-3 w-3 inline-block" />. Clicking the icon will show you information about
+                    the website's security. If you see warnings about an insecure site, do not proceed.
+                  </li>
+                  <li>
+                    <strong>Beware of fake login methods:</strong> The voting portal <strong>only</strong> uses MyID for
+                    authentication and will never ask for your password via email or text.
+                  </li>
+                  <li>
+                    <strong>Watch out for suspicious messages:</strong> If you receive an email or message asking you to
+                    vote on a different website, it may be a phishing attempt. Contact official support if in doubt.
+                  </li>
+                </ul>
+                <p className="mt-4 text-muted-foreground">
+                  If you suspect a phishing attempt, report it immediately to the election authorities at
+                  report@governmentemail.dk.
+                </p>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="coercion">
+            <AccordionTrigger>Get to Know our Anti-Coercion Measures</AccordionTrigger>
+            <AccordionContent>
+              <div className="space-y-2">
+                <p>
+                  The Online Voting Portal has numerous features to protect you from voter coercion and intimidation.
+                </p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>
+                    <strong>Revoting:</strong> The system allows you to cast a new ballot at any point during the voting
+                    period. Only your last valid ballot counts. Note that physical ballots cast in person are final and
+                    do not allow for revoting.
+                  </li>
+                  <li>
+                    <strong>Past Ballot Identification:</strong> The revoting mechanism requires you to identify your
+                    last previously cast valid ballot in order for the newly-cast ballot to be valid. This helps ensure
+                    that only you can cast your own vote at any point.
+                  </li>
+                  <li>
+                    <strong>Intentional Ballot Invalidation:</strong> If you find yourself in a situation where a
+                    coercer is forcing you to vote a certain way, you have multiple discrete options at your disposal to
+                    invalidate the new ballot.
+                  </li>
+                  <li>
+                    <strong>For further information, click the Help button in the top right corner of the page.</strong>
+                  </li>
+                </ul>
+                <p className="mt-4 text-muted-foreground">
+                  Everyone has the right to a secret ballot. However, online voting systems cannot guarantee this to the
+                  same degree as an official polling station. These measures help ensure that your intended vote is the
+                  one that counts, even under coercion. It is also possible to vote secretly in person at your local
+                  polling station.
+                </p>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="authentication">
+            <AccordionTrigger>Authentication Requirements</AccordionTrigger>
+            <AccordionContent>
+              <div className="space-y-2">
+                <p>To vote online, you need:</p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>A smartphone with MyID app installed</li>
+                  <li>Biometric authentication (fingerprint or face recognition) enabled on your device</li>
+                  <li>An up-to-date version of MyID</li>
+                </ul>
+                <p className="mt-4">
+                  If you cannot meet these requirements, please visit your local voting station to cast your vote in
+                  person.
+                </p>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="requirements">
+            <AccordionTrigger>System Requirements</AccordionTrigger>
+            <AccordionContent>
+              To ensure a smooth voting experience, use a modern web browser like Chrome, Firefox, or Safari. Enable
+              JavaScript and make sure you have a stable internet connection.
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="help">
+            <AccordionTrigger>Need Help?</AccordionTrigger>
+            <AccordionContent>
+              If you need assistance with MyID setup or have questions about the voting process, you can click the Help
+              button in the top right section of the page, call us at 00 00 00 00 (24h hotline), or contact your local
+              voting authority.
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      </div>
+    </div>
+  )
+}
+
+================
+File: app/(public)/privacy-notice/page.tsx
+================
+import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
+import { ChevronLeft } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
+import { HelpDialog } from "@/components/help-dialog"
+import { HelpCircle } from "lucide-react"
+
+export default function Page() {
+  return (
+    <div className="space-y-6">
+      <Link href="/">
+        <Button variant="ghost">
+          <ChevronLeft className="mr-2 h-4 w-4" />
+          Back to Home
+        </Button>
+      </Link>
+
+      <div className="flex items-center justify-between mb-2">
+          <h1 className="text-2xl font-bold">Use Incognito Mode to Protect Your Privacy</h1>
+          <HelpDialog defaultOpenSection="incognito-mode">
+            <button className="text-muted-foreground hover:text-foreground flex items-center gap-1">
+              <HelpCircle className="h-4 w-4" />
+              Why is this necessary?
+            </button>
+          </HelpDialog>
+      </div>
+
+      <div className="flex flex-col items-center text-center space-y-8">
+        <Link href="/login" className="block">
+          <Button size="lg" className="bg-[#FFD700] hover:bg-[#FFED4A] text-black px-8">
+            Proceed to Login
+          </Button>
+        </Link>
+
+        <Card className="max-w-xl p-6 space-y-4">
+          <p className="text-lg">
+            A voting booth keeps no record, but your browser does. To protect your privacy, right click the button above and
+            then click on "Open link in incognito window".
+          </p>
+
+          <div className="relative h-48 w-full border rounded-lg overflow-hidden bg-gray-50">
+            <Image
+              src="/incognito_guide.png?height=192&width=600"
+              alt="Screenshot showing how to right click and select 'Open in incognito mode' in a browser"
+              fill
+              className="object-contain"
+            />
+          </div>
+
+          <div className="text-sm text-muted-foreground">
+            Using incognito mode ensures that no browsing history, cookies, or other data are saved after you close the
+            window.
+          </div>
+        </Card>
+      </div>
+    </div>
+  )
+}
+
+================
+File: app/globals.css
+================
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 10% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-noto-sans), system-ui, sans-serif;
+  }
+}
+
+/* Fix for layout shift when modals/dropdowns open */
+body {
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+/* When body has a modal open, maintain the same width */
+body[data-state="open"] {
+  width: 100vw;
+}
+
+================
+File: app/layout.tsx
+================
+import type React from "react"
+import type { Metadata } from "next"
+import { Noto_Sans } from "next/font/google"
+import "./globals.css"
+
+// Load Noto Sans font with multiple weights
+const notoSans = Noto_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-noto-sans",
+})
+
+export const metadata: Metadata = {
+  title: "Online Voting Portal",
+  description: "Secure platform for democratic decision-making",
+}
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
+  return (
+    <html lang="en" className={notoSans.variable}>
+      <body className="overflow-x-hidden font-noto">
+        <div className="min-h-screen bg-gray-50">{children}</div>
+      </body>
+    </html>
+  )
+}
+
+================
+File: archive/sign-in-form.tsx
+================
+/* Old login form code, might be useful later
+"use client"
+
+import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
+import { HelpCircle, Triangle } from "lucide-react"
+import { useState } from "react"
+import { MaskedInput } from "./masked-input"
+
+export function SignInForm() {
+  const [code, setCode] = useState("")
+
+  const handleCodeChange = (value: string) => {
+    setCode(value)
+  }
+
+  return (
+    <div className="space-y-8">
+      <div className="space-y-6">
+        <div className="rounded-md bg-gray-100 p-6">
+          <div className="mb-4 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Triangle className="h-4 w-4 fill-current" />
+              <Label htmlFor="code" className="text-base">
+                Initialization Code
+              </Label>
+            </div>
+            <button className="inline-flex items-center text-sm text-gray-500 hover:text-gray-900">
+              <HelpCircle className="mr-2 h-4 w-4" />
+              What is the initialization code?
+            </button>
+          </div>
+          <MaskedInput id="code" value={code} onChange={handleCodeChange} className="bg-white" />
+          <p className="mt-2 text-sm text-gray-500">
+            It doesn't matter if you use uppercase or lowercase letters.
+          </p>
+        </div>
+      </div>
+
+      <div className="flex justify-end gap-4">
+        <Button variant="default" className="bg-gray-900 px-6 hover:bg-gray-800">
+          Login
+        </Button>
+      </div>
+    </div>
+  )
+}
+*/
+
+================
+File: components.json
+================
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "new-york",
+  "rsc": true,
+  "tsx": true,
+  "tailwind": {
+    "config": "tailwind.config.ts",
+    "css": "app/globals.css",
+    "baseColor": "zinc",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "aliases": {
+    "components": "@/components",
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui",
+    "lib": "@/lib",
+    "hooks": "@/hooks"
+  },
+  "iconLibrary": "lucide"
+}
+
+================
+File: components/ballot-identicon.tsx
+================
+import { generateBallotHash, generateIdenticon } from "@/lib/identicon"
+
+interface BallotIdenticonProps {
+  timestamp: string
+  id: string
+  size?: number
+  cellSize?: number
+  className?: string
+  identiconHash?: string // Allow passing a pre-generated hash
+}
+
+export function BallotIdenticon({
+  timestamp,
+  id,
+  size = 5,
+  cellSize = 4,
+  className = "",
+  identiconHash,
+}: BallotIdenticonProps) {
+  // Use the provided hash if available, otherwise generate it
+  const hash = identiconHash || generateBallotHash({ timestamp, id })
+
+  // Only log for user ballots (those with IDs in the 5000+ range)
+  if (id.includes("ballot-5") && id.split("-")[1].startsWith("5")) {
+    console.log(`[RENDERING IDENTICON] ID: ${id}, Hash: ${hash}`)
+  }
+
+  const { grid, colors } = generateIdenticon(hash, size)
+
+  return (
+    <div
+      className={`flex-shrink-0 rounded-md overflow-hidden ${className}`}
+      style={{
+        backgroundColor: colors.bg,
+        width: size * cellSize,
+        height: size * cellSize,
+      }}
+      title="Ballot visual identifier"
+    >
+      <div className="grid" style={{ gridTemplateColumns: `repeat(${size}, 1fr)` }}>
+        {grid.map((row, i) =>
+          row.map((cell, j) => (
+            <div
+              key={`${i}-${j}`}
+              style={{
+                width: cellSize,
+                height: cellSize,
+                backgroundColor: cell ? colors.fg : "transparent",
+              }}
+            />
+          )),
+        )}
+      </div>
+    </div>
+  )
+}
+
+================
+File: components/breadcrumb-nav.tsx
+================
+"use client"
+
+import { ChevronRight } from "lucide-react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { useVote } from "@/contexts/vote-context"
+
+export function BreadcrumbNav() {
+  const pathname = usePathname()
+  const { isVoteSubmitted } = useVote()
+
+  // Don't show breadcrumbs on the elections landing page
+  if (pathname === "/elections") {
+    return null
+  }
+
+  // Don't show breadcrumbs on the voting/new page when a vote has been submitted
+  if (pathname === "/voting/new" && isVoteSubmitted) {
+    return null
+  }
+
+  return (
+    <div className="py-4 text-sm text-muted-foreground">
+      <div className="flex items-center gap-2">
+        <Link href="/elections" className="hover:text-foreground">
+          Elections
+        </Link>
+        <ChevronRight className="h-4 w-4" />
+        <span className="font-medium text-foreground">2025 General Election</span>
+      </div>
+    </div>
+  )
+}
+
+================
+File: components/help-dialog.tsx
+================
+"use client"
+
+import { useState, useEffect, type ReactNode, useRef, useMemo } from "react"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { HelpCircle } from "lucide-react"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+
+interface HelpSection {
+  title: string
+  items: {
+    id: string
+    title: string
+    content: ReactNode
+  }[]
+}
+
+interface HelpDialogProps {
+  defaultOpenSection?: string
+  triggerText?: string
+  children?: ReactNode
+}
+
+export function HelpDialog({ defaultOpenSection, triggerText = "Help", children }: HelpDialogProps) {
+  const [openSection, setOpenSection] = useState<string | undefined>(defaultOpenSection)
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [isPrerendered, setIsPrerendered] = useState(false)
+  const dialogContentRef = useRef<HTMLDivElement>(null)
+
+  // Create refs for each accordion item
+  const itemRefs = useRef<Record<string, HTMLDivElement | null>>({})
+
+  // Define help content organized in sections
+  const helpSections: HelpSection[] = [
+    {
+      title: "General Information",
+      items: [
+        {
+          id: "privacy",
+          title: "How is my privacy protected?",
+          content: (
+            <div className="space-y-2">
+              <p>Your privacy is protected through several measures:</p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>Use incognito mode to prevent browser history</li>
+                <li>Vote in a private environment without surveillance</li>
+                <li>Your vote is encrypted and anonymized</li>
+                <li>No one can link your identity to your voting choices</li>
+              </ul>
+            </div>
+          ),
+        },
+        {
+          id: "authentication",
+          title: "What do I need to vote online?",
+          content: (
+            <div className="space-y-2">
+              <p>To vote online, you need:</p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>A smartphone with MyID app installed</li>
+                <li>Biometric authentication enabled on your device</li>
+                <li>An up-to-date version of MyID</li>
+              </ul>
+            </div>
+          ),
+        },
+      ],
+    },
+    {
+      title: "Anti-Coercion Measures",
+      items: [
+        {
+          id: "coercion-risk",
+          title: "What if I'm being coerced to vote?",
+          content: (
+            <div className="space-y-2">
+              <p>If someone is forcing you to vote in a certain way, you have several options:</p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>
+                  <strong>Intentional misidentification:</strong> If you're being watched while voting, you can
+                  intentionally misidentify your previous ballot. This will make your new vote invalid without the
+                  coercer knowing.
+                </li>
+                <li>
+                  <strong>Vote again later:</strong> You can comply with the coercer, then vote again later in private.
+                  Only your last valid vote counts.
+                </li>
+                <li>
+                  <strong>Vote in person:</strong> You can always choose to vote at a physical polling station where
+                  privacy is guaranteed. Physical votes are final and cannot be recast.
+                </li>
+              </ul>
+              <p className="mt-2 text-red-600 font-medium">
+                If you're in immediate danger, please contact the authorities at the emergency number 112.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: "plausible-deniability",
+          title: "How does plausible deniability work?",
+          content: (
+            <div className="space-y-2">
+              <p>
+                The system is designed so that if you're forced to vote under supervision, you can make your vote
+                invalid in ways that aren't obvious to an observer:
+              </p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>
+                  If you've voted before, you can claim you haven't (or select the wrong previous ballot). This
+                  invalidates your new vote.
+                </li>
+                <li>
+                  If you haven't voted before, you can claim you have. This will lead to a verification step that will
+                  fail, invalidating your vote.
+                </li>
+                <li>These actions appear normal to an observer but result in an invalid vote.</li>
+                <li>
+                  If you voted in person, your vote cannot be changed. However, these features still remain available to
+                  you for your protection.
+                </li>
+              </ul>
+              <p>
+                No matter if you've voted before, voted in person, or haven't voted at all, the system will never
+                disclose any information about your past actions — it always appear as if you have not voted before.
+                This allows you to plausibly claim or deny any past action you might have taken.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: "revoting",
+          title: "Can I change my vote?",
+          content: (
+            <div className="space-y-2">
+              <p>
+                Yes, you can change your vote at any time during the voting period. This is a security feature that:
+              </p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>Protects against coercion</li>
+                <li>Allows you to vote freely even if initially pressured</li>
+                <li>Only counts your final vote</li>
+              </ul>
+              <p>To change your vote, you'll need to identify your last valid ballot to confirm your identity.</p>
+              <p className="text-red-600 font-medium">
+                Important: If you fail to correctly identify your last valid ballot, the new ballot will not be valid.
+              </p>
+              <p>If you are being coerced, you can use this feature to intentionally invalidate the coerced ballot.</p>
+            </div>
+          ),
+        },
+        {
+          id: "ballot-verification",
+          title: "Why do I need to verify if I've voted before?",
+          content: (
+            <div className="space-y-2">
+              <p>This verification step is crucial for several security reasons:</p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>
+                  <strong>Identity verification:</strong> It ensures that only you can cast or change your vote.
+                </li>
+                <li>
+                  <strong>Anti-coercion protection:</strong> It protects you from coercion by allowing you to
+                  intentionally cast an invalid vote with plausible deniability.
+                </li>
+              </ul>
+              <p className="mt-2 text-red-600 font-medium">
+                Important: If you provide incorrect information about having previously voted or incorrectly identify
+                your last valid ballot, your new ballot will not be valid.
+              </p>
+              <p>If you are being coerced, you can use this feature to intentionally invalidate the coerced ballot.</p>
+            </div>
+          ),
+        },
+        {
+          id: "last-valid-ballot",
+          title: "What is the last valid ballot?",
+          content: (
+            <div className="space-y-2">
+              <p>
+                To protect you against coerction, the Online Voting Portal allows you to discreetly submit invalid
+                ballots. An invalid ballot is submitted when you provide incorrect information about having previously
+                voted or your last valid ballot. Conversely, a valid ballot is cast when you provide truthful
+                informaton.
+              </p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>Your first ballot is always valid — given you select you have not voted before</li>
+                <li>
+                  You can protect your first ballot under coercion by falsely claiming you have voted before and thus
+                  submitting an invalid ballot
+                </li>
+                <li>Once you have cast your first ballot, this is now your last valid ballot</li>
+                <li>
+                  If you choose to revote, select the last valid ballot to be able to submit a new valid ballot — this
+                  new ballot is now your last valid ballot
+                </li>
+                <li>
+                  If you are being coerced and submit an invalid ballot, this new ballot does <strong>not</strong> count
+                  as your last valid balot — when revoting, you must select the last valid ballot you submitted before
+                  the invalid ones submitted under coercion
+                </li>
+                <li>
+                  The system does not allow you to see what your last valid ballot is. This for your protection, as a
+                  potential coercer could also see this information
+                </li>
+              </ul>
+              <p>
+                If you are not sure what your last valid ballot is, you can vote in person before the election closes.
+                Physically cast ballots are final and cannot be changed.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: "many-ballots",
+          title: "Why am I seeing so many ballots?",
+          content: (
+            <div className="space-y-2">
+              <p>
+                For security and privacy reasons, your ballot is mixed with many other ballots. This makes it difficult
+                for anyone to identify which ballot is yours, protecting you from potential coercion.
+              </p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>Use the date and time filters to narrow down the list</li>
+                <li>Look for the unique visual pattern (identicon) associated with your ballot</li>
+                <li>If you voted recently, your ballot is likely to be among the newer ones</li>
+              </ul>
+              <p className="mt-2">
+                If you're having trouble finding your ballot, you can always vote in person at your local polling
+                station.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: "incognito-mode",
+          title: "Why do I need to use Incognito Mode?",
+          content: (
+            <div className="space-y-2">
+              <p>
+                Incognito Mode does not keep your browsing history or save any cookies. This helps to protect you from
+                coercion by ensuring that no one can tell whether you've already voted. It is an important step to
+                maintain your plausible deniability from a potential coercer.
+              </p>
+            </div>
+          ),
+        },
+      ],
+    },
+    {
+      title: "Technical Support",
+      items: [
+        {
+          id: "technical",
+          title: "Technical Requirements",
+          content: (
+            <div className="space-y-2">
+              <p>For the best voting experience:</p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>Use a modern web browser (Chrome, Firefox, Safari)</li>
+                <li>Enable JavaScript</li>
+                <li>Ensure a stable internet connection</li>
+                <li>Use a private, secure device</li>
+              </ul>
+            </div>
+          ),
+        },
+        {
+          id: "assistance",
+          title: "Need Additional Help?",
+          content: (
+            <div>
+              If you cannot use MyID or experience any issues, please visit your local voting station where staff will
+              assist you with the voting process.
+            </div>
+          ),
+        },
+      ],
+    },
+  ]
+
+  // Create a flat map of all section IDs for easier lookup
+  const allSectionIds = useMemo(() => {
+    const ids: string[] = []
+    helpSections.forEach((section) => {
+      section.items.forEach((item) => {
+        ids.push(item.id)
+      })
+    })
+    return ids
+  }, [])
+
+  // Prerender the dialog content when the component mounts
+  useEffect(() => {
+    // Mark as prerendered after a short delay to ensure the component has mounted
+    const timer = setTimeout(() => {
+      setIsPrerendered(true)
+    }, 500)
+
+    return () => clearTimeout(timer)
+  }, [])
+
+  // Function to scroll to a specific section without animation
+  const scrollToSection = (sectionId: string) => {
+    if (itemRefs.current[sectionId]) {
+      itemRefs.current[sectionId]?.scrollIntoView({
+        behavior: "auto", // Use 'auto' instead of 'smooth' to avoid visible scrolling
+        block: "start",
+      })
+    }
+  }
+
+  // Handle dialog open state changes and scroll to the default section
+  useEffect(() => {
+    const scroll = () => {
+      if (defaultOpenSection && allSectionIds.includes(defaultOpenSection)) {
+        scrollToSection(defaultOpenSection)
+      }
+    }
+
+    if (dialogOpen && defaultOpenSection) {
+      setOpenSection(defaultOpenSection)
+
+      requestAnimationFrame(() => {
+        scroll()
+      })
+    }
+  }, [dialogOpen, defaultOpenSection, allSectionIds])
+
+  // Handle section changes
+  useEffect(() => {
+    if (dialogOpen && openSection) {
+      requestAnimationFrame(() => {
+        scrollToSection(openSection)
+      })
+    }
+  }, [dialogOpen, openSection])
+
+  // Prepare dialog content for prerendering
+  const dialogContent = (
+    <div className="mt-4 space-y-6">
+      {helpSections.map((section, index) => (
+        <div key={index} className="space-y-3">
+          <h2 className="text-lg font-semibold border-b pb-2">{section.title}</h2>
+          <Accordion
+            type="single"
+            collapsible
+            className="w-full"
+            value={section.items.some((item) => item.id === openSection) ? openSection : undefined}
+            onValueChange={setOpenSection}
+          >
+            {section.items.map((item) => (
+              <AccordionItem
+                key={item.id}
+                value={item.id}
+                ref={(el) => {
+                  if (el) {
+                    itemRefs.current[item.id] = el
+                  }
+                }}
+                data-section-id={item.id}
+              >
+                <AccordionTrigger>{item.title}</AccordionTrigger>
+                <AccordionContent>{item.content}</AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      ))}
+    </div>
+  )
+
+  return (
+    <>
+      {/* Prerender the dialog content in a hidden div */}
+      {isPrerendered && <div className="hidden">{dialogContent}</div>}
+
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogTrigger asChild>
+          {children ? (
+            children
+          ) : (
+            <button className="hover:bg-yellow-400 px-2 py-1 rounded-md flex items-center gap-2">
+              <HelpCircle className="h-4 w-4" />
+              {triggerText}
+            </button>
+          )}
+        </DialogTrigger>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto" ref={dialogContentRef}>
+          <DialogHeader>
+            <DialogTitle className="text-2xl">Help Center</DialogTitle>
+          </DialogHeader>
+          {dialogContent}
+        </DialogContent>
+      </Dialog>
+    </>
+  )
+}
+
+================
+File: components/masked-input.tsx
+================
+"use client"
+
+import * as React from "react"
+import { Input } from "@/components/ui/input"
+
+interface MaskedInputProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "onChange"> {
+  value: string
+  onChange: (value: string) => void
+  groups?: number[]
+}
+
+// Maps a raw index to a formatted index by adding one extra offset for each fully completed group.
+function mapRawToFormatted(rawIndex: number, groups: number[]): number {
+  let formattedIndex = rawIndex
+  let remaining = rawIndex
+  for (let i = 0; i < groups.length; i++) {
+    if (remaining > groups[i]) {
+      formattedIndex += 1 // add offset for the space
+      remaining -= groups[i]
+    } else {
+      break
+    }
+  }
+  return formattedIndex
+}
+
+export function MaskedInput({
+  value,
+  onChange,
+  groups = [4, 4, 4, 4, 4, 4],
+  className,
+  ...props
+}: MaskedInputProps) {
+  const totalLength = groups.reduce((a, b) => a + b, 0)
+  const inputRef = React.useRef<HTMLInputElement>(null)
+
+  // Build a formatted value that shows typed characters and placeholders for missing ones.
+  const formatValue = (raw: string) => {
+    let formatted = ""
+    let currentIndex = 0
+    for (let i = 0; i < groups.length; i++) {
+      const groupLength = groups[i]
+      const groupValue = raw.slice(currentIndex, currentIndex + groupLength)
+      const padded = groupValue + "_".repeat(groupLength - groupValue.length)
+      formatted += padded
+      if (i < groups.length - 1) {
+        formatted += " " // add space between groups
+      }
+      currentIndex += groupLength
+    }
+    return formatted
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Remove all non-alphanumeric characters (stripping spaces and underscores).
+    const rawValue = e.target.value.replace(/[^A-Z0-9]/gi, "").toUpperCase()
+    if (rawValue.length <= totalLength) {
+      onChange(rawValue)
+    }
+  }
+
+  const handleClear = () => {
+    onChange("")
+    if (inputRef.current) {
+      inputRef.current.setSelectionRange(0, 0)
+      inputRef.current.focus()
+    }
+  }
+
+  // After the raw value changes, adjust the caret position.
+  React.useLayoutEffect(() => {
+    if (inputRef.current) {
+      // Map the raw length (caret at the end of typed characters) to a formatted caret position.
+      const caretPos = mapRawToFormatted(value.length, groups)
+      inputRef.current.setSelectionRange(caretPos, caretPos)
+    }
+  }, [value, groups])
+
+  return (
+    <div className="relative">
+      <Input
+        {...props}
+        ref={inputRef}
+        value={formatValue(value)}
+        onChange={handleChange}
+        className={`font-mono text-lg pr-8 ${className}`} // pr-8 adds padding for the clear button
+        style={{ caretColor: "black", letterSpacing: "0.2em" }}
+      />
+      {value && (
+        <button
+          onClick={handleClear}
+          className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+        >
+          X
+        </button>
+      )}
+    </div>
+  )
+}
+
+================
+File: components/page-wrapper.tsx
+================
+import type React from "react"
+// Create a shared wrapper component to ensure consistent layout
+export function PageWrapper({ children }: { children: React.ReactNode }) {
+  return (
+    <main className="mx-auto max-w-[1200px] px-8">
+      <div className="mx-auto max-w-[800px]">{children}</div>
+    </main>
+  )
+}
+
+================
+File: components/sign-in-form.tsx
+================
+"use client"
+
+import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
+import { HelpCircle, Triangle } from "lucide-react"
+import { useState } from "react"
+import { MaskedInput } from "./masked-input"
+
+export function SignInForm() {
+  const [code, setCode] = useState("")
+
+  const handleCodeChange = (value: string) => {
+    setCode(value)
+  }
+
+  return (
+    <div className="space-y-8">
+      <div className="space-y-6">
+        <div className="rounded-md bg-gray-100 p-6">
+          <div className="mb-4 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Triangle className="h-4 w-4 fill-current" />
+              <Label htmlFor="code" className="text-base">
+                Initialization Code
+              </Label>
+            </div>
+            <button className="inline-flex items-center text-sm text-gray-500 hover:text-gray-900">
+              <HelpCircle className="mr-2 h-4 w-4" />
+              What is the initialization code?
+            </button>
+          </div>
+          <MaskedInput id="code" value={code} onChange={handleCodeChange} className="bg-white" />
+          <p className="mt-2 text-sm text-gray-500">
+            It doesn't matter if you use uppercase or lowercase letters.
+          </p>
+        </div>
+      </div>
+
+      <div className="flex justify-end gap-4">
+        <Button variant="default" className="bg-gray-900 px-6 hover:bg-gray-800">
+          Login
+        </Button>
+      </div>
+    </div>
+  )
+}
+
+================
+File: components/top-bar-auth.tsx
+================
+"use client"
+
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
+import { AlertTriangle } from "lucide-react"
+import { HelpDialog } from "./help-dialog"
+
+// In a real application, this would come from the authentication system
+const userInfo = {
+  name: "John Testaccount",
+  id: "101010-1011",
+}
+
+export function TopBarAuth() {
+  const pathname = usePathname()
+  const isVotingPage = pathname === "/voting"
+
+  return (
+    <header className="border-b bg-[#FFD700]">
+      <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-8">
+        <div className="flex items-center gap-4">
+          <div className="text-2xl font-bold">Logo goes here</div>
+          <div className="text-xs leading-tight">
+            <div className="font-medium">{userInfo.name}</div>
+            <div className="text-gray-700">{userInfo.id}</div>
+          </div>
+        </div>
+        <div className="flex items-center gap-4">
+          <HelpDialog />
+          {isVotingPage ? (
+            <Dialog>
+              <DialogTrigger asChild>
+                <button className="hover:bg-yellow-400 px-2 py-1 rounded-md">Log Out</button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2">
+                    <AlertTriangle className="h-5 w-5 text-yellow-600" />
+                    Confirm Logout
+                  </DialogTitle>
+                  <DialogDescription className="pt-4">
+                    You have not submitted your vote. If you log out now, your selections will be lost. Are you sure you
+                    want to leave?
+                  </DialogDescription>
+                </DialogHeader>
+                <DialogFooter className="mt-4">
+                  <DialogTrigger asChild>
+                    <Button variant="outline">Cancel</Button>
+                  </DialogTrigger>
+                  <Link href="/logged-out">
+                    <Button variant="destructive">Yes, Log Out</Button>
+                  </Link>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          ) : (
+            <Link href="/logged-out" className="hover:bg-yellow-400 px-2 py-1 rounded-md">
+              Log Out
+            </Link>
+          )}
+        </div>
+      </div>
+    </header>
+  )
+}
+
+================
+File: components/top-bar-public.tsx
+================
+import Link from "next/link"
+import { Home } from "lucide-react"
+import { HelpDialog } from "./help-dialog"
+
+export function TopBarPublic() {
+  return (
+    <header className="border-b bg-[#FFD700]">
+      <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-8">
+        <Link href="/" className="flex items-center gap-2">
+          <div className="text-2xl font-bold">Logo goes here</div>
+        </Link>
+        <div className="flex items-center gap-4">
+          <HelpDialog />
+          <Link href="/" className="hover:bg-yellow-400 px-2 py-1 rounded-md flex items-center gap-2">
+            <Home className="h-4 w-4" />
+            Home
+          </Link>
+        </div>
+      </div>
+    </header>
+  )
+}
+
+================
+File: components/ui/accordion.tsx
+================
+"use client"
+
+import * as React from "react"
+import * as AccordionPrimitive from "@radix-ui/react-accordion"
+import { ChevronDown } from "lucide-react"
+
+import { cn } from "@/lib/utils"
+
+const Accordion = AccordionPrimitive.Root
+
+const AccordionItem = React.forwardRef<
+  React.ElementRef<typeof AccordionPrimitive.Item>,
+  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>
+>(({ className, ...props }, ref) => (
+  <AccordionPrimitive.Item
+    ref={ref}
+    className={cn("border-b", className)}
+    {...props}
+  />
+))
+AccordionItem.displayName = "AccordionItem"
+
+const AccordionTrigger = React.forwardRef<
+  React.ElementRef<typeof AccordionPrimitive.Trigger>,
+  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
+>(({ className, children, ...props }, ref) => (
+  <AccordionPrimitive.Header className="flex">
+    <AccordionPrimitive.Trigger
+      ref={ref}
+      className={cn(
+        "flex flex-1 items-center justify-between py-4 text-sm font-medium transition-all hover:underline text-left [&[data-state=open]>svg]:rotate-180",
+        className
+      )}
+      {...props}
+    >
+      {children}
+      <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200" />
+    </AccordionPrimitive.Trigger>
+  </AccordionPrimitive.Header>
+))
+AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName
+
+const AccordionContent = React.forwardRef<
+  React.ElementRef<typeof AccordionPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>
+>(({ className, children, ...props }, ref) => (
+  <AccordionPrimitive.Content
+    ref={ref}
+    className="overflow-hidden text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+    {...props}
+  >
+    <div className={cn("pb-4 pt-0", className)}>{children}</div>
+  </AccordionPrimitive.Content>
+))
+AccordionContent.displayName = AccordionPrimitive.Content.displayName
+
+export { Accordion, AccordionItem, AccordionTrigger, AccordionContent }
+
+================
+File: components/ui/badge.tsx
+================
+import * as React from "react"
+import { cva, type VariantProps } from "class-variance-authority"
+
+import { cn } from "@/lib/utils"
+
+const badgeVariants = cva(
+  "inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+  {
+    variants: {
+      variant: {
+        default:
+          "border-transparent bg-primary text-primary-foreground shadow hover:bg-primary/80",
+        secondary:
+          "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        destructive:
+          "border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80",
+        outline: "text-foreground",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  }
+)
+
+export interface BadgeProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof badgeVariants> {}
+
+function Badge({ className, variant, ...props }: BadgeProps) {
+  return (
+    <div className={cn(badgeVariants({ variant }), className)} {...props} />
+  )
+}
+
+export { Badge, badgeVariants }
+
+================
+File: components/ui/button.tsx
+================
+import * as React from "react"
+import { Slot } from "@radix-ui/react-slot"
+import { cva, type VariantProps } from "class-variance-authority"
+
+import { cn } from "@/lib/utils"
+
+const buttonVariants = cva(
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  {
+    variants: {
+      variant: {
+        default:
+          "bg-primary text-primary-foreground shadow hover:bg-primary/90",
+        destructive:
+          "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
+        outline:
+          "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
+        secondary:
+          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
+      },
+      size: {
+        default: "h-9 px-4 py-2",
+        sm: "h-8 rounded-md px-3 text-xs",
+        lg: "h-10 rounded-md px-8",
+        icon: "h-9 w-9",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+)
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean
+}
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button"
+    return (
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
+Button.displayName = "Button"
+
+export { Button, buttonVariants }
+
+================
+File: components/ui/calendar.tsx
+================
+"use client"
+
+import * as React from "react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
+import { DayPicker } from "react-day-picker"
+
+import { cn } from "@/lib/utils"
+import { buttonVariants } from "@/components/ui/button"
+
+export type CalendarProps = React.ComponentProps<typeof DayPicker>
+
+function Calendar({
+  className,
+  classNames,
+  showOutsideDays = true,
+  ...props
+}: CalendarProps) {
+  return (
+    <DayPicker
+      showOutsideDays={showOutsideDays}
+      className={cn("p-3", className)}
+      classNames={{
+        months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
+        month: "space-y-4",
+        caption: "flex justify-center pt-1 relative items-center",
+        caption_label: "text-sm font-medium",
+        nav: "space-x-1 flex items-center",
+        nav_button: cn(
+          buttonVariants({ variant: "outline" }),
+          "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"
+        ),
+        nav_button_previous: "absolute left-1",
+        nav_button_next: "absolute right-1",
+        table: "w-full border-collapse space-y-1",
+        head_row: "flex",
+        head_cell:
+          "text-muted-foreground rounded-md w-8 font-normal text-[0.8rem]",
+        row: "flex w-full mt-2",
+        cell: cn(
+          "relative p-0 text-center text-sm focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-accent [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected].day-range-end)]:rounded-r-md",
+          props.mode === "range"
+            ? "[&:has(>.day-range-end)]:rounded-r-md [&:has(>.day-range-start)]:rounded-l-md first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md"
+            : "[&:has([aria-selected])]:rounded-md"
+        ),
+        day: cn(
+          buttonVariants({ variant: "ghost" }),
+          "h-8 w-8 p-0 font-normal aria-selected:opacity-100"
+        ),
+        day_range_start: "day-range-start",
+        day_range_end: "day-range-end",
+        day_selected:
+          "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
+        day_today: "bg-accent text-accent-foreground",
+        day_outside:
+          "day-outside text-muted-foreground aria-selected:bg-accent/50 aria-selected:text-muted-foreground",
+        day_disabled: "text-muted-foreground opacity-50",
+        day_range_middle:
+          "aria-selected:bg-accent aria-selected:text-accent-foreground",
+        day_hidden: "invisible",
+        ...classNames,
+      }}
+      components={{
+        IconLeft: ({ className, ...props }) => (
+          <ChevronLeft className={cn("h-4 w-4", className)} {...props} />
+        ),
+        IconRight: ({ className, ...props }) => (
+          <ChevronRight className={cn("h-4 w-4", className)} {...props} />
+        ),
+      }}
+      {...props}
+    />
+  )
+}
+Calendar.displayName = "Calendar"
+
+export { Calendar }
+
+================
+File: components/ui/card.tsx
+================
+import * as React from "react"
+
+import { cn } from "@/lib/utils"
+
+const Card = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      "rounded-xl border bg-card text-card-foreground shadow",
+      className
+    )}
+    {...props}
+  />
+))
+Card.displayName = "Card"
+
+const CardHeader = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex flex-col space-y-1.5 p-6", className)}
+    {...props}
+  />
+))
+CardHeader.displayName = "CardHeader"
+
+const CardTitle = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("font-semibold leading-none tracking-tight", className)}
+    {...props}
+  />
+))
+CardTitle.displayName = "CardTitle"
+
+const CardDescription = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("text-sm text-muted-foreground", className)}
+    {...props}
+  />
+))
+CardDescription.displayName = "CardDescription"
+
+const CardContent = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+))
+CardContent.displayName = "CardContent"
+
+const CardFooter = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex items-center p-6 pt-0", className)}
+    {...props}
+  />
+))
+CardFooter.displayName = "CardFooter"
+
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
+
+================
+File: components/ui/dialog.tsx
+================
+"use client"
+
+import * as React from "react"
+import * as DialogPrimitive from "@radix-ui/react-dialog"
+import { X } from "lucide-react"
+
+import { cn } from "@/lib/utils"
+
+const Dialog = DialogPrimitive.Root
+
+const DialogTrigger = DialogPrimitive.Trigger
+
+const DialogPortal = DialogPrimitive.Portal
+
+const DialogClose = DialogPrimitive.Close
+
+const DialogOverlay = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Overlay>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
+>(({ className, ...props }, ref) => (
+  <DialogPrimitive.Overlay
+    ref={ref}
+    className={cn(
+      "fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      className
+    )}
+    {...props}
+  />
+))
+DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
+
+const DialogContent = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
+>(({ className, children, ...props }, ref) => (
+  <DialogPortal>
+    <DialogOverlay />
+    <DialogPrimitive.Content
+      ref={ref}
+      className={cn(
+        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg",
+        className
+      )}
+      {...props}
+    >
+      {children}
+      <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+        <X className="h-4 w-4" />
+        <span className="sr-only">Close</span>
+      </DialogPrimitive.Close>
+    </DialogPrimitive.Content>
+  </DialogPortal>
+))
+DialogContent.displayName = DialogPrimitive.Content.displayName
+
+const DialogHeader = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      "flex flex-col space-y-1.5 text-center sm:text-left",
+      className
+    )}
+    {...props}
+  />
+)
+DialogHeader.displayName = "DialogHeader"
+
+const DialogFooter = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
+      className
+    )}
+    {...props}
+  />
+)
+DialogFooter.displayName = "DialogFooter"
+
+const DialogTitle = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Title>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
+>(({ className, ...props }, ref) => (
+  <DialogPrimitive.Title
+    ref={ref}
+    className={cn(
+      "text-lg font-semibold leading-none tracking-tight",
+      className
+    )}
+    {...props}
+  />
+))
+DialogTitle.displayName = DialogPrimitive.Title.displayName
+
+const DialogDescription = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Description>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
+>(({ className, ...props }, ref) => (
+  <DialogPrimitive.Description
+    ref={ref}
+    className={cn("text-sm text-muted-foreground", className)}
+    {...props}
+  />
+))
+DialogDescription.displayName = DialogPrimitive.Description.displayName
+
+export {
+  Dialog,
+  DialogPortal,
+  DialogOverlay,
+  DialogTrigger,
+  DialogClose,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+}
+
+================
+File: components/ui/dropdown-menu.tsx
+================
+"use client"
+
+import * as React from "react"
+import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
+import { Check, ChevronRight, Circle } from "lucide-react"
+
+import { cn } from "@/lib/utils"
+
+const DropdownMenu = DropdownMenuPrimitive.Root
+
+const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger
+
+const DropdownMenuGroup = DropdownMenuPrimitive.Group
+
+const DropdownMenuPortal = DropdownMenuPrimitive.Portal
+
+const DropdownMenuSub = DropdownMenuPrimitive.Sub
+
+const DropdownMenuRadioGroup = DropdownMenuPrimitive.RadioGroup
+
+const DropdownMenuSubTrigger = React.forwardRef<
+  React.ElementRef<typeof DropdownMenuPrimitive.SubTrigger>,
+  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubTrigger> & {
+    inset?: boolean
+  }
+>(({ className, inset, children, ...props }, ref) => (
+  <DropdownMenuPrimitive.SubTrigger
+    ref={ref}
+    className={cn(
+      "flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none focus:bg-accent data-[state=open]:bg-accent [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+      inset && "pl-8",
+      className
+    )}
+    {...props}
+  >
+    {children}
+    <ChevronRight className="ml-auto" />
+  </DropdownMenuPrimitive.SubTrigger>
+))
+DropdownMenuSubTrigger.displayName =
+  DropdownMenuPrimitive.SubTrigger.displayName
+
+const DropdownMenuSubContent = React.forwardRef<
+  React.ElementRef<typeof DropdownMenuPrimitive.SubContent>,
+  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubContent>
+>(({ className, ...props }, ref) => (
+  <DropdownMenuPrimitive.SubContent
+    ref={ref}
+    className={cn(
+      "z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-lg data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-dropdown-menu-content-transform-origin]",
+      className
+    )}
+    {...props}
+  />
+))
+DropdownMenuSubContent.displayName =
+  DropdownMenuPrimitive.SubContent.displayName
+
+const DropdownMenuContent = React.forwardRef<
+  React.ElementRef<typeof DropdownMenuPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Content>
+>(({ className, sideOffset = 4, ...props }, ref) => (
+  <DropdownMenuPrimitive.Portal>
+    <DropdownMenuPrimitive.Content
+      ref={ref}
+      sideOffset={sideOffset}
+      className={cn(
+        "z-50 max-h-[var(--radix-dropdown-menu-content-available-height)] min-w-[8rem] overflow-y-auto overflow-x-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md",
+        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-dropdown-menu-content-transform-origin]",
+        className
+      )}
+      {...props}
+    />
+  </DropdownMenuPrimitive.Portal>
+))
+DropdownMenuContent.displayName = DropdownMenuPrimitive.Content.displayName
+
+const DropdownMenuItem = React.forwardRef<
+  React.ElementRef<typeof DropdownMenuPrimitive.Item>,
+  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Item> & {
+    inset?: boolean
+  }
+>(({ className, inset, ...props }, ref) => (
+  <DropdownMenuPrimitive.Item
+    ref={ref}
+    className={cn(
+      "relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&>svg]:size-4 [&>svg]:shrink-0",
+      inset && "pl-8",
+      className
+    )}
+    {...props}
+  />
+))
+DropdownMenuItem.displayName = DropdownMenuPrimitive.Item.displayName
+
+const DropdownMenuCheckboxItem = React.forwardRef<
+  React.ElementRef<typeof DropdownMenuPrimitive.CheckboxItem>,
+  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.CheckboxItem>
+>(({ className, children, checked, ...props }, ref) => (
+  <DropdownMenuPrimitive.CheckboxItem
+    ref={ref}
+    className={cn(
+      "relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      className
+    )}
+    checked={checked}
+    {...props}
+  >
+    <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+      <DropdownMenuPrimitive.ItemIndicator>
+        <Check className="h-4 w-4" />
+      </DropdownMenuPrimitive.ItemIndicator>
+    </span>
+    {children}
+  </DropdownMenuPrimitive.CheckboxItem>
+))
+DropdownMenuCheckboxItem.displayName =
+  DropdownMenuPrimitive.CheckboxItem.displayName
+
+const DropdownMenuRadioItem = React.forwardRef<
+  React.ElementRef<typeof DropdownMenuPrimitive.RadioItem>,
+  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.RadioItem>
+>(({ className, children, ...props }, ref) => (
+  <DropdownMenuPrimitive.RadioItem
+    ref={ref}
+    className={cn(
+      "relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      className
+    )}
+    {...props}
+  >
+    <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+      <DropdownMenuPrimitive.ItemIndicator>
+        <Circle className="h-2 w-2 fill-current" />
+      </DropdownMenuPrimitive.ItemIndicator>
+    </span>
+    {children}
+  </DropdownMenuPrimitive.RadioItem>
+))
+DropdownMenuRadioItem.displayName = DropdownMenuPrimitive.RadioItem.displayName
+
+const DropdownMenuLabel = React.forwardRef<
+  React.ElementRef<typeof DropdownMenuPrimitive.Label>,
+  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Label> & {
+    inset?: boolean
+  }
+>(({ className, inset, ...props }, ref) => (
+  <DropdownMenuPrimitive.Label
+    ref={ref}
+    className={cn(
+      "px-2 py-1.5 text-sm font-semibold",
+      inset && "pl-8",
+      className
+    )}
+    {...props}
+  />
+))
+DropdownMenuLabel.displayName = DropdownMenuPrimitive.Label.displayName
+
+const DropdownMenuSeparator = React.forwardRef<
+  React.ElementRef<typeof DropdownMenuPrimitive.Separator>,
+  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Separator>
+>(({ className, ...props }, ref) => (
+  <DropdownMenuPrimitive.Separator
+    ref={ref}
+    className={cn("-mx-1 my-1 h-px bg-muted", className)}
+    {...props}
+  />
+))
+DropdownMenuSeparator.displayName = DropdownMenuPrimitive.Separator.displayName
+
+const DropdownMenuShortcut = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLSpanElement>) => {
+  return (
+    <span
+      className={cn("ml-auto text-xs tracking-widest opacity-60", className)}
+      {...props}
+    />
+  )
+}
+DropdownMenuShortcut.displayName = "DropdownMenuShortcut"
+
+export {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuGroup,
+  DropdownMenuPortal,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuRadioGroup,
+}
+
+================
+File: components/ui/input.tsx
+================
+import * as React from "react"
+
+import { cn } from "@/lib/utils"
+
+const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
+  ({ className, type, ...props }, ref) => {
+    return (
+      <input
+        type={type}
+        className={cn(
+          "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+          className
+        )}
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
+Input.displayName = "Input"
+
+export { Input }
+
+================
+File: components/ui/label.tsx
+================
+"use client"
+
+import * as React from "react"
+import * as LabelPrimitive from "@radix-ui/react-label"
+import { cva, type VariantProps } from "class-variance-authority"
+
+import { cn } from "@/lib/utils"
+
+const labelVariants = cva(
+  "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+)
+
+const Label = React.forwardRef<
+  React.ElementRef<typeof LabelPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> &
+    VariantProps<typeof labelVariants>
+>(({ className, ...props }, ref) => (
+  <LabelPrimitive.Root
+    ref={ref}
+    className={cn(labelVariants(), className)}
+    {...props}
+  />
+))
+Label.displayName = LabelPrimitive.Root.displayName
+
+export { Label }
+
+================
+File: components/ui/pagination.tsx
+================
+import * as React from "react"
+import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react"
+
+import { cn } from "@/lib/utils"
+import { ButtonProps, buttonVariants } from "@/components/ui/button"
+
+const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
+  <nav
+    role="navigation"
+    aria-label="pagination"
+    className={cn("mx-auto flex w-full justify-center", className)}
+    {...props}
+  />
+)
+Pagination.displayName = "Pagination"
+
+const PaginationContent = React.forwardRef<
+  HTMLUListElement,
+  React.ComponentProps<"ul">
+>(({ className, ...props }, ref) => (
+  <ul
+    ref={ref}
+    className={cn("flex flex-row items-center gap-1", className)}
+    {...props}
+  />
+))
+PaginationContent.displayName = "PaginationContent"
+
+const PaginationItem = React.forwardRef<
+  HTMLLIElement,
+  React.ComponentProps<"li">
+>(({ className, ...props }, ref) => (
+  <li ref={ref} className={cn("", className)} {...props} />
+))
+PaginationItem.displayName = "PaginationItem"
+
+type PaginationLinkProps = {
+  isActive?: boolean
+} & Pick<ButtonProps, "size"> &
+  React.ComponentProps<"a">
+
+const PaginationLink = ({
+  className,
+  isActive,
+  size = "icon",
+  ...props
+}: PaginationLinkProps) => (
+  <a
+    aria-current={isActive ? "page" : undefined}
+    className={cn(
+      buttonVariants({
+        variant: isActive ? "outline" : "ghost",
+        size,
+      }),
+      className
+    )}
+    {...props}
+  />
+)
+PaginationLink.displayName = "PaginationLink"
+
+const PaginationPrevious = ({
+  className,
+  ...props
+}: React.ComponentProps<typeof PaginationLink>) => (
+  <PaginationLink
+    aria-label="Go to previous page"
+    size="default"
+    className={cn("gap-1 pl-2.5", className)}
+    {...props}
+  >
+    <ChevronLeft className="h-4 w-4" />
+    <span>Previous</span>
+  </PaginationLink>
+)
+PaginationPrevious.displayName = "PaginationPrevious"
+
+const PaginationNext = ({
+  className,
+  ...props
+}: React.ComponentProps<typeof PaginationLink>) => (
+  <PaginationLink
+    aria-label="Go to next page"
+    size="default"
+    className={cn("gap-1 pr-2.5", className)}
+    {...props}
+  >
+    <span>Next</span>
+    <ChevronRight className="h-4 w-4" />
+  </PaginationLink>
+)
+PaginationNext.displayName = "PaginationNext"
+
+const PaginationEllipsis = ({
+  className,
+  ...props
+}: React.ComponentProps<"span">) => (
+  <span
+    aria-hidden
+    className={cn("flex h-9 w-9 items-center justify-center", className)}
+    {...props}
+  >
+    <MoreHorizontal className="h-4 w-4" />
+    <span className="sr-only">More pages</span>
+  </span>
+)
+PaginationEllipsis.displayName = "PaginationEllipsis"
+
+export {
+  Pagination,
+  PaginationContent,
+  PaginationLink,
+  PaginationItem,
+  PaginationPrevious,
+  PaginationNext,
+  PaginationEllipsis,
+}
+
+================
+File: components/ui/popover.tsx
+================
+"use client"
+
+import * as React from "react"
+import * as PopoverPrimitive from "@radix-ui/react-popover"
+
+import { cn } from "@/lib/utils"
+
+const Popover = PopoverPrimitive.Root
+
+const PopoverTrigger = PopoverPrimitive.Trigger
+
+const PopoverAnchor = PopoverPrimitive.Anchor
+
+const PopoverContent = React.forwardRef<
+  React.ElementRef<typeof PopoverPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>
+>(({ className, align = "center", sideOffset = 4, ...props }, ref) => (
+  <PopoverPrimitive.Portal>
+    <PopoverPrimitive.Content
+      ref={ref}
+      align={align}
+      sideOffset={sideOffset}
+      className={cn(
+        "z-50 w-72 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-popover-content-transform-origin]",
+        className
+      )}
+      {...props}
+    />
+  </PopoverPrimitive.Portal>
+))
+PopoverContent.displayName = PopoverPrimitive.Content.displayName
+
+export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor }
+
+================
+File: components/ui/tabs.tsx
+================
+"use client"
+
+import * as React from "react"
+import * as TabsPrimitive from "@radix-ui/react-tabs"
+
+import { cn } from "@/lib/utils"
+
+const Tabs = TabsPrimitive.Root
+
+const TabsList = React.forwardRef<
+  React.ElementRef<typeof TabsPrimitive.List>,
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
+>(({ className, ...props }, ref) => (
+  <TabsPrimitive.List
+    ref={ref}
+    className={cn(
+      "inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground",
+      className
+    )}
+    {...props}
+  />
+))
+TabsList.displayName = TabsPrimitive.List.displayName
+
+const TabsTrigger = React.forwardRef<
+  React.ElementRef<typeof TabsPrimitive.Trigger>,
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
+>(({ className, ...props }, ref) => (
+  <TabsPrimitive.Trigger
+    ref={ref}
+    className={cn(
+      "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow",
+      className
+    )}
+    {...props}
+  />
+))
+TabsTrigger.displayName = TabsPrimitive.Trigger.displayName
+
+const TabsContent = React.forwardRef<
+  React.ElementRef<typeof TabsPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
+>(({ className, ...props }, ref) => (
+  <TabsPrimitive.Content
+    ref={ref}
+    className={cn(
+      "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+      className
+    )}
+    {...props}
+  />
+))
+TabsContent.displayName = TabsPrimitive.Content.displayName
+
+export { Tabs, TabsList, TabsTrigger, TabsContent }
+
+================
+File: components/ui/tooltip.tsx
+================
+"use client"
+
+import * as React from "react"
+import * as TooltipPrimitive from "@radix-ui/react-tooltip"
+
+import { cn } from "@/lib/utils"
+
+const TooltipProvider = TooltipPrimitive.Provider
+
+const Tooltip = TooltipPrimitive.Root
+
+const TooltipTrigger = TooltipPrimitive.Trigger
+
+const TooltipContent = React.forwardRef<
+  React.ElementRef<typeof TooltipPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
+>(({ className, sideOffset = 4, ...props }, ref) => (
+  <TooltipPrimitive.Portal>
+    <TooltipPrimitive.Content
+      ref={ref}
+      sideOffset={sideOffset}
+      className={cn(
+        "z-50 overflow-hidden rounded-md bg-primary px-3 py-1.5 text-xs text-primary-foreground animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-tooltip-content-transform-origin]",
+        className
+      )}
+      {...props}
+    />
+  </TooltipPrimitive.Portal>
+))
+TooltipContent.displayName = TooltipPrimitive.Content.displayName
+
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider }
+
+================
+File: contexts/vote-context.tsx
+================
+"use client"
+
+import { createContext, useContext, useState, type ReactNode } from "react"
+
+interface VoteContextType {
+  isVoteSubmitted: boolean
+  setVoteSubmitted: (value: boolean) => void
+}
+
+const VoteContext = createContext<VoteContextType | undefined>(undefined)
+
+export function VoteProvider({ children }: { children: ReactNode }) {
+  const [isVoteSubmitted, setVoteSubmitted] = useState(false)
+
+  return <VoteContext.Provider value={{ isVoteSubmitted, setVoteSubmitted }}>{children}</VoteContext.Provider>
+}
+
+export function useVote() {
+  const context = useContext(VoteContext)
+  if (context === undefined) {
+    throw new Error("useVote must be used within a VoteProvider")
+  }
+  return context
+}
+
+================
+File: eslint.config.mjs
+================
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import { FlatCompat } from "@eslint/eslintrc";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+});
+
+const eslintConfig = [
+  ...compat.extends("next/core-web-vitals", "next/typescript"),
+];
+
+export default eslintConfig;
+
+================
+File: lib/ballot-data.ts
+================
+// Define the ballot data structure
+export interface BallotOption {
+  id: string
+  text: string
+}
+
+export interface BallotItem {
+  id: string
+  title: string
+  description: string
+  options: BallotOption[]
+}
+
+export interface Vote {
+  proposal: string
+  choice: string
+}
+
+export interface Ballot {
+  id: string
+  timestamp: string
+  votes: Vote[]
+  identiconHash?: string
+}
+
+// For verification, we only show timestamp and ID, not the actual votes
+export interface PublicBallot {
+  id: string
+  timestamp: string
+  isSubmittedByUser?: boolean // Flag to identify user-submitted ballots internally
+  identiconHash?: string
+}
+
+// Define the ballot items
+export const ballotItems: BallotItem[] = [
+  {
+    id: "proposal-1",
+    title: "Parliamentary Election",
+    description: "Vote for the party you wish to represent you in the Parliament.",
+    options: [
+      { id: "option-1-1", text: "Social Democrats" },
+      { id: "option-1-2", text: "New Liberal Party" },
+      { id: "option-1-3", text: "Green Party" },
+      { id: "option-1-4", text: "Christian Conservative Union" },
+      { id: "option-1-5", text: "CHANGE!" },
+    ],
+  },
+  {
+    id: "proposal-2",
+    title: "Legalisation of Fentanyl",
+    description: "Should the sale, posession, and use of fentanyl be legal for adults aged 18 and above?",
+    options: [
+      { id: "option-2-1", text: "Yes" },
+      { id: "option-2-2", text: "No" },
+    ],
+  },
+  {
+    id: "proposal-3",
+    title: "Presidential Election",
+    description: "Vote for the country's new president.",
+    options: [
+      { id: "option-3-1", text: "James Goodman" },
+      { id: "option-3-2", text: "Nancy Grubber" },
+    ],
+  },
+]
+
+// Helper function to generate a random date with plausible voting hours (7:00 to 23:00)
+// and spread across the last 48 hours (typical election period)
+function generatePlausibleDate(maxDaysAgo = 2): Date {
+  const now = new Date()
+
+  // Randomly distribute timestamps over the election period (last 48 hours)
+  // This simulates ballots being created every few minutes
+  const minutesAgo = Math.floor(Math.random() * (maxDaysAgo * 24 * 60)) + 1 // Add 1 to ensure we're at least 1 minute in the past
+  let date = new Date(now.getTime() - minutesAgo * 60 * 1000)
+
+  // Make sure hour is between 7:00 and 23:00
+  const hour = date.getHours()
+  if (hour < 7) {
+    date.setHours(7 + Math.floor(Math.random() * 5)) // Early morning hours
+  } else if (hour > 23) {
+    date.setHours(19 + Math.floor(Math.random() * 5)) // Evening hours
+  }
+
+  // Check if the date is in the future after hour adjustment (can happen at night)
+  if (date > now) {
+    // Subtract a day to ensure it's in the past
+    date = new Date(date.getTime() - 24 * 60 * 60 * 1000)
+  }
+
+  return date
+}
+
+// Helper function to check if a date is within the last N days
+function isWithinLastDays(date: Date, days: number): boolean {
+  const now = new Date()
+  const diffTime = Math.abs(now.getTime() - date.getTime())
+  const diffDays = diffTime / (1000 * 60 * 60 * 24)
+  return diffDays <= days
+}
+
+// Generate a deterministic ID based on timestamp
+// Use a reserved range (5000+) for real user ballots
+export function generateBallotId(timestamp: string, isUserBallot = false, index = 0): string {
+  const timeMs = new Date(timestamp).getTime()
+
+  let id: string
+  if (isUserBallot) {
+    // For user ballots, use a high number range (5000+)
+    // Make it fully deterministic based on timestamp
+    const timePart = timeMs.toString().slice(-6)
+    id = `ballot-${5000 + (timeMs % 1000)}-${timePart}`
+  } else {
+    // For generated ballots, use a lower number range (0-4999)
+    // Use timestamp and index to ensure uniqueness
+    const seed = Math.floor((timeMs % 4000) + (index % 1000))
+    id = `ballot-${seed}-${timeMs.toString().slice(-6)}-${index}`
+  }
+
+  return id
+}
+
+// Import the hash generation function directly to avoid circular dependencies
+import { generateBallotHash } from "@/lib/identicon" // Import from identicon.ts, not hash-utils.ts
+
+// Helper function to get user submitted ballots from localStorage
+function getUserSubmittedBallots(): PublicBallot[] {
+  try {
+    // Get submitted ballots from localStorage - this is now our ONLY source of truth
+    const submittedBallotsString = localStorage.getItem("submittedBallots")
+    let ballots: PublicBallot[] = []
+
+    if (submittedBallotsString) {
+      ballots = JSON.parse(submittedBallotsString)
+    }
+
+    // Filter out ballots older than 2 days
+    const recentBallots = ballots.filter((ballot) => {
+      const ballotDate = new Date(ballot.timestamp)
+      return isWithinLastDays(ballotDate, 2)
+    })
+
+    // Ensure all ballots have an identicon hash
+    const processedBallots = recentBallots.map((ballot) => {
+      // Generate the identicon hash if it doesn't exist
+      const finalHash = ballot.identiconHash || generateBallotHash({ timestamp: ballot.timestamp, id: ballot.id })
+
+      // Only log user ballots
+      if (ballot.isSubmittedByUser) {
+        console.log(`[USER BALLOT] ID: ${ballot.id}, Hash: ${finalHash}`)
+      }
+
+      return {
+        ...ballot,
+        isSubmittedByUser: true,
+        identiconHash: finalHash,
+      }
+    })
+
+    return processedBallots
+  } catch (error) {
+    console.error("Error loading submitted ballots:", error)
+  }
+  return []
+}
+
+// Function to save a ballot to the user's submitted ballots
+export function saveUserBallot(ballot: PublicBallot): void {
+  try {
+    // Generate the identicon hash if it doesn't exist
+    const finalHash = ballot.identiconHash || generateBallotHash({ timestamp: ballot.timestamp, id: ballot.id })
+
+    console.log(`[SAVING BALLOT] ID: ${ballot.id}, Hash: ${finalHash}`)
+
+    const ballotWithHash = {
+      ...ballot,
+      identiconHash: finalHash,
+    }
+
+    // Get existing ballots
+    const existingBallotsString = localStorage.getItem("submittedBallots")
+    let ballots: PublicBallot[] = existingBallotsString ? JSON.parse(existingBallotsString) : []
+
+    // Check if this ballot already exists
+    const existingIndex = ballots.findIndex((b) => b.id === ballot.id)
+    if (existingIndex >= 0) {
+      // Update existing ballot
+      ballots[existingIndex] = ballotWithHash
+    } else {
+      // Add the new ballot
+      ballots.push(ballotWithHash)
+    }
+
+    // Filter out ballots older than 2 days
+    ballots = ballots.filter((b) => {
+      const ballotDate = new Date(b.timestamp)
+      return isWithinLastDays(ballotDate, 2)
+    })
+
+    // Save back to localStorage - this is our ONLY storage location now
+    localStorage.setItem("submittedBallots", JSON.stringify(ballots))
+
+    // Remove the legacy lastCastBallot storage
+    localStorage.removeItem("lastCastBallot")
+  } catch (error) {
+    console.error("Error saving ballot:", error)
+  }
+}
+
+// Helper function to generate random ballots with realistic timestamps
+export function generateRandomPublicBallots(count = 800, includeUserBallots = true): PublicBallot[] {
+  // Get user submitted ballots
+  const userSubmittedBallots = includeUserBallots ? getUserSubmittedBallots() : []
+
+  // Track used IDs to avoid duplicates
+  const usedBallotIds = new Set<string>()
+
+  // Add user ballot IDs to the used set
+  userSubmittedBallots.forEach((ballot) => {
+    usedBallotIds.add(ballot.id)
+  })
+
+  // Generate random ballots (public version with only timestamp and ID)
+  const randomBallots: PublicBallot[] = []
+  const numRandomBallots = Math.max(0, count - userSubmittedBallots.length)
+
+  // Generate random ballots
+  for (let i = 0; i < numRandomBallots; i++) {
+    const timestamp = generatePlausibleDate().toISOString()
+    // Only include ballots from the last 2 days
+    const ballotDate = new Date(timestamp)
+    if (isWithinLastDays(ballotDate, 2)) {
+      // Generate a unique ID
+      let id: string
+      let attempts = 0
+      do {
+        id = generateBallotId(timestamp, false, i + attempts)
+        attempts++
+      } while (usedBallotIds.has(id) && attempts < 100) // Prevent infinite loops
+
+      if (!usedBallotIds.has(id)) {
+        usedBallotIds.add(id)
+
+        // Generate the identicon hash
+        const identiconHash = generateBallotHash({ timestamp, id })
+
+        randomBallots.push({
+          id,
+          timestamp,
+          identiconHash,
+        })
+      }
+    }
+  }
+
+  // Sort ballots by timestamp (newest first)
+  randomBallots.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+
+  // Combine random ballots with user submitted ballots
+  const allBallots = [...randomBallots, ...userSubmittedBallots]
+
+  // Sort all ballots by timestamp (newest first)
+  allBallots.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+
+  // Log only the number of user ballots
+  console.log(`[BALLOT COUNT] User ballots: ${userSubmittedBallots.length}, Total: ${allBallots.length}`)
+
+  // Log only user ballots for debugging
+  if (userSubmittedBallots.length > 0) {
+    console.log("[USER BALLOTS]", userSubmittedBallots)
+  }
+
+  return allBallots
+}
+
+================
+File: lib/date-utils.ts
+================
+// Format a date in Danish format (DD-MM-YYYY)
+export function formatDateDanish(date: Date | string): string {
+    const d = typeof date === "string" ? new Date(date) : date
+    return d.toLocaleDateString("da-DK", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    })
+  }
+  
+// Format time as HH:MM with colon separator
+export function formatTimeDanish(date: Date | string): string {
+const d = typeof date === "string" ? new Date(date) : date
+
+// Get hours and minutes and pad with leading zeros if needed
+const hours = d.getHours().toString().padStart(2, "0")
+const minutes = d.getMinutes().toString().padStart(2, "0")
+
+// Return in HH:MM format with colon
+return `${hours}:${minutes}`
+}
+
+================
+File: lib/identicon.ts
+================
+// Simple identicon generator based on ballot timestamp and ID only (not voting choices)
+export function generateBallotHash(ballot: { timestamp: string; id: string }): string {
+    // Create a string representation of the ballot using only timestamp and ID
+    // Ensure we're using the exact same format every time
+    const ballotString = `${ballot.timestamp}:${ballot.id}`
+  
+    // Only log for user ballots (those with IDs in the 5000+ range)
+    const isUserBallot = ballot.id.includes("ballot-5") && ballot.id.split("-")[1].startsWith("5")
+    if (isUserBallot) {
+      console.log(`[GENERATING HASH] Input: ${ballotString}`)
+    }
+  
+    // Simple hash function
+    let hash = 0
+    for (let i = 0; i < ballotString.length; i++) {
+      const char = ballotString.charCodeAt(i)
+      hash = (hash << 5) - hash + char
+      hash = hash & hash // Convert to 32bit integer
+    }
+  
+    // Convert to positive hex string
+    const result = Math.abs(hash).toString(16).padStart(8, "0")
+  
+    if (isUserBallot) {
+      console.log(`[HASH RESULT] ${result}`)
+    }
+  
+    return result
+  }
+  
+  // Generate a color from a hash
+  export function hashToColor(hash: string): string {
+    // Use first 6 characters of hash for color
+    return `#${hash.substring(0, 6)}`
+  }
+  
+  // Generate background and foreground colors from a hash
+  export function hashToColors(hash: string): { bg: string; fg: string } {
+    const bgColor = hashToColor(hash)
+  
+    // Generate a contrasting foreground color
+    const r = Number.parseInt(hash.substring(0, 2), 16)
+    const g = Number.parseInt(hash.substring(2, 4), 16)
+    const b = Number.parseInt(hash.substring(4, 6), 16)
+  
+    // Calculate brightness (simple formula)
+    const brightness = (r * 299 + g * 587 + b * 114) / 1000
+  
+    // Choose white or black based on background brightness
+    const fgColor = brightness > 128 ? "#000000" : "#FFFFFF"
+  
+    return { bg: bgColor, fg: fgColor }
+  }
+  
+  // Generate a simple grid-based identicon
+  export function generateIdenticon(hash: string, size = 5): { grid: boolean[][]; colors: { bg: string; fg: string } } {
+    const colors = hashToColors(hash)
+    const grid: boolean[][] = []
+  
+    // Use the hash to determine which cells are filled
+    for (let i = 0; i < size; i++) {
+      const row: boolean[] = []
+      for (let j = 0; j < size; j++) {
+        // Use different parts of the hash for different positions
+        const position = i * size + j
+        const hexChar = hash[position % hash.length]
+        const value = Number.parseInt(hexChar, 16)
+  
+        // Fill the cell if the value is even
+        row.push(value % 2 === 0)
+      }
+      grid.push(row)
+    }
+  
+    // Make the pattern symmetrical (like GitHub identicons)
+    for (let i = 0; i < size; i++) {
+      for (let j = Math.ceil(size / 2); j < size; j++) {
+        grid[i][j] = grid[i][size - j - 1]
+      }
+    }
+  
+    return { grid, colors }
+  }
+
+================
+File: lib/utils.ts
+================
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+
+================
+File: next.config.ts
+================
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  /* config options here */
+};
+
+module.exports = {
+  reactStrictMode: true,
+  experimental: { },
+};
+
+export default nextConfig;
+
+================
+File: package.json
+================
+{
+  "name": "loki-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@radix-ui/react-accordion": "^1.2.3",
+    "@radix-ui/react-dialog": "^1.1.6",
+    "@radix-ui/react-dropdown-menu": "^2.1.6",
+    "@radix-ui/react-icons": "^1.3.2",
+    "@radix-ui/react-label": "^2.1.2",
+    "@radix-ui/react-popover": "^1.1.6",
+    "@radix-ui/react-slot": "^1.1.2",
+    "@radix-ui/react-tabs": "^1.1.3",
+    "@radix-ui/react-tooltip": "^1.1.8",
+    "@shadcn/ui": "^0.0.4",
+    "axios": "^1.7.9",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "date-fns": "^3.6.0",
+    "lucide-react": "^0.475.0",
+    "next": "15.1.7",
+    "next-auth": "^4.24.11",
+    "react": "^19.0.0",
+    "react-day-picker": "^8.10.1",
+    "react-dom": "^19.0.0",
+    "react-hook-form": "^7.54.2",
+    "tailwind-merge": "^3.0.1",
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.1.7",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.7.3"
+  }
+}
+
+================
+File: postcss.config.mjs
+================
+/** @type {import('postcss-load-config').Config} */
+const config = {
+  plugins: {
+    tailwindcss: {},
+  },
+};
+
+export default config;
+
+================
+File: public/file.svg
+================
+<svg fill="none" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M14.5 13.5V5.41a1 1 0 0 0-.3-.7L9.8.29A1 1 0 0 0 9.08 0H1.5v13.5A2.5 2.5 0 0 0 4 16h8a2.5 2.5 0 0 0 2.5-2.5m-1.5 0v-7H8v-5H3v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1M9.5 5V2.12L12.38 5zM5.13 5h-.62v1.25h2.12V5zm-.62 3h7.12v1.25H4.5zm.62 3h-.62v1.25h7.12V11z" clip-rule="evenodd" fill="#666" fill-rule="evenodd"/></svg>
+
+================
+File: public/globe.svg
+================
+<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g clip-path="url(#a)"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.27 14.1a6.5 6.5 0 0 0 3.67-3.45q-1.24.21-2.7.34-.31 1.83-.97 3.1M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.48-1.52a7 7 0 0 1-.96 0H7.5a4 4 0 0 1-.84-1.32q-.38-.89-.63-2.08a40 40 0 0 0 3.92 0q-.25 1.2-.63 2.08a4 4 0 0 1-.84 1.31zm2.94-4.76q1.66-.15 2.95-.43a7 7 0 0 0 0-2.58q-1.3-.27-2.95-.43a18 18 0 0 1 0 3.44m-1.27-3.54a17 17 0 0 1 0 3.64 39 39 0 0 1-4.3 0 17 17 0 0 1 0-3.64 39 39 0 0 1 4.3 0m1.1-1.17q1.45.13 2.69.34a6.5 6.5 0 0 0-3.67-3.44q.65 1.26.98 3.1M8.48 1.5l.01.02q.41.37.84 1.31.38.89.63 2.08a40 40 0 0 0-3.92 0q.25-1.2.63-2.08a4 4 0 0 1 .85-1.32 7 7 0 0 1 .96 0m-2.75.4a6.5 6.5 0 0 0-3.67 3.44 29 29 0 0 1 2.7-.34q.31-1.83.97-3.1M4.58 6.28q-1.66.16-2.95.43a7 7 0 0 0 0 2.58q1.3.27 2.95.43a18 18 0 0 1 0-3.44m.17 4.71q-1.45-.12-2.69-.34a6.5 6.5 0 0 0 3.67 3.44q-.65-1.27-.98-3.1" fill="#666"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h16v16H0z"/></clipPath></defs></svg>
+
+================
+File: public/next.svg
+================
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 394 80"><path fill="#000" d="M262 0h68.5v12.7h-27.2v66.6h-13.6V12.7H262V0ZM149 0v12.7H94v20.4h44.3v12.6H94v21h55v12.6H80.5V0h68.7zm34.3 0h-17.8l63.8 79.4h17.9l-32-39.7 32-39.6h-17.9l-23 28.6-23-28.6zm18.3 56.7-9-11-27.1 33.7h17.8l18.3-22.7z"/><path fill="#000" d="M81 79.3 17 0H0v79.3h13.6V17l50.2 62.3H81Zm252.6-.4c-1 0-1.8-.4-2.5-1s-1.1-1.6-1.1-2.6.3-1.8 1-2.5 1.6-1 2.6-1 1.8.3 2.5 1a3.4 3.4 0 0 1 .6 4.3 3.7 3.7 0 0 1-3 1.8zm23.2-33.5h6v23.3c0 2.1-.4 4-1.3 5.5a9.1 9.1 0 0 1-3.8 3.5c-1.6.8-3.5 1.3-5.7 1.3-2 0-3.7-.4-5.3-1s-2.8-1.8-3.7-3.2c-.9-1.3-1.4-3-1.4-5h6c.1.8.3 1.6.7 2.2s1 1.2 1.6 1.5c.7.4 1.5.5 2.4.5 1 0 1.8-.2 2.4-.6a4 4 0 0 0 1.6-1.8c.3-.8.5-1.8.5-3V45.5zm30.9 9.1a4.4 4.4 0 0 0-2-3.3 7.5 7.5 0 0 0-4.3-1.1c-1.3 0-2.4.2-3.3.5-.9.4-1.6 1-2 1.6a3.5 3.5 0 0 0-.3 4c.3.5.7.9 1.3 1.2l1.8 1 2 .5 3.2.8c1.3.3 2.5.7 3.7 1.2a13 13 0 0 1 3.2 1.8 8.1 8.1 0 0 1 3 6.5c0 2-.5 3.7-1.5 5.1a10 10 0 0 1-4.4 3.5c-1.8.8-4.1 1.2-6.8 1.2-2.6 0-4.9-.4-6.8-1.2-2-.8-3.4-2-4.5-3.5a10 10 0 0 1-1.7-5.6h6a5 5 0 0 0 3.5 4.6c1 .4 2.2.6 3.4.6 1.3 0 2.5-.2 3.5-.6 1-.4 1.8-1 2.4-1.7a4 4 0 0 0 .8-2.4c0-.9-.2-1.6-.7-2.2a11 11 0 0 0-2.1-1.4l-3.2-1-3.8-1c-2.8-.7-5-1.7-6.6-3.2a7.2 7.2 0 0 1-2.4-5.7 8 8 0 0 1 1.7-5 10 10 0 0 1 4.3-3.5c2-.8 4-1.2 6.4-1.2 2.3 0 4.4.4 6.2 1.2 1.8.8 3.2 2 4.3 3.4 1 1.4 1.5 3 1.5 5h-5.8z"/></svg>
+
+================
+File: public/vercel.svg
+================
+<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1155 1000"><path d="m577.3 0 577.4 1000H0z" fill="#fff"/></svg>
+
+================
+File: public/window.svg
+================
+<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" clip-rule="evenodd" d="M1.5 2.5h13v10a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1zM0 1h16v11.5a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 0 12.5zm3.75 4.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5M7 4.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0m1.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5" fill="#666"/></svg>
+
+================
+File: README.md
+================
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+## Getting Started
+
+First, run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+
+## Learn More
+
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+================
+File: tailwind.config.ts
+================
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+	darkMode: ["class"],
+	content: [
+	  "./pages/**/*.{ts,tsx}",
+	  "./components/**/*.{ts,tsx}",
+	  "./app/**/*.{ts,tsx}",
+	  "./src/**/*.{ts,tsx}",
+	  "*.{js,ts,jsx,tsx,mdx}",
+	],
+	theme: {
+	  container: {
+		center: true,
+		padding: "2rem",
+		screens: {
+		  "2xl": "1400px",
+		},
+	  },
+	  extend: {
+		fontFamily: {
+		  noto: ["var(--font-noto-sans)", "system-ui", "sans-serif"],
+		},
+		colors: {
+		  border: "hsl(var(--border))",
+		  input: "hsl(var(--input))",
+		  ring: "hsl(var(--ring))",
+		  background: "hsl(var(--background))",
+		  foreground: "hsl(var(--foreground))",
+		  primary: {
+			DEFAULT: "hsl(var(--primary))",
+			foreground: "hsl(var(--primary-foreground))",
+		  },
+		  secondary: {
+			DEFAULT: "hsl(var(--secondary))",
+			foreground: "hsl(var(--secondary-foreground))",
+		  },
+		  destructive: {
+			DEFAULT: "hsl(var(--destructive))",
+			foreground: "hsl(var(--destructive-foreground))",
+		  },
+		  muted: {
+			DEFAULT: "hsl(var(--muted))",
+			foreground: "hsl(var(--muted-foreground))",
+		  },
+		  accent: {
+			DEFAULT: "hsl(var(--accent))",
+			foreground: "hsl(var(--accent-foreground))",
+		  },
+		  popover: {
+			DEFAULT: "hsl(var(--popover))",
+			foreground: "hsl(var(--popover-foreground))",
+		  },
+		  card: {
+			DEFAULT: "hsl(var(--card))",
+			foreground: "hsl(var(--card-foreground))",
+		  },
+		},
+		borderRadius: {
+		  lg: "var(--radius)",
+		  md: "calc(var(--radius) - 2px)",
+		  sm: "calc(var(--radius) - 4px)",
+		},
+		keyframes: {
+		  "accordion-down": {
+			from: { height: 0 },
+			to: { height: "var(--radix-accordion-content-height)" },
+		  },
+		  "accordion-up": {
+			from: { height: "var(--radix-accordion-content-height)" },
+			to: { height: 0 },
+		  },
+		},
+		animation: {
+		  "accordion-down": "accordion-down 0.2s ease-out",
+		  "accordion-up": "accordion-up 0.2s ease-out",
+		},
+	  },
+	},
+	plugins: [require("tailwindcss-animate")],
+  }
+
+================
+File: tsconfig.json
+================
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "moduleResolution": "nodenext",
+    "esModuleInterop": true,
+    "module": "NodeNext",
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    },
+    "resolveJsonModule": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+, "tailwind.config.js"  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
+
+
+
+================================================================
+End of Codebase
+================================================================

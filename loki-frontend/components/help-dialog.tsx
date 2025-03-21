@@ -25,6 +25,7 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
   const [dialogOpen, setDialogOpen] = useState(false)
   const [isPrerendered, setIsPrerendered] = useState(false)
   const dialogContentRef = useRef<HTMLDivElement>(null)
+  const initialOpenRef = useRef(true)
 
   // Create refs for each accordion item
   const itemRefs = useRef<Record<string, HTMLDivElement | null>>({})
@@ -68,6 +69,73 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
     {
       title: "Anti-Coercion Measures",
       items: [
+        {
+          id: "what-is-coercion",
+          title: "What is voter coercion?",
+          content: (
+            <div className="space-y-2">
+              <p>
+                Voter coercion occurs when someone forces or pressures you to vote in a particular way against your
+                will. This can happen through:
+              </p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>
+                  <strong>Direct threats:</strong> Someone threatening harm if you don't vote as they demand
+                </li>
+                <li>
+                  <strong>Intimidation:</strong> Creating fear or discomfort to influence your vote
+                </li>
+                <li>
+                  <strong>Monitoring:</strong> Someone watching over your shoulder as you vote to ensure you vote their
+                  way
+                </li>
+                <li>
+                  <strong>Family pressure:</strong> Relatives insisting you vote according to family preferences
+                </li>
+                <li>
+                  <strong>Financial leverage:</strong> Promising rewards or threatening financial consequences based on
+                  how you vote
+                </li>
+              </ul>
+              <p className="mt-2">
+                Online voting systems are particularly vulnerable to coercion because voting can happen outside the
+                privacy of an official voting booth. The anti-coercion measures in this system are designed to give you
+                ways to protect your true voting intentions even under pressure.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: "ballot-verification-security",
+          title: "Why do I need to verify my voting history?",
+          content: (
+            <div className="space-y-2">
+              <p>The ballot verification step serves two critical security purposes:</p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>
+                  <strong>Identity verification:</strong> It ensures that only you can cast or change your vote by
+                  requiring knowledge that only you should have.
+                </li>
+                <li>
+                  <strong>Anti-coercion protection:</strong> It gives you a way to invalidate coerced votes without the
+                  coercer knowing.
+                </li>
+              </ul>
+              <p className="mt-2">
+                When you want to revote, you'll be shown a list of ballots that includes your previously cast ballots
+                mixed with many others. You need to select all of your previous ballots to verify your identity.
+              </p>
+              <p className="mt-2 text-red-600 font-medium">
+                Important: If you provide incorrect information about having previously voted or fail to identify all
+                your previous ballots, your new ballot will not be valid.
+              </p>
+              <p>
+                If you are being coerced, you can use this feature to intentionally invalidate the coerced ballot by
+                selecting the wrong ballots or claiming you haven't voted when you have (or vice versa).
+              </p>
+            </div>
+          ),
+        },
         {
           id: "coercion-risk",
           title: "What if I'm being coerced to vote?",
@@ -140,72 +208,86 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
                 <li>Allows you to vote freely even if initially pressured</li>
                 <li>Only counts your final vote</li>
               </ul>
-              <p>To change your vote, you'll need to identify your last valid ballot to confirm your identity.</p>
+              <p>To change your vote, you'll need to identify your previous ballot(s) to confirm your identity.</p>
               <p className="text-red-600 font-medium">
-                Important: If you fail to correctly identify your last valid ballot, the new ballot will not be valid.
+                Important: If you fail to correctly identify your previous ballot(s), your new vote will not be valid.
               </p>
               <p>If you are being coerced, you can use this feature to intentionally invalidate the coerced ballot.</p>
             </div>
           ),
         },
         {
-          id: "ballot-verification",
-          title: "Why do I need to verify if I've voted before?",
+          id: "previous-ballots",
+          title: "How do I identify my previous ballots?",
           content: (
             <div className="space-y-2">
-              <p>This verification step is crucial for several security reasons:</p>
-              <ul className="list-disc pl-6 space-y-1">
-                <li>
-                  <strong>Identity verification:</strong> It ensures that only you can cast or change your vote.
-                </li>
-                <li>
-                  <strong>Anti-coercion protection:</strong> It protects you from coercion by allowing you to
-                  intentionally cast an invalid vote with plausible deniability.
-                </li>
-              </ul>
-              <p className="mt-2 text-red-600 font-medium">
-                Important: If you provide incorrect information about having previously voted or incorrectly identify
-                your last valid ballot, your new ballot will not be valid.
+              <p>
+                To protect your voting privacy, the system doesn't explicitly tell you which ballots are yours. Instead,
+                you need to recognize your own ballots using:
               </p>
-              <p>If you are being coerced, you can use this feature to intentionally invalidate the coerced ballot.</p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>The date and time when you cast your vote</li>
+                <li>The unique visual pattern (identicon) associated with your ballot</li>
+              </ul>
+              <p className="mt-2">
+                When you cast a ballot, you'll see a receipt with this information. It's important to remember or note
+                these details if you plan to revote later.
+              </p>
+              <p className="mt-2">If you're having trouble identifying your previous ballots, you can:</p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>Use the date and time filters to narrow down the list</li>
+                <li>Look for the unique visual pattern (identicon) that matches your ballot</li>
+              </ul>
+              <p className="mt-2">
+                If you're still unsure, you can vote in person at your local polling station. Physical votes are final
+                and cannot be changed.
+              </p>
             </div>
           ),
         },
         {
-          id: "last-valid-ballot",
-          title: "What is the last valid ballot?",
+          id: "many-ballots",
+          title: "Why am I seeing so many ballots?",
           content: (
             <div className="space-y-2">
               <p>
-                To protect you against coerction, the Online Voting Portal allows you to discreetly submit invalid
-                ballots. An invalid ballot is submitted when you provide incorrect information about having previously
-                voted or your last valid ballot. Conversely, a valid ballot is cast when you provide truthful
-                informaton.
+                For security and privacy reasons, your ballot is mixed with many other ballots. This makes it difficult
+                for anyone to identify which ballot is yours, protecting you from potential coercion.
               </p>
               <ul className="list-disc pl-6 space-y-1">
-                <li>Your first ballot is always valid — given you select you have not voted before</li>
-                <li>
-                  You can protect your first ballot under coercion by falsely claiming you have voted before and thus
-                  submitting an invalid ballot
-                </li>
-                <li>Once you have cast your first ballot, this is now your last valid ballot</li>
-                <li>
-                  If you choose to revote, select the last valid ballot to be able to submit a new valid ballot — this
-                  new ballot is now your last valid ballot
-                </li>
-                <li>
-                  If you are being coerced and submit an invalid ballot, this new ballot does <strong>not</strong> count
-                  as your last valid balot — when revoting, you must select the last valid ballot you submitted before
-                  the invalid ones submitted under coercion
-                </li>
-                <li>
-                  The system does not allow you to see what your last valid ballot is. This for your protection, as a
-                  potential coercer could also see this information
-                </li>
+                <li>Use the date and time filters to narrow down the list</li>
+                <li>Look for the unique visual pattern (identicon) associated with your ballot</li>
+                <li>If you voted recently, your ballot is likely to be among the newer ones</li>
               </ul>
+              <p className="mt-2">
+                If you're having trouble finding your ballot, you can always vote in person at your local polling
+                station.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: "identicon",
+          title: "What is the visual pattern (identicon)?",
+          content: (
+            <div className="space-y-2">
               <p>
-                If you are not sure what your last valid ballot is, you can vote in person before the election closes.
-                Physically cast ballots are final and cannot be changed.
+                The colored pattern square is a visual identifier called an "identicon" that is unique to your ballot.
+                It helps you:
+              </p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>Recognize your ballot when you need to verify it later</li>
+                <li>Confirm that your ballot was correctly recorded in the system</li>
+                <li>Identify your ballot without revealing your voting choices</li>
+              </ul>
+              <p className="mt-2">
+                Each identicon is generated based on your ballot's timestamp and ID, creating a unique visual pattern
+                that's easier to recognize than a long string of characters. The pattern and colors will always be the
+                same for your specific ballot.
+              </p>
+              <p className="mt-2">
+                If you need to revote later, you'll be asked to identify your previous ballot. The identicon will help
+                you find it among other ballots.
               </p>
             </div>
           ),
@@ -308,11 +390,23 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
   // Handle section changes
   useEffect(() => {
     if (dialogOpen && openSection) {
-      requestAnimationFrame(() => {
-        scrollToSection(openSection)
-      })
+      // Only auto-scroll if this is the initial opening with defaultOpenSection
+      if (initialOpenRef.current && defaultOpenSection === openSection) {
+        requestAnimationFrame(() => {
+          scrollToSection(openSection)
+        })
+      }
+      // Reset the flag after initial opening is handled
+      initialOpenRef.current = false
     }
-  }, [dialogOpen, openSection])
+  }, [dialogOpen, openSection, defaultOpenSection])
+
+  // Reset the initialOpen flag when dialog closes
+  useEffect(() => {
+    if (!dialogOpen) {
+      initialOpenRef.current = true
+    }
+  }, [dialogOpen])
 
   // Prepare dialog content for prerendering
   const dialogContent = (
@@ -325,7 +419,11 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
             collapsible
             className="w-full"
             value={section.items.some((item) => item.id === openSection) ? openSection : undefined}
-            onValueChange={setOpenSection}
+            onValueChange={(value) => {
+              // When user manually clicks an accordion item, don't trigger auto-scroll
+              initialOpenRef.current = false
+              setOpenSection(value)
+            }}
           >
             {section.items.map((item) => (
               <AccordionItem
