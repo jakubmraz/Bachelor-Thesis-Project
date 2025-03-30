@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { AlertTriangle } from "lucide-react"
 import { HelpDialog } from "./help-dialog"
+import Image from "next/image"
 
 // In a real application, this would come from the authentication system
 const userInfo = {
@@ -29,7 +30,16 @@ export function TopBarAuth() {
     <header className="border-b bg-[#FFD700]">
       <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-8">
         <div className="flex items-center gap-4">
-          <div className="text-2xl font-bold">Logo goes here</div>
+          <div className="relative h-14 w-auto overflow-hidden flex items-center">
+            <Image
+              src="/logo.png?height=56&width=180&text=VOTE+LOGO"
+              alt="Voting Portal Logo"
+              width={240}
+              height={80}
+              className="object-contain"
+              priority
+            />
+          </div>
           <div className="text-xs leading-tight">
             <div className="font-medium">{userInfo.name}</div>
             <div className="text-gray-700">{userInfo.id}</div>

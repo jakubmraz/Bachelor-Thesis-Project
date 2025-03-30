@@ -114,14 +114,16 @@ export default function NewVotingPage() {
 
       {isSubmitted ? (
         <div className="mt-6 space-y-6">
-          <div className="flex flex-col items-center">
-            <div className="mb-8 flex h-24 w-24 items-center justify-center rounded-full bg-green-100">
-              <Check className="h-12 w-12 text-green-600" />
+          <div className="flex items-center mb-8">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-100 mr-4">
+              <Check className="h-8 w-8 text-green-600" />
             </div>
-            <h1 className="mb-4 text-2xl font-bold">Vote Successfully Cast</h1>
-            <p className="mb-8 text-center text-gray-600 max-w-md">
-              Thank you for participating in the democratic process. Your vote has been recorded securely.
-            </p>
+            <div>
+              <h1 className="text-2xl font-bold">Vote Successfully Cast</h1>
+              <p className="text-gray-600">
+                Thank you for participating in the democratic process. Your vote has been recorded securely.
+              </p>
+            </div>
           </div>
 
           <Card className="max-w-2xl mx-auto">
@@ -183,10 +185,12 @@ export default function NewVotingPage() {
                 <div className="flex gap-3">
                   <Info className="h-5 w-5 text-gray-600 mt-0.5 flex-shrink-0" />
                   <div>
-                    <h3 className="font-semibold mb-1">Remember the Visual Pattern</h3>
+                    <h3 className="font-semibold mb-1">Remember the Date, Time, and Pattern</h3>
                     <p className="text-sm text-gray-600">
-                      The colored pattern square will help you identify your ballot if you need to revote later. For
-                      your privacy, we recommend not saving or sharing this information.
+                      If you need to revote later, you'll need to identify this ballot by the{" "}
+                      <strong>date and time</strong> it was cast ({formattedDate} at {formattedTime}). The colored
+                      pattern square is a visual aid to help you recognize your ballot more easily. For your privacy, we
+                      recommend not saving or sharing this information.
                     </p>
                   </div>
                 </div>

@@ -1,74 +1,80 @@
-// Simple identicon generator based on ballot timestamp and ID only (not voting choices)
+import crypto from 'crypto';
+
+// Expanded, colorblind-friendly palette (excluding black and white for background)
+const SAFE_COLORS = [
+    "#E69F00", // orange
+    "#56B4E9", // sky blue
+    "#009E73", // teal/green
+    "#F0E442", // yellow
+    "#0072B2", // strong blue
+    "#D55E00", // reddish orange
+    "#CC79A7", // pink
+    "#117733"  // forest green
+];
+
+// Deterministic SHA-256 hash of a ballot object
 export function generateBallotHash(ballot: { timestamp: string; id: string }): string {
-    // Create a string representation of the ballot using only timestamp and ID
-    // Ensure we're using the exact same format every time
-    const ballotString = `${ballot.timestamp}:${ballot.id}`
-  
-    // Simple hash function
-    let hash = 0
-    for (let i = 0; i < ballotString.length; i++) {
-      const char = ballotString.charCodeAt(i)
-      hash = (hash << 5) - hash + char
-      hash = hash & hash // Convert to 32bit integer
-    }
-  
-    // Convert to positive hex string
-    const result = Math.abs(hash).toString(16).padStart(8, "0")
-    return result
-  }
-  
-  // Generate a color from a hash
-  export function hashToColor(hash: string): string {
-    // Use first 6 characters of hash for color
-    return `#${hash.substring(0, 6)}`
-  }
-  
-  // Generate background and foreground colors from a hash
-  export function hashToColors(hash: string): { bg: string; fg: string } {
-    const bgColor = hashToColor(hash)
-  
-    // Generate a contrasting foreground color
-    const r = Number.parseInt(hash.substring(0, 2), 16)
-    const g = Number.parseInt(hash.substring(2, 4), 16)
-    const b = Number.parseInt(hash.substring(4, 6), 16)
-  
-    // Calculate brightness (simple formula)
-    const brightness = (r * 299 + g * 587 + b * 114) / 1000
-  
-    // Choose white or black based on background brightness
-    const fgColor = brightness > 128 ? "#000000" : "#FFFFFF"
-  
-    return { bg: bgColor, fg: fgColor }
-  }
-  
-  // Generate a simple grid-based identicon
-  export function generateIdenticon(hash: string, size = 5): { grid: boolean[][]; colors: { bg: string; fg: string } } {
-    const colors = hashToColors(hash)
-    const grid: boolean[][] = []
-  
-    // Use the hash to determine which cells are filled
+    const ballotString = `${ballot.timestamp}:${ballot.id}`; // No randomness
+    return crypto.createHash('sha256').update(ballotString).digest('hex');
+}
+
+// Deterministic background color from hash
+export function hashToColor(hash: string): string {
+    const index = parseInt(hash.substring(0, 2), 16) % SAFE_COLORS.length;
+    return SAFE_COLORS[index];
+}
+
+// Utility: Calculate relative luminance of a color
+function getLuminance(hex: string): number {
+    const rgb = hex.match(/\w\w/g)!.map(x => parseInt(x, 16) / 255);
+    const [r, g, b] = rgb.map(c => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4));
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+// Utility: Calculate contrast ratio between two colors
+function getContrast(hex1: string, hex2: string): number {
+    const lum1 = getLuminance(hex1);
+    const lum2 = getLuminance(hex2);
+    const brightest = Math.max(lum1, lum2);
+    const darkest = Math.min(lum1, lum2);
+    return (brightest + 0.05) / (darkest + 0.05);
+}
+
+// Choose high-contrast foreground color (black or white)
+export function hashToColors(hash: string): { bg: string; fg: string } {
+    const bg = hashToColor(hash);
+    const blackContrast = getContrast(bg, "#000000");
+    const whiteContrast = getContrast(bg, "#FFFFFF");
+
+    const fg = blackContrast >= whiteContrast ? "#000000" : "#FFFFFF";
+    return { bg, fg };
+}
+
+// Generate symmetrical identicon from hash
+export function generateIdenticon(
+    hash: string,
+    size = 5
+): { grid: boolean[][]; colors: { bg: string; fg: string } } {
+    const colors = hashToColors(hash);
+    const grid: boolean[][] = [];
+
     for (let i = 0; i < size; i++) {
-      const row: boolean[] = []
-      for (let j = 0; j < size; j++) {
-        // Use different parts of the hash for different positions
-        const position = i * size + j
-        const hexChar = hash[position % hash.length]
-        const value = Number.parseInt(hexChar, 16)
-  
-        // Fill the cell if the value is even
-        row.push(value % 2 === 0)
-      }
-      grid.push(row)
+        const row: boolean[] = [];
+        for (let j = 0; j < size; j++) {
+            const position = i * size + j;
+            const hexChar = hash[position % hash.length];
+            const value = parseInt(hexChar, 16);
+            row.push(value % 2 === 0);
+        }
+        grid.push(row);
     }
-  
-    // Make the pattern symmetrical (like GitHub identicons)
+
+    // Apply vertical mirroring for symmetry
     for (let i = 0; i < size; i++) {
-      for (let j = Math.ceil(size / 2); j < size; j++) {
-        grid[i][j] = grid[i][size - j - 1]
-      }
+        for (let j = Math.ceil(size / 2); j < size; j++) {
+            grid[i][j] = grid[i][size - j - 1];
+        }
     }
-  
-    return { grid, colors }
-  }
-  
-  
+
+    return { grid, colors };
+}

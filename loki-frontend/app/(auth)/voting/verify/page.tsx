@@ -27,6 +27,14 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { BallotIdenticon } from "@/components/ballot-identicon"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 
 export default function VerifyPreviousVotePage() {
   const [previousBallots, setPreviousBallots] = useState<PublicBallot[]>([])
@@ -36,6 +44,7 @@ export default function VerifyPreviousVotePage() {
   const [selectedDates, setSelectedDates] = useState<string[]>([])
   const [selectedHours, setSelectedHours] = useState<string[]>([])
   const [activeTab, setActiveTab] = useState("all")
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false)
 
   const ITEMS_PER_PAGE = 8
 
@@ -472,13 +481,47 @@ export default function VerifyPreviousVotePage() {
           </Tabs>
 
           <div className="flex justify-end mt-8">
-            <Link href="/voting/new">
-              <Button className="bg-gray-900">
-                Continue to Voting
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
+            <Button className="bg-gray-900" onClick={() => setConfirmDialogOpen(true)}>
+              Continue to Voting
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
           </div>
+
+          {/* Confirmation Dialog */}
+          <Dialog open={confirmDialogOpen} onOpenChange={setConfirmDialogOpen}>
+            <DialogContent className="max-w-md">
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <AlertTriangle className="h-5 w-5 text-red-600" />
+                  Confirm Ballot Selection
+                </DialogTitle>
+              </DialogHeader>
+              <DialogDescription asChild>
+                <div className="space-y-4">
+                  <p>
+                    You have selected <strong>{selectedBallotIds.length}</strong> ballot
+                    {selectedBallotIds.length !== 1 ? "s" : ""}. Are you sure you wish to continue?
+                  </p>
+                  <div className="rounded-lg border-2 border-red-200 bg-red-50 p-3">
+                    <p className="text-sm text-red-800 font-medium">
+                      If you incorrectly identify your previous valid ballots, your new ballot will not be counted!
+                    </p>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    You're seeing this notification regardless of if your choices were correct or not.
+                  </p>
+                </div>
+              </DialogDescription>
+              <DialogFooter className="gap-2 sm:gap-0">
+                <Button variant="outline" onClick={() => setConfirmDialogOpen(false)}>
+                  Go back and verify
+                </Button>
+                <Link href="/voting/new">
+                  <Button className="bg-gray-900">Continue</Button>
+                </Link>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </>
       )}
     </div>

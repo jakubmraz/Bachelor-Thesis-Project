@@ -3,13 +3,14 @@ import Link from "next/link"
 import { ChevronRight, InfoIcon, Settings2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import Image from "next/image"
 
 export default function Page() {
   return (
     <div className="flex flex-col items-center pt-8 relative min-h-[80vh]">
       {/* Hero Section */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold mb-4">Welcome to the Online Voting Portal</h1>
+      <div className="text-center mb-8">
+        <h1 className="text-4xl font-bold mb-4">Welcome to Denmark's Online Voting Portal</h1>
         <p className="text-lg text-gray-600 mb-8">
           Your secure platform for participating in democratic decision-making
         </p>
@@ -20,6 +21,19 @@ export default function Page() {
               <ChevronRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>
+        </div>
+      </div>
+
+      {/* Banner Image */}
+      <div className="w-full max-w-2xl mb-8 relative">
+        <div className="aspect-[4/1] relative w-full overflow-hidden rounded-lg border border-gray-200 shadow-sm">
+          <Image
+            src="/landingpage_banner.png?height=168&width=672&text=Election+Banner+Image"
+            alt="Election banner"
+            fill
+            className="object-fill"
+            priority
+          />
         </div>
       </div>
 
@@ -49,7 +63,7 @@ export default function Page() {
               </div>
             </AccordionContent>
           </AccordionItem>
-          
+
           <AccordionItem value="coercion">
             <AccordionTrigger>Get to Know our Anti-Coercion Measures</AccordionTrigger>
             <AccordionContent>
@@ -93,9 +107,9 @@ export default function Page() {
               <div className="space-y-2">
                 <p>To vote online, you need:</p>
                 <ul className="list-disc pl-6 space-y-1">
-                  <li>A smartphone with MyID app installed</li>
+                  <li>A smartphone with MitID app installed</li>
                   <li>Biometric authentication (fingerprint or face recognition) enabled on your device</li>
-                  <li>An up-to-date version of MyID</li>
+                  <li>An up-to-date version of MitID</li>
                 </ul>
                 <p className="mt-4">
                   If you cannot meet these requirements, please visit your local voting station to cast your vote in
@@ -116,7 +130,7 @@ export default function Page() {
           <AccordionItem value="help">
             <AccordionTrigger>Need Help?</AccordionTrigger>
             <AccordionContent>
-              If you need assistance with MyID setup or have questions about the voting process, you can click the Help
+              If you need assistance with MitID setup or have questions about the voting process, you can click the Help
               button in the top right section of the page, call us at 00 00 00 00 (24h hotline), or contact your local
               voting authority.
             </AccordionContent>
