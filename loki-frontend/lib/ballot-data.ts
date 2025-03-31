@@ -21,6 +21,7 @@ export interface Ballot {
   timestamp: string
   votes: Vote[]
   identiconHash?: string
+  phrase?: string
 }
 
 // For verification, we only show timestamp and ID, not the actual votes
@@ -29,6 +30,7 @@ export interface PublicBallot {
   timestamp: string
   isSubmittedByUser?: boolean // Flag to identify user-submitted ballots internally
   identiconHash?: string
+  phrase?: string
 }
 
 // Define the ballot items
@@ -123,6 +125,7 @@ export function generateBallotId(timestamp: string, isUserBallot = false, index 
 
 // Import the hash generation function directly to avoid circular dependencies
 import { generateBallotHash } from "@/lib/identicon"
+import { generatePhrase } from "@/lib/word-phrases"
 
 // Helper function to get user submitted ballots from localStorage
 function getUserSubmittedBallots(): PublicBallot[] {
@@ -141,15 +144,19 @@ function getUserSubmittedBallots(): PublicBallot[] {
       return isWithinLastDays(ballotDate, 2)
     })
 
-    // Ensure all ballots have an identicon hash
+    // Ensure all ballots have an identicon hash and phrase
     const processedBallots = recentBallots.map((ballot) => {
       // Generate the identicon hash if it doesn't exist
       const finalHash = ballot.identiconHash || generateBallotHash({ timestamp: ballot.timestamp, id: ballot.id })
+
+      // Generate phrase if it doesn't exist
+      const phrase = ballot.phrase || generatePhrase(finalHash)
 
       return {
         ...ballot,
         isSubmittedByUser: true,
         identiconHash: finalHash,
+        phrase,
       }
     })
 
@@ -166,9 +173,13 @@ export function saveUserBallot(ballot: PublicBallot): void {
     // Generate the identicon hash if it doesn't exist
     const finalHash = ballot.identiconHash || generateBallotHash({ timestamp: ballot.timestamp, id: ballot.id })
 
+    // Generate phrase if it doesn't exist
+    const phrase = ballot.phrase || generatePhrase(finalHash)
+
     const ballotWithHash = {
       ...ballot,
       identiconHash: finalHash,
+      phrase,
     }
 
     // Get existing ballots
@@ -238,10 +249,14 @@ export function generateRandomPublicBallots(count = 800, includeUserBallots = tr
         // Generate the identicon hash
         const identiconHash = generateBallotHash({ timestamp, id })
 
+        // Generate phrase
+        const phrase = generatePhrase(identiconHash)
+
         randomBallots.push({
           id,
           timestamp,
           identiconHash,
+          phrase,
         })
       }
     }

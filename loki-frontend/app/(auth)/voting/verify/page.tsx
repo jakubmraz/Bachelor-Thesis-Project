@@ -1,9 +1,11 @@
 "use client"
 
+import type React from "react"
+
 import { useState, useEffect, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { ArrowLeft, Check, ArrowRight, AlertTriangle, HelpCircle, Filter, X, Clock } from "lucide-react"
+import { ArrowLeft, Check, ArrowRight, AlertTriangle, HelpCircle, Filter, X, Clock, Search } from "lucide-react"
 import Link from "next/link"
 import { type PublicBallot, generateRandomPublicBallots } from "@/lib/ballot-data"
 import { formatDateDanish, formatTimeDanish } from "@/lib/date-utils"
@@ -35,6 +37,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
 
 export default function VerifyPreviousVotePage() {
   const [previousBallots, setPreviousBallots] = useState<PublicBallot[]>([])
@@ -43,6 +46,8 @@ export default function VerifyPreviousVotePage() {
   const [page, setPage] = useState(1)
   const [selectedDates, setSelectedDates] = useState<string[]>([])
   const [selectedHours, setSelectedHours] = useState<string[]>([])
+  const [searchTerms, setSearchTerms] = useState<string[]>([])
+  const [searchInput, setSearchInput] = useState("")
   const [activeTab, setActiveTab] = useState("all")
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false)
 
@@ -116,7 +121,23 @@ export default function VerifyPreviousVotePage() {
     })
   }, [previousBallots])
 
-  // Filter ballots based on selected dates and hours
+  // Handle search submission
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (searchInput.trim()) {
+      setSearchTerms((prev) => [...prev, searchInput.trim().toLowerCase()])
+      setSearchInput("")
+      setPage(1) // Reset to first page when filters change
+    }
+  }
+
+  // Remove a search term
+  const removeSearchTerm = (term: string) => {
+    setSearchTerms((prev) => prev.filter((t) => t !== term))
+    setPage(1) // Reset to first page when filters change
+  }
+
+  // Filter ballots based on selected dates, hours, and search terms
   const filteredBallots = useMemo(() => {
     return previousBallots.filter((ballot) => {
       // Check if ballot matches selected dates
@@ -133,9 +154,21 @@ export default function VerifyPreviousVotePage() {
 
       const matchesHour = selectedHours.length === 0 || selectedHours.includes(hourRange)
 
-      return matchesDate && matchesHour
+      // Check if ballot matches search terms
+      const matchesSearch =
+        searchTerms.length === 0 ||
+        searchTerms.some((term) => {
+          // Search in phrase if available
+          if (ballot.phrase && ballot.phrase.toLowerCase().includes(term)) {
+            return true
+          }
+          // Search in ID (could be expanded to search in other fields)
+          return ballot.id.toLowerCase().includes(term)
+        })
+
+      return matchesDate && matchesHour && matchesSearch
     })
-  }, [previousBallots, selectedDates, selectedHours])
+  }, [previousBallots, selectedDates, selectedHours, searchTerms])
 
   // Paginated ballots
   const paginatedBallots = useMemo(() => {
@@ -186,10 +219,11 @@ export default function VerifyPreviousVotePage() {
   const clearFilters = () => {
     setSelectedDates([])
     setSelectedHours([])
+    setSearchTerms([])
     setPage(1)
   }
 
-  const hasActiveFilters = selectedDates.length > 0 || selectedHours.length > 0
+  const hasActiveFilters = selectedDates.length > 0 || selectedHours.length > 0 || searchTerms.length > 0
 
   return (
     <div className="pb-8 space-y-6">
@@ -300,12 +334,18 @@ export default function VerifyPreviousVotePage() {
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                {hasActiveFilters && (
-                  <Button variant="ghost" onClick={clearFilters} className="gap-2">
-                    <X className="h-4 w-4" />
-                    Clear Filters
-                  </Button>
-                )}
+                <form onSubmit={handleSearchSubmit} className="flex items-center">
+                  <div className="relative">
+                    <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
+                    <Input
+                      type="text"
+                      placeholder="Search phrases"
+                      value={searchInput}
+                      onChange={(e) => setSearchInput(e.target.value)}
+                      className="pl-8 pr-4 h-10 w-[180px]"
+                    />
+                  </div>
+                </form>
 
                 <div className="ml-auto">
                   <HelpDialog defaultOpenSection="many-ballots">
@@ -317,21 +357,36 @@ export default function VerifyPreviousVotePage() {
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-2 mt-2">
-                {selectedDates.map((date) => (
-                  <Badge key={date} variant="secondary" className="gap-1">
-                    {date}
-                    <X className="h-3 w-3 cursor-pointer" onClick={() => toggleDateFilter(date)} />
-                  </Badge>
-                ))}
+              {hasActiveFilters && (
+                <div className="flex justify-between items-center mt-2">
+                  <div className="flex flex-wrap gap-2">
+                    {selectedDates.map((date) => (
+                      <Badge key={date} variant="secondary" className="gap-1">
+                        {date}
+                        <X className="h-3 w-3 cursor-pointer" onClick={() => toggleDateFilter(date)} />
+                      </Badge>
+                    ))}
 
-                {selectedHours.map((hourRange) => (
-                  <Badge key={hourRange} variant="secondary" className="gap-1">
-                    {hourRange}
-                    <X className="h-3 w-3 cursor-pointer" onClick={() => toggleHourFilter(hourRange)} />
-                  </Badge>
-                ))}
-              </div>
+                    {selectedHours.map((hourRange) => (
+                      <Badge key={hourRange} variant="secondary" className="gap-1">
+                        {hourRange}
+                        <X className="h-3 w-3 cursor-pointer" onClick={() => toggleHourFilter(hourRange)} />
+                      </Badge>
+                    ))}
+
+                    {searchTerms.map((term) => (
+                      <Badge key={term} variant="secondary" className="gap-1">
+                        {term}
+                        <X className="h-3 w-3 cursor-pointer" onClick={() => removeSearchTerm(term)} />
+                      </Badge>
+                    ))}
+                  </div>
+                  <Button variant="ghost" onClick={clearFilters} className="gap-2 ml-2 shrink-0">
+                    <X className="h-4 w-4" />
+                    Clear Filters
+                  </Button>
+                </div>
+              )}
 
               <Card className="bg-gray-50 border-gray-200">
                 <CardContent className="p-3">
@@ -384,13 +439,16 @@ export default function VerifyPreviousVotePage() {
                               <span className="text-gray-500 ml-2">{formatTimeDanish(ballot.timestamp)}</span>
                             </div>
                           </div>
-                          <BallotIdenticon
-                            timestamp={ballot.timestamp}
-                            id={ballot.id}
-                            size={5}
-                            cellSize={4}
-                            identiconHash={ballot.identiconHash}
-                          />
+                          <div className="flex items-center gap-3">
+                            {ballot.phrase && <div className="text-sm text-gray-600">{ballot.phrase}</div>}
+                            <BallotIdenticon
+                              timestamp={ballot.timestamp}
+                              id={ballot.id}
+                              size={5}
+                              cellSize={4}
+                              identiconHash={ballot.identiconHash}
+                            />
+                          </div>
                         </div>
                       </CardHeader>
                     </Card>
@@ -440,26 +498,29 @@ export default function VerifyPreviousVotePage() {
                                 <span className="text-gray-500 ml-2">{formatTimeDanish(ballot.timestamp)}</span>
                               </div>
                             </div>
-                            <div className="flex items-center gap-2">
-                              <BallotIdenticon
-                                timestamp={ballot.timestamp}
-                                id={ballot.id}
-                                size={5}
-                                cellSize={4}
-                                identiconHash={ballot.identiconHash}
-                              />
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="h-8 w-8 p-0"
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  toggleBallot(ballot.id)
-                                }}
-                              >
-                                <X className="h-4 w-4" />
-                                <span className="sr-only">Remove</span>
-                              </Button>
+                            <div className="flex items-center gap-3">
+                              {ballot.phrase && <div className="text-sm text-gray-600">{ballot.phrase}</div>}
+                              <div className="flex items-center gap-2">
+                                <BallotIdenticon
+                                  timestamp={ballot.timestamp}
+                                  id={ballot.id}
+                                  size={5}
+                                  cellSize={4}
+                                  identiconHash={ballot.identiconHash}
+                                />
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="h-8 w-8 p-0"
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    toggleBallot(ballot.id)
+                                  }}
+                                >
+                                  <X className="h-4 w-4" />
+                                  <span className="sr-only">Remove</span>
+                                </Button>
+                              </div>
                             </div>
                           </div>
                         </CardHeader>

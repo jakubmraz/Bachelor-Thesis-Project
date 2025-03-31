@@ -137,6 +137,34 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
           ),
         },
         {
+          id: "memory-aids",
+          title: "What are the memory aids?",
+          content: (
+            <div className="space-y-2">
+              <p>Your ballot has two memory aids to help you identify it later if you need to revote:</p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>
+                  <strong>Word phrase:</strong> A unique two-word combination (e.g., "grit orient") that's generated
+                  from your ballot's information. This phrase is easier to remember than numbers or codes.
+                </li>
+                <li>
+                  <strong>Visual pattern (identicon):</strong> The colored square pattern is a visual identifier unique
+                  to your ballot. It helps you recognize your ballot at a glance when you need to verify it later.
+                </li>
+              </ul>
+              <p className="mt-2">
+                Both memory aids are generated based on your ballot's timestamp and ID, creating unique identifiers that
+                are consistent for your specific ballot. They help you find your ballot among many others if you need to
+                revote.
+              </p>
+              <p className="mt-2">
+                While these aids make identification easier, remembering the date and time of your vote is still the
+                most reliable way to identify your ballot.
+              </p>
+            </div>
+          ),
+        },
+        {
           id: "coercion-risk",
           title: "What if I'm being coerced to vote?",
           content: (
@@ -228,6 +256,7 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
               <ul className="list-disc pl-6 space-y-1">
                 <li>The date and time when you cast your vote</li>
                 <li>The unique visual pattern (identicon) associated with your ballot</li>
+                <li>The word phrase generated for your ballot</li>
               </ul>
               <p className="mt-2">
                 When you cast a ballot, you'll see a receipt with this information. It's important to remember or note
@@ -236,7 +265,7 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
               <p className="mt-2">If you're having trouble identifying your previous ballots, you can:</p>
               <ul className="list-disc pl-6 space-y-1">
                 <li>Use the date and time filters to narrow down the list</li>
-                <li>Look for the unique visual pattern (identicon) that matches your ballot</li>
+                <li>Look for the unique visual pattern and word phrase that match your ballot</li>
               </ul>
               <p className="mt-2">
                 If you're still unsure, you can vote in person at your local polling station. Physical votes are final
@@ -256,38 +285,12 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
               </p>
               <ul className="list-disc pl-6 space-y-1">
                 <li>Use the date and time filters to narrow down the list</li>
-                <li>Look for the unique visual pattern (identicon) associated with your ballot</li>
+                <li>Look for the unique visual pattern and word phrase associated with your ballot</li>
                 <li>If you voted recently, your ballot is likely to be among the newer ones</li>
               </ul>
               <p className="mt-2">
                 If you're having trouble finding your ballot, you can always vote in person at your local polling
                 station.
-              </p>
-            </div>
-          ),
-        },
-        {
-          id: "identicon",
-          title: "What is the visual pattern (identicon)?",
-          content: (
-            <div className="space-y-2">
-              <p>
-                The colored pattern square is a visual identifier called an "identicon" that is unique to your ballot.
-                It helps you:
-              </p>
-              <ul className="list-disc pl-6 space-y-1">
-                <li>Recognize your ballot when you need to verify it later</li>
-                <li>Confirm that your ballot was correctly recorded in the system</li>
-                <li>Identify your ballot without revealing your voting choices</li>
-              </ul>
-              <p className="mt-2">
-                Each identicon is generated based on your ballot's timestamp and ID, creating a unique visual pattern
-                that's easier to recognize than a long string of characters. The pattern and colors will always be the
-                same for your specific ballot.
-              </p>
-              <p className="mt-2">
-                If you need to revote later, you'll be asked to identify your previous ballot. The identicon will help
-                you find it among other ballots.
               </p>
             </div>
           ),

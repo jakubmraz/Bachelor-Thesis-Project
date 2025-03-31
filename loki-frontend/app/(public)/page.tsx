@@ -1,6 +1,6 @@
 "use client"
 import Link from "next/link"
-import { ChevronRight, InfoIcon, Settings2 } from "lucide-react"
+import { ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import Image from "next/image"
@@ -15,7 +15,7 @@ export default function Page() {
           Your secure platform for participating in democratic decision-making
         </p>
         <div className="flex justify-center">
-          <Link href="/privacy-notice">
+          <Link href="/login">
             <Button size="lg" className="bg-[#FFD700] hover:bg-[#FFED4A] text-black">
               <span>Login to Vote</span>
               <ChevronRight className="ml-2 h-4 w-4" />

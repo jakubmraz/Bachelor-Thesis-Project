@@ -11,6 +11,7 @@ import { formatDateDanish, formatTimeDanish } from "@/lib/date-utils"
 import { useVote } from "@/contexts/vote-context"
 import { BallotIdenticon } from "@/components/ballot-identicon"
 import { generateBallotHash } from "@/lib/identicon"
+import { generatePhrase } from "@/lib/word-phrases"
 import { HelpDialog } from "@/components/help-dialog"
 
 export default function NewVotingPage() {
@@ -20,6 +21,7 @@ export default function NewVotingPage() {
   const [ballotTimestamp, setBallotTimestamp] = useState("")
   const [ballotId, setBallotId] = useState("")
   const [identiconHash, setIdenticonHash] = useState("")
+  const [phrase, setPhrase] = useState("")
   const { setVoteSubmitted } = useVote()
 
   const handleOptionSelect = (proposalId: string, optionId: string) => {
@@ -55,9 +57,13 @@ export default function NewVotingPage() {
     // Generate the identicon hash
     const hash = generateBallotHash({ timestamp, id: newBallotId })
 
+    // Generate memorable phrase
+    const generatedPhrase = generatePhrase(hash)
+
     setBallotTimestamp(timestamp)
     setBallotId(newBallotId)
     setIdenticonHash(hash)
+    setPhrase(generatedPhrase)
 
     // Create ballot data
     const ballot: Ballot = {
@@ -72,6 +78,7 @@ export default function NewVotingPage() {
         }
       }),
       identiconHash: hash,
+      phrase: generatedPhrase,
     }
 
     // Save the ballot to localStorage
@@ -83,6 +90,7 @@ export default function NewVotingPage() {
         timestamp: timestamp,
         isSubmittedByUser: true,
         identiconHash: hash,
+        phrase: generatedPhrase,
       })
     } catch (error) {
       console.error("Error saving ballot:", error)
@@ -132,37 +140,49 @@ export default function NewVotingPage() {
               <div className="bg-red-50 border border-red-200 rounded-md p-3 mt-2 flex items-start gap-2">
                 <AlertTriangle className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
                 <p className="text-sm text-red-800">
-                  You will need to identify your previously cast ballots if you plan to revote. Make sure to remember
-                  this information.
+                  If you plan to revote later, you'll need to identify this ballot by the <strong>date and time</strong>{" "}
+                  shown below. Please take note of this information.
                 </p>
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="bg-gray-50 p-4 rounded-md">
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-start">
                   <div>
-                    <div className="font-medium mb-1">Ballot cast on {formattedDate}</div>
-                    <div className="text-sm text-gray-500">at {formattedTime}</div>
+                    <div className="font-medium mb-1">
+                      Ballot cast on <strong className="text-black">{formattedDate}</strong>
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      at <strong className="text-black">{formattedTime}</strong>
+                    </div>
                   </div>
-                  <div className="flex flex-col items-center">
-                    <HelpDialog defaultOpenSection="identicon">
-                      <button className="text-xs text-blue-600 hover:text-blue-800 mb-1 flex items-center gap-1">
-                        <HelpCircle className="h-3 w-3" />
-                        <span>What's this?</span>
-                      </button>
-                    </HelpDialog>
-                    {identiconHash ? (
-                      <BallotIdenticon
-                        timestamp={ballotTimestamp}
-                        id={ballotId}
-                        size={5}
-                        cellSize={8}
-                        className=""
-                        identiconHash={identiconHash}
-                      />
-                    ) : (
-                      <div className="w-20 h-20 bg-gray-200 rounded-md"></div>
-                    )}
+                  <div className="flex flex-col items-end">
+                    <div className="flex items-center justify-end mb-1">
+                      <div className="font-medium text-black mr-2">Memory aids</div>
+                      <HelpDialog defaultOpenSection="memory-aids">
+                        <button className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1">
+                          <HelpCircle className="h-3 w-3" />
+                          <span>What's this?</span>
+                        </button>
+                      </HelpDialog>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="text-sm font-medium">{phrase}</div>
+                      <div>
+                        {identiconHash ? (
+                          <BallotIdenticon
+                            timestamp={ballotTimestamp}
+                            id={ballotId}
+                            size={5}
+                            cellSize={8}
+                            className=""
+                            identiconHash={identiconHash}
+                          />
+                        ) : (
+                          <div className="w-20 h-20 bg-gray-200 rounded-md"></div>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -185,12 +205,23 @@ export default function NewVotingPage() {
                 <div className="flex gap-3">
                   <Info className="h-5 w-5 text-gray-600 mt-0.5 flex-shrink-0" />
                   <div>
-                    <h3 className="font-semibold mb-1">Remember the Date, Time, and Pattern</h3>
-                    <p className="text-sm text-gray-600">
-                      If you need to revote later, you'll need to identify this ballot by the{" "}
-                      <strong>date and time</strong> it was cast ({formattedDate} at {formattedTime}). The colored
-                      pattern square is a visual aid to help you recognize your ballot more easily. For your privacy, we
-                      recommend not saving or sharing this information.
+                    <h3 className="font-semibold mb-1">Important: Remember Your Ballot Details</h3>
+                    <p className="text-sm text-gray-600 mb-3">
+                      To identify this ballot if you need to revote later, you must remember:
+                    </p>
+                    <ol className="list-decimal pl-5 text-sm text-gray-600 space-y-1">
+                      <li>
+                        Date: <strong className="text-black">{formattedDate}</strong>
+                      </li>
+                      <li>
+                        Time: <strong className="text-black">{formattedTime}</strong>
+                      </li>
+                    </ol>
+
+                    <p className="text-sm text-gray-600 mt-3">
+                      The colored pattern square and word phrase ("<strong>{phrase}</strong>") are visual aids to help
+                      you recognize your ballot more easily, but remembering the date and time is sufficient. For your
+                      privacy, we recommend not saving or sharing this information.
                     </p>
                   </div>
                 </div>
