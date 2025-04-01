@@ -71,6 +71,24 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
           ),
         },
         {
+          id: "vote-multiple-times",
+          title: "Can I vote multiple times?",
+          content: (
+            <div className="space-y-2">
+              <p>
+                <b>Every citizen only has one vote.</b>
+              </p>
+              <p>
+                The digital voting system allows you to vote multiple times to change your vote. Only your last vote counts.
+                Casting multiple ballots does not result in multiple votes given to your selected party/candidate or to your selected position on an issue.
+              </p>
+              <p>
+                Casting a ballot both digitally and in person does not result in multiple votes given. Only your physical ballot will count in this scenario. 
+              </p>
+            </div>
+          ),
+        },
+        {
           id: "privacy",
           title: "Are my votes private?",
           content: (
@@ -113,47 +131,6 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
                 <li>Biometric authentication enabled on your device</li>
                 <li>An up-to-date version of MyID</li>
               </ul>
-            </div>
-          ),
-        },
-        {
-          id: "revoting",
-          title: "How does revoting work?",
-          content: (
-            <div className="space-y-2">
-              <p>The online voting portal allows you to recast your vote an unlimited number of times until the election closes.</p>
-              <p>
-                To be able to cast a new ballot, you must be able to recall all your previous valid ballots by their date and time cast.
-                The system will provide you with visual and lexical mnemonic aids to help you remember your previous ballots.
-              </p>
-            </div>
-          ),
-        },
-        {
-          id: "memory-aids",
-          title: "What are the memory aids?",
-          content: (
-            <div className="space-y-2">
-              <p>Your ballot has two memory aids to help you identify it later if you need to revote:</p>
-              <ul className="list-disc pl-6 space-y-1">
-                <li>
-                  <strong>Word phrase:</strong> A unique two-word combination (e.g., "grit orient") that's generated
-                  from your ballot's information. This phrase is easier to remember than numbers or codes.
-                </li>
-                <li>
-                  <strong>Visual pattern (identicon):</strong> The colored square pattern is a visual identifier unique
-                  to your ballot. It helps you recognize your ballot at a glance when you need to verify it later.
-                </li>
-              </ul>
-              <p className="mt-2">
-                Both memory aids are generated based on your ballot's timestamp and ID, creating unique identifiers that
-                are consistent for your specific ballot. They help you find your ballot among many others if you need to
-                revote.
-              </p>
-              <p className="mt-2">
-                While these aids make identification easier, remembering the date and time of your vote is still the
-                most reliable way to identify your ballot.
-              </p>
             </div>
           ),
         },
@@ -258,6 +235,76 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
           ),
         },
         {
+          id: "incognito-mode",
+          title: "Why do I need to use Incognito Mode?",
+          content: (
+            <div className="space-y-2">
+              <p>
+                Incognito Mode does not keep your browsing history or save any cookies. This helps to protect you from
+                coercion by ensuring that no one can tell whether you've already voted. It is an important step to
+                maintain your plausible deniability from a potential coercer.
+              </p>
+            </div>
+          ),
+        },
+      ],
+    },
+    {
+      title: "Revoting",
+      items: [
+        {
+          id: "revoting",
+          title: "How does revoting work?",
+          content: (
+            <div className="space-y-2">
+              <p>The online voting portal allows you to recast your vote an unlimited number of times until the election closes.</p>
+              <p>
+                To be able to cast a new ballot, you must be able to recall all your previous valid ballots by their date and time cast.
+                The system will provide you with visual and lexical memory aids to help you remember your previous ballots.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: "revote-physical",
+          title: "Can I revote if I voted in person?",
+          content: (
+            <div className="space-y-2">
+              <p>
+                No. Physical votes are final and cannot be changed. If you vote both digitally and physically, only your physical vote will count.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: "memory-aids",
+          title: "What are the memory aids?",
+          content: (
+            <div className="space-y-2">
+              <p>Your ballot has two memory aids to help you identify it later if you need to revote:</p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>
+                  <strong>Word phrase:</strong> A unique two-word combination (e.g., "grit orient") that's generated
+                  from your ballot's information. This phrase is easier to remember than numbers or codes.
+                </li>
+                <li>
+                  <strong>Visual pattern (identicon):</strong> The colored square pattern is a visual identifier unique
+                  to your ballot. It helps you recognize your ballot at a glance when you need to verify it later.
+                </li>
+              </ul>
+              <p className="mt-2">
+                Both memory aids are generated based on your ballot's timestamp and ID, creating unique identifiers that
+                are consistent for your specific ballot. They help you find your ballot among many others if you need to
+                revote.
+              </p>
+              <p className="mt-2">
+                While these aids make identification easier, remembering the date and time of your vote is still the
+                most reliable way to identify your ballot.
+              </p>
+            </div>
+          ),
+        },
+        {
           id: "ballot-verification-security",
           title: "Why do I need to verify my voting history?",
           content: (
@@ -275,11 +322,11 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
               </ul>
               <p className="mt-2">
                 When you want to revote, you'll be shown a list of ballots that includes your previously cast ballots
-                mixed with many others. You need to select all of your previous ballots to verify your identity.
+                mixed with many others. You need to select all of your previous valid ballots to verify your identity.
               </p>
               <p className="mt-2 text-red-600 font-medium">
                 Important: If you provide incorrect information about having previously voted or fail to identify all
-                your previous ballots, your new ballot will not be valid.
+                your previous valid ballots, your new ballot will not be valid.
               </p>
               <p>
                 If you are being coerced, you can use this feature to intentionally invalidate the coerced ballot by
@@ -294,7 +341,7 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
           content: (
             <div className="space-y-2">
               <p>
-                To protect your voting privacy, the system doesn't explicitly tell you which ballots are yours. Instead,
+                To protect your voting privacy, the system doesn't explicitly tell you which ballots are yours or which ones are valid. Instead,
                 you need to recognize your own ballots using:
               </p>
               <ul className="list-disc pl-6 space-y-1">
@@ -319,13 +366,62 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
           ),
         },
         {
+          id: "valid-ballot",
+          title: "What are valid and invalid ballots?",
+          content: (
+            <div className="space-y-2">
+              <p>
+                A valid ballot is cast when you provide accurate information about your voting history for the given election.
+                Conversely, an invalid ballot is cast when you, intentionally or not, provide false information about your voting history.
+              </p>
+              <p className="mt-2 text-red-600 font-medium">
+                It is important that, when revoting, you only identify your previous valid ballots.
+              </p>
+              <p>Examples:</p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>
+                  If, for this election, this is your first time voting and you select you have not voted before, 
+                  your first cast ballot will always be valid.
+                </li>
+                <li>
+                  If you vote again later, select that you have voted before in this election, and correctly identify your previous ballot,
+                  your new ballot will be valid. If you wish to vote again for the third time later, you must correctly identify both previous ballots.
+                </li>
+                <li>
+                  If you have voted before in this election but select that this is your first time voting, your ballot will be invalid.
+                  Conversely, if you have not voted before in this election but select that you have and select any of the presented ballots, your ballot will be invalid.
+                </li>
+              </ul>
+            </div>
+          ),
+        },
+        {
+          id: "see-valid-ballot",
+          title: "Can I see if my ballot was valid or not?",
+          content: (
+            <div className="space-y-2">
+              <p>
+                The system protects you against potential coercion by maintaining your plausible deniability at all points.
+                This unfortunately means that there is no way for you to see if any of your ballots were valid or not.
+              </p>
+              <p>
+                <b>Your first ballot will always be valid</b>, provided you selected that you had not voted before when casting it.
+              </p>
+              <p>
+                If you are unsure about your previous votes in this election but wish to revote, you can still vote physically at you local polling station.
+                Physical votes always take priority over digital ones.
+              </p>
+            </div>
+          ),
+        },
+        {
           id: "many-ballots",
           title: "Why am I seeing so many ballots?",
           content: (
             <div className="space-y-2">
               <p>
                 For security and privacy reasons, your ballot is mixed with many other ballots. This makes it difficult
-                for anyone to identify which ballot is yours, protecting you from potential coercion.
+                for anyone to identify which ballots are yours, protecting you from potential coercion.
               </p>
               <ul className="list-disc pl-6 space-y-1">
                 <li>Use the date and time filters to narrow down the list</li>
@@ -340,18 +436,29 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
           ),
         },
         {
-          id: "incognito-mode",
-          title: "Why do I need to use Incognito Mode?",
+          id: "see-previous-votes",
+          title: "Can I see how I voted?",
           content: (
             <div className="space-y-2">
               <p>
-                Incognito Mode does not keep your browsing history or save any cookies. This helps to protect you from
-                coercion by ensuring that no one can tell whether you've already voted. It is an important step to
-                maintain your plausible deniability from a potential coercer.
+                The system protects you against potential coercion by maintaining your plausible deniability at all points.
+                This unfortunately means that there is no way for you to see your voting history.
               </p>
             </div>
           ),
         },
+        {
+          id: "cant-remember",
+          title: "What if I can't remember my previous ballots?",
+          content: (
+            <div className="space-y-2">
+              <p>
+                In the event you wish to change your vote but cannot recall your previous valid ballots, you can vote at your local polling station
+                in person. Physical votes are final and are always counted, regardless of if you voted online first.
+              </p>
+            </div>
+          ),
+        }
       ],
     },
     {
