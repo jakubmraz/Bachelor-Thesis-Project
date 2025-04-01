@@ -158,7 +158,7 @@ export default function NewVotingPage() {
                   </div>
                   <div className="flex flex-col items-end">
                     <div className="flex items-center justify-end mb-1">
-                      <div className="font-medium text-black mr-2">Memory aids</div>
+                      <div className="text-sm font-medium text-black mr-2">Memory aids</div>
                       <HelpDialog defaultOpenSection="memory-aids">
                         <button className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1">
                           <HelpCircle className="h-3 w-3" />
@@ -167,7 +167,7 @@ export default function NewVotingPage() {
                       </HelpDialog>
                     </div>
                     <div className="flex items-center gap-3">
-                      <div className="text-sm font-medium">{phrase}</div>
+                      <div className="font-medium"><b>{phrase}</b></div>
                       <div>
                         {identiconHash ? (
                           <BallotIdenticon
