@@ -36,17 +36,69 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
       title: "General Information",
       items: [
         {
-          id: "privacy",
-          title: "How is my privacy protected?",
+          id: "general",
+          title: "How do I vote online?",
           content: (
             <div className="space-y-2">
-              <p>Your privacy is protected through several measures:</p>
+              <p>
+                As a Danish citizen above the age 18, you are automatically eligible to vote in local and national elections.
+                You do not need to register anywhere.
+              </p>
+              <p>
+                You have the option to either vote in person at your local polling station or digitally via this portal.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: "difference",
+          title: "What are the differences between voting online or in person?",
+          content: (
+            <div className="space-y-2">
+              <p>
+                The choice to vote in person or digitally is entirely up to you. It is however important to remember some differences:
+              </p>
               <ul className="list-disc pl-6 space-y-1">
-                <li>Use incognito mode to prevent browser history</li>
-                <li>Vote in a private environment without surveillance</li>
-                <li>Your vote is encrypted and anonymized</li>
-                <li>No one can link your identity to your voting choices</li>
+                <li>Online voting allows you to change your vote, physical voting does not.</li>
+                <li>Physical votes are final. If you vote both online and physically, only your physical vote will count.</li>
+                <li>Online voting cannot guarantee your privacy from people around you. Physical voting is fully private.</li>
               </ul>
+              <p>
+                The online voting portal has numerous safety measures to protect you from coercion. For further information, 
+                read the Anti-Coercion Measures section below.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: "privacy",
+          title: "Are my votes private?",
+          content: (
+            <div className="space-y-2">
+              <p>Your voting privacy is protected through several measures:</p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>
+                  Your ballots are encrypted before they are sent over the network.
+                  This prevents hackers from seeing your choices even if they have access to your network activity.
+                </li>
+                <li>
+                  The system hides your ballot in the database by creating other fake ballots. This means that even in the event of a database breach,
+                  your vote can never be traced back to you.
+                </li>
+              </ul>
+              <p>It is however not possible to guarantee your privacy in some cases:</p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>
+                  There is somebody looking at your screen while you vote.
+                </li>
+                <li>
+                  Your computer has a virus which allows hackers to see your screen or computer activity.
+                </li>
+              </ul>
+              <p>
+                When voting, always make sure you are alone and have the most up-to-date version of your operating system and any security software you use.
+                If you are in doubt, you can vote in person at your local polling station instead.
+              </p>
             </div>
           ),
         },
@@ -61,6 +113,47 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
                 <li>Biometric authentication enabled on your device</li>
                 <li>An up-to-date version of MyID</li>
               </ul>
+            </div>
+          ),
+        },
+        {
+          id: "revoting",
+          title: "How does revoting work?",
+          content: (
+            <div className="space-y-2">
+              <p>The online voting portal allows you to recast your vote an unlimited number of times until the election closes.</p>
+              <p>
+                To be able to cast a new ballot, you must be able to recall all your previous valid ballots by their date and time cast.
+                The system will provide you with visual and lexical mnemonic aids to help you remember your previous ballots.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: "memory-aids",
+          title: "What are the memory aids?",
+          content: (
+            <div className="space-y-2">
+              <p>Your ballot has two memory aids to help you identify it later if you need to revote:</p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>
+                  <strong>Word phrase:</strong> A unique two-word combination (e.g., "grit orient") that's generated
+                  from your ballot's information. This phrase is easier to remember than numbers or codes.
+                </li>
+                <li>
+                  <strong>Visual pattern (identicon):</strong> The colored square pattern is a visual identifier unique
+                  to your ballot. It helps you recognize your ballot at a glance when you need to verify it later.
+                </li>
+              </ul>
+              <p className="mt-2">
+                Both memory aids are generated based on your ballot's timestamp and ID, creating unique identifiers that
+                are consistent for your specific ballot. They help you find your ballot among many others if you need to
+                revote.
+              </p>
+              <p className="mt-2">
+                While these aids make identification easier, remembering the date and time of your vote is still the
+                most reliable way to identify your ballot.
+              </p>
             </div>
           ),
         },
@@ -101,65 +194,6 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
                 Online voting systems are particularly vulnerable to coercion because voting can happen outside the
                 privacy of an official voting booth. The anti-coercion measures in this system are designed to give you
                 ways to protect your true voting intentions even under pressure.
-              </p>
-            </div>
-          ),
-        },
-        {
-          id: "ballot-verification-security",
-          title: "Why do I need to verify my voting history?",
-          content: (
-            <div className="space-y-2">
-              <p>The ballot verification step serves two critical security purposes:</p>
-              <ul className="list-disc pl-6 space-y-1">
-                <li>
-                  <strong>Identity verification:</strong> It ensures that only you can cast or change your vote by
-                  requiring knowledge that only you should have.
-                </li>
-                <li>
-                  <strong>Anti-coercion protection:</strong> It gives you a way to invalidate coerced votes without the
-                  coercer knowing.
-                </li>
-              </ul>
-              <p className="mt-2">
-                When you want to revote, you'll be shown a list of ballots that includes your previously cast ballots
-                mixed with many others. You need to select all of your previous ballots to verify your identity.
-              </p>
-              <p className="mt-2 text-red-600 font-medium">
-                Important: If you provide incorrect information about having previously voted or fail to identify all
-                your previous ballots, your new ballot will not be valid.
-              </p>
-              <p>
-                If you are being coerced, you can use this feature to intentionally invalidate the coerced ballot by
-                selecting the wrong ballots or claiming you haven't voted when you have (or vice versa).
-              </p>
-            </div>
-          ),
-        },
-        {
-          id: "memory-aids",
-          title: "What are the memory aids?",
-          content: (
-            <div className="space-y-2">
-              <p>Your ballot has two memory aids to help you identify it later if you need to revote:</p>
-              <ul className="list-disc pl-6 space-y-1">
-                <li>
-                  <strong>Word phrase:</strong> A unique two-word combination (e.g., "grit orient") that's generated
-                  from your ballot's information. This phrase is easier to remember than numbers or codes.
-                </li>
-                <li>
-                  <strong>Visual pattern (identicon):</strong> The colored square pattern is a visual identifier unique
-                  to your ballot. It helps you recognize your ballot at a glance when you need to verify it later.
-                </li>
-              </ul>
-              <p className="mt-2">
-                Both memory aids are generated based on your ballot's timestamp and ID, creating unique identifiers that
-                are consistent for your specific ballot. They help you find your ballot among many others if you need to
-                revote.
-              </p>
-              <p className="mt-2">
-                While these aids make identification easier, remembering the date and time of your vote is still the
-                most reliable way to identify your ballot.
               </p>
             </div>
           ),
@@ -216,31 +250,41 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
                 </li>
               </ul>
               <p>
-                No matter if you've voted before, voted in person, or haven't voted at all, the system will never
-                disclose any information about your past actions — it always appear as if you have not voted before.
+                No matter if you've voted before, voted in person, or haven't voted at all, <b>the system will never
+                disclose any information about your past actions — it will always appear as if you have not voted before. </b>
                 This allows you to plausibly claim or deny any past action you might have taken.
               </p>
             </div>
           ),
         },
         {
-          id: "revoting",
-          title: "Can I change my vote?",
+          id: "ballot-verification-security",
+          title: "Why do I need to verify my voting history?",
           content: (
             <div className="space-y-2">
-              <p>
-                Yes, you can change your vote at any time during the voting period. This is a security feature that:
-              </p>
+              <p>The voting history verification step serves two critical security purposes:</p>
               <ul className="list-disc pl-6 space-y-1">
-                <li>Protects against coercion</li>
-                <li>Allows you to vote freely even if initially pressured</li>
-                <li>Only counts your final vote</li>
+                <li>
+                  <strong>Identity verification:</strong> It ensures that only you can cast or change your vote by
+                  requiring knowledge that only you should have.
+                </li>
+                <li>
+                  <strong>Anti-coercion protection:</strong> It gives you a way to invalidate coerced votes without the
+                  coercer knowing.
+                </li>
               </ul>
-              <p>To change your vote, you'll need to identify your previous ballot(s) to confirm your identity.</p>
-              <p className="text-red-600 font-medium">
-                Important: If you fail to correctly identify your previous ballot(s), your new vote will not be valid.
+              <p className="mt-2">
+                When you want to revote, you'll be shown a list of ballots that includes your previously cast ballots
+                mixed with many others. You need to select all of your previous ballots to verify your identity.
               </p>
-              <p>If you are being coerced, you can use this feature to intentionally invalidate the coerced ballot.</p>
+              <p className="mt-2 text-red-600 font-medium">
+                Important: If you provide incorrect information about having previously voted or fail to identify all
+                your previous ballots, your new ballot will not be valid.
+              </p>
+              <p>
+                If you are being coerced, you can use this feature to intentionally invalidate the coerced ballot by
+                selecting the wrong ballots or claiming you haven't voted when you have (or vice versa).
+              </p>
             </div>
           ),
         },
