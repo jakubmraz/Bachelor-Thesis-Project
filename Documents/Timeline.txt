@@ -5,10 +5,10 @@ Goals: -Project roadmap ✅
 👇
 By 7th March
 Goals: -Implemented system skeleton with usable dev interface with the necessary buttons and pages ✅
--Implemented guidance for external security management (deleting browser history, etc...) 🟨 (done with incognito mode, needs more)
+-Implemented guidance for external security management (deleting browser history, etc...) 🟨 (done with incognito mode, needs more) ✅
 -Implemented frontend for non-coerced voting ✅
 -Implemented frontend for deniable revoting ✅ (redone in the next period)
--Implemented tutorial/guidance for the system 🟨 (feels about 70% done, needs further revisions and additions)
+-Implemented tutorial/guidance for the system 🟨 (feels about 70% done, needs further revisions and additions) ✅
 -Initial CSS design ✅
 -Small survey of 2-3 people to get feedback on design implementations ✅
 👇
@@ -21,7 +21,7 @@ By 3rd April
 -Implemented frontend for user vote verification
 -Finalise UI
 -Small survey of 2-3 people to get feedback on design implementations (focus on help text)
--Revisit previous 🟨 items
+-Revisit previous 🟨 items ✅
 👇
 By 17th April
 Goals:
@@ -34,6 +34,5 @@ Goals:
 Submission deadline - 15th May
 
 
-notes: explain what coercion is
-do usability testing about help texts specifically
+notes: do usability testing about help texts specifically
 48h election, 1 ballot per 3 mintes -> 960 ballots in 2 days per voter
