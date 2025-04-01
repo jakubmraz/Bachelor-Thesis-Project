@@ -79,12 +79,12 @@ export default function Page() {
                   </li>
                   <li>
                     <strong>Past Ballot Identification:</strong> The revoting mechanism requires you to identify your
-                    last previously cast valid ballot in order for the newly-cast ballot to be valid. This helps ensure
+                    previously cast valid ballots in order for the newly-cast ballot to be valid. This helps ensure
                     that only you can cast your own vote at any point.
                   </li>
                   <li>
                     <strong>Intentional Ballot Invalidation:</strong> If you find yourself in a situation where a
-                    coercer is forcing you to vote a certain way, you have multiple discrete options at your disposal to
+                    coercer is forcing you to vote a certain way, you have multiple discreet options at your disposal to
                     invalidate the new ballot.
                   </li>
                   <li>

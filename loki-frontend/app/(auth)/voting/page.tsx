@@ -48,7 +48,7 @@ export default function VotingEntryPage() {
             className="w-full h-32 flex flex-col items-center justify-center gap-2 text-left p-4"
           >
             <div className="font-semibold">Yes, I've voted before</div>
-            <div className="text-sm text-muted-foreground">I want to verify my previous ballot and revote</div>
+            <div className="text-sm text-muted-foreground">I want to verify my previous ballots and revote</div>
           </Button>
         </Link>
       </div>

@@ -436,7 +436,7 @@ export default function VerifyPreviousVotePage() {
                             </div>
                             <div className="text-sm">
                               <span className="font-medium">{formatDateDanish(ballot.timestamp)}</span>
-                              <span className="text-gray-500 ml-2">{formatTimeDanish(ballot.timestamp)}</span>
+                              <span className="text-gray-600 ml-2">{formatTimeDanish(ballot.timestamp)}</span>
                             </div>
                           </div>
                           <div className="flex items-center gap-3">
