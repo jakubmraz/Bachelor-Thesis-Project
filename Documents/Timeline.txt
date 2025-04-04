@@ -19,8 +19,8 @@ Goals:
 👇
 By 3rd April
 -Implemented frontend for user vote verification
--Finalise UI
--Small survey of 2-3 people to get feedback on design implementations (focus on help text)
+-Finalise UI 🟨 (seems at a good place, ask for feedback on friday)
+-Small survey of 2-3 people to get feedback on design implementations ✅ with focus on help text 🟨 (mostly focused on revoting ui changes)
 -Revisit previous 🟨 items ✅
 👇
 By 17th April

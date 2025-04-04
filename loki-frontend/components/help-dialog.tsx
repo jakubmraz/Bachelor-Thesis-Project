@@ -618,7 +618,7 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
         </DialogTrigger>
         <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto" ref={dialogContentRef}>
           <DialogHeader>
-            <DialogTitle className="text-2xl">Help Center</DialogTitle>
+            <DialogTitle className="text-2xl">Help Centre</DialogTitle>
           </DialogHeader>
           {dialogContent}
         </DialogContent>
