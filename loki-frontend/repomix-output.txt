@@ -53,19 +53,18 @@ app/(auth)/voting/new/page.tsx
 app/(auth)/voting/page.tsx
 app/(auth)/voting/verify/loading.tsx
 app/(auth)/voting/verify/page.tsx
-app/(public)/help/page.tsx
 app/(public)/layout.tsx
 app/(public)/logged-out/page.tsx
 app/(public)/login/auth/page.tsx
 app/(public)/login/page.tsx
 app/(public)/page.tsx
-app/(public)/privacy-notice/page.tsx
 app/globals.css
 app/layout.tsx
 archive/sign-in-form.tsx
 components.json
 components/ballot-identicon.tsx
 components/breadcrumb-nav.tsx
+components/footer.tsx
 components/help-dialog.tsx
 components/masked-input.tsx
 components/page-wrapper.tsx
@@ -91,6 +90,8 @@ lib/ballot-data.ts
 lib/date-utils.ts
 lib/identicon.ts
 lib/utils.ts
+lib/word-phrases.ts
+lib/wordlist.ts
 next.config.ts
 package.json
 postcss.config.mjs
@@ -155,14 +156,29 @@ next-env.d.ts
 ================
 File: app/(auth)/elections/page.tsx
 ================
+"use client"
+
+import type React from "react"
+
+import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { CalendarIcon, CheckCircle2, Clock } from "lucide-react"
+import { CalendarIcon, CheckCircle2, Clock, InfoIcon } from "lucide-react"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog"
 
 export default function ElectionsPage() {
+  const [dialogOpen, setDialogOpen] = useState(false)
+
   // In a real application, this would come from an API
-  const elections = [
+  const activeElections = [
     {
       id: "general-2025",
       title: "2025 General Election",
@@ -174,56 +190,150 @@ export default function ElectionsPage() {
     // More elections would be listed here in a real application
   ]
 
-  return (
-    <div className="py-8">
-      <h1 className="text-2xl font-bold mb-6">Available Elections</h1>
-      <p className="text-muted-foreground mb-8">
-        Select an election to cast or modify your vote. 
-      </p>
+  const pastElections = [
+    {
+      id: "local-2024",
+      title: "2024 Local Elections",
+      description: "Vote for your local municipality representatives.",
+      startDate: "2024-11-01",
+      endDate: "2024-11-15",
+      status: "completed",
+    },
+  ]
 
-      <div className="grid gap-6">
-        {elections.map((election) => (
-          <Card key={election.id} className="overflow-hidden">
-            <CardHeader className="pb-3">
-              <div className="flex justify-between items-start">
-                <div>
-                  <CardTitle className="text-xl">{election.title}</CardTitle>
-                  <CardDescription className="mt-1">{election.description}</CardDescription>
-                </div>
-                {election.status === "active" && (
-                  <div className="flex items-center text-sm text-green-600 bg-green-50 px-2 py-1 rounded-full">
-                    <CheckCircle2 className="h-4 w-4 mr-1" />
-                    Active
+  const handleDemoClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    setDialogOpen(true)
+  }
+
+  return (
+    <div className="py-8 space-y-12">
+      {/* Active Elections Section */}
+      <section>
+        <h1 className="text-2xl font-bold mb-6">Available Elections</h1>
+        <p className="text-muted-foreground mb-8">Select an election to cast or modify your vote.</p>
+
+        <div className="grid gap-6">
+          {activeElections.map((election) => (
+            <Card key={election.id} className="overflow-hidden">
+              <CardHeader className="pb-3">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <CardTitle className="text-xl">{election.title}</CardTitle>
+                    <CardDescription className="mt-1">{election.description}</CardDescription>
                   </div>
-                )}
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center text-sm text-muted-foreground mb-2">
-                <CalendarIcon className="h-4 w-4 mr-2" />
-                <span>
-                  {new Date(election.startDate).toLocaleDateString()} -{" "}
-                  {new Date(election.endDate).toLocaleDateString()}
-                </span>
-              </div>
-              <div className="flex items-center text-sm text-muted-foreground">
-                <Clock className="h-4 w-4 mr-2" />
-                <span>Closes in 10 days</span>
-              </div>
-            </CardContent>
-            <CardFooter className="bg-gray-50 border-t">
-              <div className="w-full flex justify-between items-center">
-                <div className="text-sm text-muted-foreground">
-                  {election.status === "active" ? "You can vote or modify your vote until the election closes" : ""}
+                  {election.status === "active" && (
+                    <div className="flex items-center text-sm text-green-600 bg-green-50 px-2 py-1 rounded-full">
+                      <CheckCircle2 className="h-4 w-4 mr-1" />
+                      Active
+                    </div>
+                  )}
                 </div>
-                <Link href="/voting">
-                  <Button>Enter Election</Button>
-                </Link>
-              </div>
-            </CardFooter>
-          </Card>
-        ))}
-      </div>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center text-sm text-muted-foreground mb-2">
+                  <CalendarIcon className="h-4 w-4 mr-2" />
+                  <span>
+                    {new Date(election.startDate).toLocaleDateString()} -{" "}
+                    {new Date(election.endDate).toLocaleDateString()}
+                  </span>
+                </div>
+                <div className="flex items-center text-sm text-muted-foreground">
+                  <Clock className="h-4 w-4 mr-2" />
+                  <span>Closes in 10 days</span>
+                </div>
+              </CardContent>
+              <CardFooter className="bg-gray-50 border-t py-4">
+                <div className="w-full flex justify-between items-center">
+                  <div className="text-sm text-muted-foreground">
+                    {election.status === "active" ? "You can vote or modify your vote until the election closes" : ""}
+                  </div>
+                  <Link href="/voting">
+                    <Button>Enter Election</Button>
+                  </Link>
+                </div>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* Past Elections Section */}
+      <section>
+        <h2 className="text-xl font-bold mb-6">Past Elections</h2>
+        <p className="text-muted-foreground mb-8">View results from previous elections.</p>
+
+        <div className="grid gap-6">
+          {pastElections.map((election) => (
+            <Card key={election.id} className="overflow-hidden bg-gray-100 border-gray-200">
+              <CardHeader className="pb-3">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <CardTitle className="text-xl">{election.title}</CardTitle>
+                    <CardDescription className="mt-1">{election.description}</CardDescription>
+                  </div>
+                  <div className="flex items-center text-sm text-gray-600 bg-gray-200 px-2 py-1 rounded-full">
+                    <CheckCircle2 className="h-4 w-4 mr-1" />
+                    Completed
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center text-sm text-muted-foreground mb-2">
+                  <CalendarIcon className="h-4 w-4 mr-2" />
+                  <span>
+                    {new Date(election.startDate).toLocaleDateString()} -{" "}
+                    {new Date(election.endDate).toLocaleDateString()}
+                  </span>
+                </div>
+              </CardContent>
+              <CardFooter className="bg-gray-200 border-t py-4">
+                <div className="w-full flex justify-between items-center">
+                  <div className="text-sm text-muted-foreground">Final results are available</div>
+                  <Button variant="outline" onClick={handleDemoClick}>
+                    View Results
+                  </Button>
+                </div>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* Archived Elections Section */}
+      <section>
+        <h2 className="text-xl font-bold mb-6">Archived Elections</h2>
+        <p className="text-muted-foreground mb-8">Access historical election data from the archives.</p>
+
+        <Card className="bg-gray-50 border-gray-200">
+          <CardContent className="py-6">
+            <div className="flex flex-col items-center text-center gap-4">
+              <div className="text-gray-500">Access historical election data from previous years</div>
+              <Button variant="outline" onClick={handleDemoClick}>
+                View Archived Elections
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* Demo Feature Dialog */}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <InfoIcon className="h-5 w-5 text-blue-500" />
+              Demo Feature
+            </DialogTitle>
+            <DialogDescription className="pt-2">
+              This feature is just for show and isn't implemented in this demo.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button onClick={() => setDialogOpen(false)}>Close</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
@@ -283,13 +393,15 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { Check, ChevronRight, HelpCircle, Info, ArrowLeft } from "lucide-react"
+import { Check, ChevronRight, HelpCircle, Info, ArrowLeft, AlertTriangle } from "lucide-react"
 import Link from "next/link"
 import { ballotItems, type Ballot, saveUserBallot, generateBallotId } from "@/lib/ballot-data"
 import { formatDateDanish, formatTimeDanish } from "@/lib/date-utils"
 import { useVote } from "@/contexts/vote-context"
 import { BallotIdenticon } from "@/components/ballot-identicon"
 import { generateBallotHash } from "@/lib/identicon"
+import { generatePhrase } from "@/lib/word-phrases"
+import { HelpDialog } from "@/components/help-dialog"
 
 export default function NewVotingPage() {
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({})
@@ -298,6 +410,7 @@ export default function NewVotingPage() {
   const [ballotTimestamp, setBallotTimestamp] = useState("")
   const [ballotId, setBallotId] = useState("")
   const [identiconHash, setIdenticonHash] = useState("")
+  const [phrase, setPhrase] = useState("")
   const { setVoteSubmitted } = useVote()
 
   const handleOptionSelect = (proposalId: string, optionId: string) => {
@@ -333,9 +446,13 @@ export default function NewVotingPage() {
     // Generate the identicon hash
     const hash = generateBallotHash({ timestamp, id: newBallotId })
 
+    // Generate memorable phrase
+    const generatedPhrase = generatePhrase(hash)
+
     setBallotTimestamp(timestamp)
     setBallotId(newBallotId)
     setIdenticonHash(hash)
+    setPhrase(generatedPhrase)
 
     // Create ballot data
     const ballot: Ballot = {
@@ -350,6 +467,7 @@ export default function NewVotingPage() {
         }
       }),
       identiconHash: hash,
+      phrase: generatedPhrase,
     }
 
     // Save the ballot to localStorage
@@ -361,10 +479,8 @@ export default function NewVotingPage() {
         timestamp: timestamp,
         isSubmittedByUser: true,
         identiconHash: hash,
+        phrase: generatedPhrase,
       })
-
-      // Log for debugging
-      console.log("Saved ballot:", newBallotId, "with hash:", hash)
     } catch (error) {
       console.error("Error saving ballot:", error)
     }
@@ -395,41 +511,69 @@ export default function NewVotingPage() {
 
       {isSubmitted ? (
         <div className="mt-6 space-y-6">
-          <div className="flex flex-col items-center">
-            <div className="mb-8 flex h-24 w-24 items-center justify-center rounded-full bg-green-100">
-              <Check className="h-12 w-12 text-green-600" />
+          <div className="flex items-center mb-8">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-100 mr-4">
+              <Check className="h-8 w-8 text-green-600" />
             </div>
-            <h1 className="mb-4 text-2xl font-bold">Vote Successfully Cast</h1>
-            <p className="mb-8 text-center text-gray-600 max-w-md">
-              Thank you for participating in the democratic process. Your vote has been recorded securely.
-            </p>
+            <div>
+              <h1 className="text-2xl font-bold">Vote Successfully Cast</h1>
+              <p className="text-gray-600">
+                Thank you for participating in the democratic process. Your vote has been recorded securely.
+              </p>
+            </div>
           </div>
 
           <Card className="max-w-2xl mx-auto">
             <CardHeader>
               <CardTitle>Your Ballot Information</CardTitle>
-              <CardDescription>
-                This information may help you identify your ballot if you need to revote later.
-              </CardDescription>
+              <div className="bg-red-50 border border-red-200 rounded-md p-3 mt-2 flex items-start gap-2">
+                <AlertTriangle className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
+                <p className="text-sm text-red-800">
+                  If you plan to revote later, you'll need to identify this ballot by the <strong>date and time</strong>{" "}
+                  shown below. Please take note of this information.
+                </p>
+              </div>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="bg-gray-50 p-4 rounded-md flex justify-between items-center">
-                <div>
-                  <div className="font-medium mb-1">Ballot cast on {formattedDate}</div>
-                  <div className="text-sm text-gray-500">at {formattedTime}</div>
+              <div className="bg-gray-50 p-4 rounded-md">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <div className="font-medium mb-1">
+                      Ballot cast on <strong className="text-black">{formattedDate}</strong>
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      at <strong className="text-black">{formattedTime}</strong>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end">
+                    <div className="flex items-center justify-end mb-1">
+                      <div className="text-sm font-medium text-black mr-2">Memory aids</div>
+                      <HelpDialog defaultOpenSection="memory-aids">
+                        <button className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1">
+                          <HelpCircle className="h-3 w-3" />
+                          <span>What's this?</span>
+                        </button>
+                      </HelpDialog>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="font-medium"><b>{phrase}</b></div>
+                      <div>
+                        {identiconHash ? (
+                          <BallotIdenticon
+                            timestamp={ballotTimestamp}
+                            id={ballotId}
+                            size={5}
+                            cellSize={8}
+                            className=""
+                            identiconHash={identiconHash}
+                          />
+                        ) : (
+                          <div className="w-20 h-20 bg-gray-200 rounded-md"></div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                {identiconHash ? (
-                  <BallotIdenticon
-                    timestamp={ballotTimestamp}
-                    id={ballotId}
-                    size={8}
-                    cellSize={5}
-                    className="ml-4"
-                    identiconHash={identiconHash}
-                  />
-                ) : (
-                  <div className="ml-4 w-40 h-40 bg-gray-200 rounded-md"></div>
-                )}
               </div>
 
               <div className="space-y-4">
@@ -446,18 +590,27 @@ export default function NewVotingPage() {
                 })}
               </div>
 
-              <div className="bg-yellow-50 p-4 rounded-md border border-yellow-200 mt-4">
+              <div className="bg-gray-50 p-4 rounded-md border border-gray-200 mt-4">
                 <div className="flex gap-3">
-                  <Info className="h-5 w-5 text-yellow-600 mt-0.5 flex-shrink-0" />
+                  <Info className="h-5 w-5 text-gray-600 mt-0.5 flex-shrink-0" />
                   <div>
-                    <h3 className="font-semibold mb-1">Important Privacy Notice</h3>
-                    <p className="text-sm text-gray-600">
-                      For your privacy, we recommend not saving or sharing this information unless you plan to revote.
-                      The system is designed to protect your voting privacy even if you cannot recall your previous
-                      ballot.
+                    <h3 className="font-semibold mb-1">Important: Remember Your Ballot Details</h3>
+                    <p className="text-sm text-gray-600 mb-3">
+                      To identify this ballot if you need to revote later, you must remember:
                     </p>
-                    <p className="text-sm text-gray-600 mt-2">
-                      <strong>Remember the visual pattern</strong> of your ballot to help you identify it later.
+                    <ol className="list-decimal pl-5 text-sm text-gray-600 space-y-1">
+                      <li>
+                        Date: <strong className="text-black">{formattedDate}</strong>
+                      </li>
+                      <li>
+                        Time: <strong className="text-black">{formattedTime}</strong>
+                      </li>
+                    </ol>
+
+                    <p className="text-sm text-gray-600 mt-3">
+                      The colored pattern square and word phrase ("<strong>{phrase}</strong>") are visual aids to help
+                      you recognize your ballot more easily, but remembering the date and time is sufficient. For your
+                      privacy, we recommend not saving or sharing this information.
                     </p>
                   </div>
                 </div>
@@ -623,8 +776,8 @@ export default function VotingEntryPage() {
     <div className="space-y-6">
       <div>
         <div className="flex items-center justify-between mb-2">
-          <h1 className="text-2xl font-bold">Have you voted before?</h1>
-          <HelpDialog defaultOpenSection="ballot-verification">
+          <h1 className="text-2xl font-bold">Have you voted before in this election?</h1>
+          <HelpDialog defaultOpenSection="ballot-verification-security">
             <button className="text-muted-foreground hover:text-foreground flex items-center gap-1">
               <HelpCircle className="h-4 w-4" />
               Why is this necessary?
@@ -661,7 +814,7 @@ export default function VotingEntryPage() {
             className="w-full h-32 flex flex-col items-center justify-center gap-2 text-left p-4"
           >
             <div className="font-semibold">Yes, I've voted before</div>
-            <div className="text-sm text-muted-foreground">I want to verify my previous ballot and revote</div>
+            <div className="text-sm text-muted-foreground">I want to verify my previous ballots and revote</div>
           </Button>
         </Link>
       </div>
@@ -685,10 +838,12 @@ File: app/(auth)/voting/verify/page.tsx
 ================
 "use client"
 
+import type React from "react"
+
 import { useState, useEffect, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { ArrowLeft, Check, ArrowRight, AlertTriangle, HelpCircle, Filter, X, Clock } from "lucide-react"
+import { ArrowLeft, Check, ArrowRight, AlertTriangle, HelpCircle, Filter, X, Clock, Search } from "lucide-react"
 import Link from "next/link"
 import { type PublicBallot, generateRandomPublicBallots } from "@/lib/ballot-data"
 import { formatDateDanish, formatTimeDanish } from "@/lib/date-utils"
@@ -712,6 +867,15 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { BallotIdenticon } from "@/components/ballot-identicon"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
 
 export default function VerifyPreviousVotePage() {
   const [previousBallots, setPreviousBallots] = useState<PublicBallot[]>([])
@@ -720,7 +884,10 @@ export default function VerifyPreviousVotePage() {
   const [page, setPage] = useState(1)
   const [selectedDates, setSelectedDates] = useState<string[]>([])
   const [selectedHours, setSelectedHours] = useState<string[]>([])
+  const [searchTerms, setSearchTerms] = useState<string[]>([])
+  const [searchInput, setSearchInput] = useState("")
   const [activeTab, setActiveTab] = useState("all")
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false)
 
   const ITEMS_PER_PAGE = 8
 
@@ -730,26 +897,13 @@ export default function VerifyPreviousVotePage() {
       // Clear any legacy storage
       localStorage.removeItem("lastCastBallot")
 
-      console.log("[VERIFY PAGE] Loading ballots...")
-
       // Generate 800 ballots as a simulation (in reality there would be ~1000 for a 48h election)
       // Include user ballots
       const ballots = generateRandomPublicBallots(800, true)
 
-      // Log only user ballots
-      const userBallots = ballots.filter((b) => b.isSubmittedByUser)
-      if (userBallots.length > 0) {
-        console.log("[VERIFY PAGE] User ballots found:", userBallots.length)
-        userBallots.forEach((ballot) => {
-          console.log(`[VERIFY PAGE] User ballot: ID=${ballot.id}, Hash=${ballot.identiconHash}`)
-        })
-      } else {
-        console.log("[VERIFY PAGE] No user ballots found")
-      }
-
       setPreviousBallots(ballots)
     } catch (error) {
-      console.error("[VERIFY PAGE] Error loading ballots:", error)
+      console.error("Error loading ballots:", error)
     } finally {
       setIsLoading(false)
     }
@@ -805,7 +959,23 @@ export default function VerifyPreviousVotePage() {
     })
   }, [previousBallots])
 
-  // Filter ballots based on selected dates and hours
+  // Handle search submission
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (searchInput.trim()) {
+      setSearchTerms((prev) => [...prev, searchInput.trim().toLowerCase()])
+      setSearchInput("")
+      setPage(1) // Reset to first page when filters change
+    }
+  }
+
+  // Remove a search term
+  const removeSearchTerm = (term: string) => {
+    setSearchTerms((prev) => prev.filter((t) => t !== term))
+    setPage(1) // Reset to first page when filters change
+  }
+
+  // Filter ballots based on selected dates, hours, and search terms
   const filteredBallots = useMemo(() => {
     return previousBallots.filter((ballot) => {
       // Check if ballot matches selected dates
@@ -822,9 +992,21 @@ export default function VerifyPreviousVotePage() {
 
       const matchesHour = selectedHours.length === 0 || selectedHours.includes(hourRange)
 
-      return matchesDate && matchesHour
+      // Check if ballot matches search terms
+      const matchesSearch =
+        searchTerms.length === 0 ||
+        searchTerms.some((term) => {
+          // Search in phrase if available
+          if (ballot.phrase && ballot.phrase.toLowerCase().includes(term)) {
+            return true
+          }
+          // Search in ID (could be expanded to search in other fields)
+          return ballot.id.toLowerCase().includes(term)
+        })
+
+      return matchesDate && matchesHour && matchesSearch
     })
-  }, [previousBallots, selectedDates, selectedHours])
+  }, [previousBallots, selectedDates, selectedHours, searchTerms])
 
   // Paginated ballots
   const paginatedBallots = useMemo(() => {
@@ -841,13 +1023,6 @@ export default function VerifyPreviousVotePage() {
   const totalPages = Math.max(1, Math.ceil(filteredBallots.length / ITEMS_PER_PAGE))
 
   const toggleBallot = (ballotId: string) => {
-    // Find the ballot for logging - but only log user ballots
-    const ballot = previousBallots.find((b) => b.id === ballotId)
-    if (ballot && ballot.isSubmittedByUser) {
-      console.log(`[BALLOT SELECTION] Toggling user ballot: ${ballotId}`)
-      console.log(`[BALLOT SELECTION] Hash: ${ballot.identiconHash}`)
-    }
-
     setSelectedBallotIds((prev) => {
       if (prev.includes(ballotId)) {
         return prev.filter((id) => id !== ballotId)
@@ -882,10 +1057,11 @@ export default function VerifyPreviousVotePage() {
   const clearFilters = () => {
     setSelectedDates([])
     setSelectedHours([])
+    setSearchTerms([])
     setPage(1)
   }
 
-  const hasActiveFilters = selectedDates.length > 0 || selectedHours.length > 0
+  const hasActiveFilters = selectedDates.length > 0 || selectedHours.length > 0 || searchTerms.length > 0
 
   return (
     <div className="pb-8 space-y-6">
@@ -898,17 +1074,25 @@ export default function VerifyPreviousVotePage() {
 
       <div>
         <div className="flex items-center justify-between mb-2">
-          <h1 className="text-2xl font-bold">Identify Your Previous Valid Ballots</h1>
-          <HelpDialog defaultOpenSection="last-valid-ballot">
-            <button className="text-muted-foreground hover:text-foreground flex items-center gap-1">
-              <HelpCircle className="h-4 w-4" />
-              Why is this necessary?
-            </button>
-          </HelpDialog>
+          <h1 className="text-2xl font-bold">Identify Your Previous Ballots</h1>
+          <div className="flex items-center gap-3">
+            <HelpDialog defaultOpenSection="previous-ballots">
+              <button className="text-muted-foreground hover:text-foreground flex items-center gap-1">
+                <HelpCircle className="h-4 w-4" />
+                How do I identify my ballots?
+              </button>
+            </HelpDialog>
+            <HelpDialog defaultOpenSection="ballot-verification-security">
+              <button className="text-muted-foreground hover:text-foreground flex items-center gap-1">
+                <HelpCircle className="h-4 w-4" />
+                Why is this necessary?
+              </button>
+            </HelpDialog>
+          </div>
         </div>
         <p className="text-muted-foreground mb-4">
-          Please select ALL ballots that match your previous valid votes. This step helps ensure the security of your
-          vote and protects against coercion.
+          Please select ALL ballots that match your previous votes. This step helps ensure the security of your vote and
+          protects against coercion.
         </p>
 
         <div className="rounded-lg border-2 border-red-200 bg-red-50 p-4 mb-6">
@@ -917,8 +1101,8 @@ export default function VerifyPreviousVotePage() {
             <div>
               <h3 className="font-semibold text-red-900 mb-1">Important Security Notice</h3>
               <p className="text-sm text-red-800">
-                If you fail to identify all your previous valid ballots, your new vote will not be counted. This is a
-                security feature that protects against coerced voting.
+                If you fail to identify all your previous ballots, your new vote will not be counted. This is a security
+                feature that protects against coerced voting.
               </p>
             </div>
           </div>
@@ -988,12 +1172,18 @@ export default function VerifyPreviousVotePage() {
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                {hasActiveFilters && (
-                  <Button variant="ghost" onClick={clearFilters} className="gap-2">
-                    <X className="h-4 w-4" />
-                    Clear Filters
-                  </Button>
-                )}
+                <form onSubmit={handleSearchSubmit} className="flex items-center">
+                  <div className="relative">
+                    <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
+                    <Input
+                      type="text"
+                      placeholder="Search phrases"
+                      value={searchInput}
+                      onChange={(e) => setSearchInput(e.target.value)}
+                      className="pl-8 pr-4 h-10 w-[180px]"
+                    />
+                  </div>
+                </form>
 
                 <div className="ml-auto">
                   <HelpDialog defaultOpenSection="many-ballots">
@@ -1005,21 +1195,36 @@ export default function VerifyPreviousVotePage() {
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-2 mt-2">
-                {selectedDates.map((date) => (
-                  <Badge key={date} variant="secondary" className="gap-1">
-                    {date}
-                    <X className="h-3 w-3 cursor-pointer" onClick={() => toggleDateFilter(date)} />
-                  </Badge>
-                ))}
+              {hasActiveFilters && (
+                <div className="flex justify-between items-center mt-2">
+                  <div className="flex flex-wrap gap-2">
+                    {selectedDates.map((date) => (
+                      <Badge key={date} variant="secondary" className="gap-1">
+                        {date}
+                        <X className="h-3 w-3 cursor-pointer" onClick={() => toggleDateFilter(date)} />
+                      </Badge>
+                    ))}
 
-                {selectedHours.map((hourRange) => (
-                  <Badge key={hourRange} variant="secondary" className="gap-1">
-                    {hourRange}
-                    <X className="h-3 w-3 cursor-pointer" onClick={() => toggleHourFilter(hourRange)} />
-                  </Badge>
-                ))}
-              </div>
+                    {selectedHours.map((hourRange) => (
+                      <Badge key={hourRange} variant="secondary" className="gap-1">
+                        {hourRange}
+                        <X className="h-3 w-3 cursor-pointer" onClick={() => toggleHourFilter(hourRange)} />
+                      </Badge>
+                    ))}
+
+                    {searchTerms.map((term) => (
+                      <Badge key={term} variant="secondary" className="gap-1">
+                        {term}
+                        <X className="h-3 w-3 cursor-pointer" onClick={() => removeSearchTerm(term)} />
+                      </Badge>
+                    ))}
+                  </div>
+                  <Button variant="ghost" onClick={clearFilters} className="gap-2 ml-2 shrink-0">
+                    <X className="h-4 w-4" />
+                    Clear Filters
+                  </Button>
+                </div>
+              )}
 
               <Card className="bg-gray-50 border-gray-200">
                 <CardContent className="p-3">
@@ -1069,16 +1274,19 @@ export default function VerifyPreviousVotePage() {
                             </div>
                             <div className="text-sm">
                               <span className="font-medium">{formatDateDanish(ballot.timestamp)}</span>
-                              <span className="text-gray-500 ml-2">{formatTimeDanish(ballot.timestamp)}</span>
+                              <span className="text-gray-600 ml-2">{formatTimeDanish(ballot.timestamp)}</span>
                             </div>
                           </div>
-                          <BallotIdenticon
-                            timestamp={ballot.timestamp}
-                            id={ballot.id}
-                            size={5}
-                            cellSize={4}
-                            identiconHash={ballot.identiconHash}
-                          />
+                          <div className="flex items-center gap-3">
+                            {ballot.phrase && <div className="text-sm text-gray-600">{ballot.phrase}</div>}
+                            <BallotIdenticon
+                              timestamp={ballot.timestamp}
+                              id={ballot.id}
+                              size={5}
+                              cellSize={4}
+                              identiconHash={ballot.identiconHash}
+                            />
+                          </div>
                         </div>
                       </CardHeader>
                     </Card>
@@ -1128,26 +1336,29 @@ export default function VerifyPreviousVotePage() {
                                 <span className="text-gray-500 ml-2">{formatTimeDanish(ballot.timestamp)}</span>
                               </div>
                             </div>
-                            <div className="flex items-center gap-2">
-                              <BallotIdenticon
-                                timestamp={ballot.timestamp}
-                                id={ballot.id}
-                                size={5}
-                                cellSize={4}
-                                identiconHash={ballot.identiconHash}
-                              />
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="h-8 w-8 p-0"
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  toggleBallot(ballot.id)
-                                }}
-                              >
-                                <X className="h-4 w-4" />
-                                <span className="sr-only">Remove</span>
-                              </Button>
+                            <div className="flex items-center gap-3">
+                              {ballot.phrase && <div className="text-sm text-gray-600">{ballot.phrase}</div>}
+                              <div className="flex items-center gap-2">
+                                <BallotIdenticon
+                                  timestamp={ballot.timestamp}
+                                  id={ballot.id}
+                                  size={5}
+                                  cellSize={4}
+                                  identiconHash={ballot.identiconHash}
+                                />
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="h-8 w-8 p-0"
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    toggleBallot(ballot.id)
+                                  }}
+                                >
+                                  <X className="h-4 w-4" />
+                                  <span className="sr-only">Remove</span>
+                                </Button>
+                              </div>
                             </div>
                           </div>
                         </CardHeader>
@@ -1169,67 +1380,49 @@ export default function VerifyPreviousVotePage() {
           </Tabs>
 
           <div className="flex justify-end mt-8">
-            <Link href="/voting/new">
-              <Button className="bg-gray-900">
-                Continue to Voting
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
+            <Button className="bg-gray-900" onClick={() => setConfirmDialogOpen(true)}>
+              Continue to Voting
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
           </div>
+
+          {/* Confirmation Dialog */}
+          <Dialog open={confirmDialogOpen} onOpenChange={setConfirmDialogOpen}>
+            <DialogContent className="max-w-md">
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <AlertTriangle className="h-5 w-5 text-red-600" />
+                  Confirm Ballot Selection
+                </DialogTitle>
+              </DialogHeader>
+              <DialogDescription asChild>
+                <div className="space-y-4">
+                  <p>
+                    You have selected <strong>{selectedBallotIds.length}</strong> ballot
+                    {selectedBallotIds.length !== 1 ? "s" : ""}. Are you sure you wish to continue?
+                  </p>
+                  <div className="rounded-lg border-2 border-red-200 bg-red-50 p-3">
+                    <p className="text-sm text-red-800 font-medium">
+                      If you incorrectly identify your previous valid ballots, your new ballot will not be counted!
+                    </p>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    You're seeing this notification regardless of if your choices were correct or not.
+                  </p>
+                </div>
+              </DialogDescription>
+              <DialogFooter className="gap-2 sm:gap-0">
+                <Button variant="outline" onClick={() => setConfirmDialogOpen(false)}>
+                  Go back and verify
+                </Button>
+                <Link href="/voting/new">
+                  <Button className="bg-gray-900">Continue</Button>
+                </Link>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </>
       )}
-    </div>
-  )
-}
-
-================
-File: app/(public)/help/page.tsx
-================
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { ChevronLeft } from "lucide-react"
-
-export default function Page() {
-  return (
-    <div className="space-y-8">
-      <Link href="/">
-        <Button variant="ghost" className="mb-6">
-          <ChevronLeft className="mr-2 h-4 w-4" />
-          Back to Home
-        </Button>
-      </Link>
-
-      <div>
-        <h1 className="text-2xl font-bold mb-4">Help Center</h1>
-        <div className="prose prose-gray max-w-none">
-          <h2>Frequently Asked Questions</h2>
-          <h3>About MyID Authentication</h3>
-          <p>
-            MyID is a secure authentication method that uses biometric verification to ensure your identity. You must
-            have the MyID app installed on your smartphone with biometric authentication enabled.
-          </p>
-
-          <h3>Voting Process</h3>
-          <p>
-            Once authenticated, you will be guided through the voting process step by step. Make sure to review your
-            choices before submitting your final vote.
-          </p>
-
-          <h3>Technical Requirements</h3>
-          <p>
-            - A modern web browser (Chrome, Firefox, Safari)
-            <br />- JavaScript enabled
-            <br />- Stable internet connection
-            <br />- MyID app installed and configured
-          </p>
-
-          <h3>Need Additional Help?</h3>
-          <p>
-            If you cannot use MyID or experience any issues, please visit your local voting station where staff will
-            assist you with the voting process.
-          </p>
-        </div>
-      </div>
     </div>
   )
 }
@@ -1240,6 +1433,7 @@ File: app/(public)/layout.tsx
 import type React from "react"
 import { TopBarPublic } from "@/components/top-bar-public"
 import { PageWrapper } from "@/components/page-wrapper"
+import { Footer } from "@/components/footer"
 
 export default function PublicLayout({
   children,
@@ -1250,6 +1444,7 @@ export default function PublicLayout({
     <>
       <TopBarPublic />
       <PageWrapper>{children}</PageWrapper>
+      <Footer />
     </>
   )
 }
@@ -1292,12 +1487,19 @@ export default function Page() {
         </Link>
       </div>
 
-      <div className="text-center max-w-xl">
-        <h1 className="text-2xl font-bold mb-4">MyID Authentication</h1>
-        <p className="text-gray-600 mb-8">
-          This page would embed a MyID window to guide the user through authentication. Akin to MitID.
+      <div className="text-center max-w-xl mb-8">
+        <h1 className="text-2xl font-bold mb-4">MitID Authentication</h1>
+        <p className="text-gray-600">
+          This page would embed a MitID window to guide the user through authentication. The actual MitID integration is
+          out of scope for this project.
         </p>
       </div>
+
+      <Link href="/elections" className="mb-8">
+        <Button size="lg" className="bg-gray-900">
+          Continue
+        </Button>
+      </Link>
 
       <div className="border border-dashed border-gray-300 rounded-lg p-4 w-full max-w-md aspect-[4/5] relative bg-gray-50">
         <Image
@@ -1307,16 +1509,6 @@ export default function Page() {
           className="object-contain p-4"
         />
       </div>
-
-      <div className="rounded-lg bg-gray-50 p-4 max-w-md w-full text-center">
-        <p className="text-sm text-gray-600">Note: The actual MyID integration is out of scope for this project.</p>
-      </div>
-
-      <Link href="/elections">
-        <Button size="lg" className="bg-gray-900">
-          Continue
-        </Button>
-      </Link>
     </div>
   )
 }
@@ -1326,7 +1518,10 @@ File: app/(public)/login/page.tsx
 ================
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { ChevronLeft, Fingerprint } from "lucide-react"
+import { ChevronLeft, Fingerprint, HelpCircle } from "lucide-react"
+import { Card, CardContent } from "@/components/ui/card"
+import Image from "next/image"
+import { HelpDialog } from "@/components/help-dialog"
 
 export default function Page() {
   return (
@@ -1340,26 +1535,61 @@ export default function Page() {
 
       <div className="space-y-8">
         <div>
-          <h1 className="mb-4 text-2xl font-bold">Secure Login</h1>
-          <p className="text-gray-600">
-            This voting portal uses biometric authentication through MyID to ensure secure and reliable voter
+          <h1 className="text-2xl font-bold mb-2">Secure Login</h1>
+          <p className="text-gray-600 mb-4">
+            This voting portal uses biometric authentication through MitID to ensure secure and reliable voter
             identification.
           </p>
         </div>
 
+        {/* Privacy Notice Card */}
+        <Card className="border-amber-200 bg-amber-50">
+          <CardContent className="pt-6">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-lg font-semibold">Use Incognito Mode to Protect Your Privacy</h2>
+              <HelpDialog defaultOpenSection="incognito-mode">
+                <button className="text-muted-foreground hover:text-foreground flex items-center gap-1">
+                  <HelpCircle className="h-4 w-4" />
+                  Why is this important?
+                </button>
+              </HelpDialog>
+            </div>
+            <p className="mb-4">
+              A voting booth keeps no record, but your browser does. To protect your privacy, right click the login
+              button below and then click on "Open link in incognito window".
+            </p>
+
+            <div className="relative h-48 w-full border rounded-lg overflow-hidden bg-gray-50 mb-4">
+              <Image
+                src="/incognito_guide.png?height=192&width=600"
+                alt="Screenshot showing how to right click and select 'Open in incognito mode' in a browser"
+                fill
+                className="object-contain"
+              />
+            </div>
+
+            <p className="text-sm text-muted-foreground">
+              Using incognito mode ensures that no browsing history, cookies, or other data are saved after you close
+              the window.
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* Login Button */}
         <Link href="/login/auth" className="block">
           <Button size="lg" className="w-full bg-gray-900 py-6 text-lg">
             <Fingerprint className="mr-2 h-5 w-5" />
-            Login with MyID
+            Login with MitID
           </Button>
         </Link>
 
+        {/* Requirements Card */}
         <div className="rounded-lg bg-gray-50 p-4">
           <h2 className="mb-2 font-semibold">Important Information</h2>
           <ul className="space-y-2 text-sm text-gray-600">
-            <li>• You must have MyID installed with biometric authentication enabled</li>
-            <li>• If you cannot use MyID, please visit your local voting station to vote in person</li>
-            <li>• Make sure your MyID app is up to date before proceeding</li>
+            <li>• You must have MitID installed with biometric authentication enabled</li>
+            <li>• If you cannot use MitID, please visit your local voting station to vote in person</li>
+            <li>• Make sure your MitID app is up to date before proceeding</li>
           </ul>
         </div>
       </div>
@@ -1372,26 +1602,40 @@ File: app/(public)/page.tsx
 ================
 "use client"
 import Link from "next/link"
-import { ChevronRight, InfoIcon, Settings2 } from "lucide-react"
+import { ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import Image from "next/image"
 
 export default function Page() {
   return (
     <div className="flex flex-col items-center pt-8 relative min-h-[80vh]">
       {/* Hero Section */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold mb-4">Welcome to the Online Voting Portal</h1>
+      <div className="text-center mb-8">
+        <h1 className="text-4xl font-bold mb-4">Welcome to Denmark's Online Voting Portal</h1>
         <p className="text-lg text-gray-600 mb-8">
           Your secure platform for participating in democratic decision-making
         </p>
         <div className="flex justify-center">
-          <Link href="/privacy-notice">
+          <Link href="/login">
             <Button size="lg" className="bg-[#FFD700] hover:bg-[#FFED4A] text-black">
               <span>Login to Vote</span>
               <ChevronRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>
+        </div>
+      </div>
+
+      {/* Banner Image */}
+      <div className="w-full max-w-2xl mb-8 relative">
+        <div className="aspect-[4/1] relative w-full overflow-hidden rounded-lg border border-gray-200 shadow-sm">
+          <Image
+            src="/landingpage_banner.png?height=168&width=672&text=Election+Banner+Image"
+            alt="Election banner"
+            fill
+            className="object-fill"
+            priority
+          />
         </div>
       </div>
 
@@ -1422,44 +1666,6 @@ export default function Page() {
             </AccordionContent>
           </AccordionItem>
 
-          <AccordionItem value="phishing">
-            <AccordionTrigger>Ensure You're on the Official Voting Site</AccordionTrigger>
-            <AccordionContent>
-              <div className="space-y-2">
-                <p>
-                  Hackers may attempt to impersonate the voting portal to steal your credentials or manipulate your
-                  vote. This is known as "phishing." To protect yourself, please verify the following:
-                </p>
-                <ul className="list-disc pl-6 space-y-1">
-                  <li>
-                    <strong>Check the web address:</strong> Make sure you are on the official voting site. The correct
-                    URL will always be <strong>https://votingwebsiteurl.dk</strong>. Avoid clicking links from emails or
-                    messages; type the URL manually if possible.
-                  </li>
-                  <li>
-                    <strong>Look for HTTPS:</strong> Depending on your browser, the address bar should provide
-                    connection informtion. This is usually found on the left of the web address under one of these
-                    icons: 🔒, <InfoIcon className="h-3 w-3 inline-block" />,{" "}
-                    <Settings2 className="h-3 w-3 inline-block" />. Clicking the icon will show you information about
-                    the website's security. If you see warnings about an insecure site, do not proceed.
-                  </li>
-                  <li>
-                    <strong>Beware of fake login methods:</strong> The voting portal <strong>only</strong> uses MyID for
-                    authentication and will never ask for your password via email or text.
-                  </li>
-                  <li>
-                    <strong>Watch out for suspicious messages:</strong> If you receive an email or message asking you to
-                    vote on a different website, it may be a phishing attempt. Contact official support if in doubt.
-                  </li>
-                </ul>
-                <p className="mt-4 text-muted-foreground">
-                  If you suspect a phishing attempt, report it immediately to the election authorities at
-                  report@governmentemail.dk.
-                </p>
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-
           <AccordionItem value="coercion">
             <AccordionTrigger>Get to Know our Anti-Coercion Measures</AccordionTrigger>
             <AccordionContent>
@@ -1475,12 +1681,12 @@ export default function Page() {
                   </li>
                   <li>
                     <strong>Past Ballot Identification:</strong> The revoting mechanism requires you to identify your
-                    last previously cast valid ballot in order for the newly-cast ballot to be valid. This helps ensure
+                    previously cast valid ballots in order for the newly-cast ballot to be valid. This helps ensure
                     that only you can cast your own vote at any point.
                   </li>
                   <li>
                     <strong>Intentional Ballot Invalidation:</strong> If you find yourself in a situation where a
-                    coercer is forcing you to vote a certain way, you have multiple discrete options at your disposal to
+                    coercer is forcing you to vote a certain way, you have multiple discreet options at your disposal to
                     invalidate the new ballot.
                   </li>
                   <li>
@@ -1503,9 +1709,9 @@ export default function Page() {
               <div className="space-y-2">
                 <p>To vote online, you need:</p>
                 <ul className="list-disc pl-6 space-y-1">
-                  <li>A smartphone with MyID app installed</li>
+                  <li>A smartphone with MitID app installed</li>
                   <li>Biometric authentication (fingerprint or face recognition) enabled on your device</li>
-                  <li>An up-to-date version of MyID</li>
+                  <li>An up-to-date version of MitID</li>
                 </ul>
                 <p className="mt-4">
                   If you cannot meet these requirements, please visit your local voting station to cast your vote in
@@ -1526,75 +1732,12 @@ export default function Page() {
           <AccordionItem value="help">
             <AccordionTrigger>Need Help?</AccordionTrigger>
             <AccordionContent>
-              If you need assistance with MyID setup or have questions about the voting process, you can click the Help
+              If you need assistance with MitID setup or have questions about the voting process, you can click the Help
               button in the top right section of the page, call us at 00 00 00 00 (24h hotline), or contact your local
               voting authority.
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-      </div>
-    </div>
-  )
-}
-
-================
-File: app/(public)/privacy-notice/page.tsx
-================
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { ChevronLeft } from "lucide-react"
-import Image from "next/image"
-import Link from "next/link"
-import { HelpDialog } from "@/components/help-dialog"
-import { HelpCircle } from "lucide-react"
-
-export default function Page() {
-  return (
-    <div className="space-y-6">
-      <Link href="/">
-        <Button variant="ghost">
-          <ChevronLeft className="mr-2 h-4 w-4" />
-          Back to Home
-        </Button>
-      </Link>
-
-      <div className="flex items-center justify-between mb-2">
-          <h1 className="text-2xl font-bold">Use Incognito Mode to Protect Your Privacy</h1>
-          <HelpDialog defaultOpenSection="incognito-mode">
-            <button className="text-muted-foreground hover:text-foreground flex items-center gap-1">
-              <HelpCircle className="h-4 w-4" />
-              Why is this necessary?
-            </button>
-          </HelpDialog>
-      </div>
-
-      <div className="flex flex-col items-center text-center space-y-8">
-        <Link href="/login" className="block">
-          <Button size="lg" className="bg-[#FFD700] hover:bg-[#FFED4A] text-black px-8">
-            Proceed to Login
-          </Button>
-        </Link>
-
-        <Card className="max-w-xl p-6 space-y-4">
-          <p className="text-lg">
-            A voting booth keeps no record, but your browser does. To protect your privacy, right click the button above and
-            then click on "Open link in incognito window".
-          </p>
-
-          <div className="relative h-48 w-full border rounded-lg overflow-hidden bg-gray-50">
-            <Image
-              src="/incognito_guide.png?height=192&width=600"
-              alt="Screenshot showing how to right click and select 'Open in incognito mode' in a browser"
-              fill
-              className="object-contain"
-            />
-          </div>
-
-          <div className="text-sm text-muted-foreground">
-            Using incognito mode ensures that no browsing history, cookies, or other data are saved after you close the
-            window.
-          </div>
-        </Card>
       </div>
     </div>
   )
@@ -1819,12 +1962,6 @@ export function BallotIdenticon({
 }: BallotIdenticonProps) {
   // Use the provided hash if available, otherwise generate it
   const hash = identiconHash || generateBallotHash({ timestamp, id })
-
-  // Only log for user ballots (those with IDs in the 5000+ range)
-  if (id.includes("ballot-5") && id.split("-")[1].startsWith("5")) {
-    console.log(`[RENDERING IDENTICON] ID: ${id}, Hash: ${hash}`)
-  }
-
   const { grid, colors } = generateIdenticon(hash, size)
 
   return (
@@ -1893,6 +2030,176 @@ export function BreadcrumbNav() {
 }
 
 ================
+File: components/footer.tsx
+================
+"use client"
+
+import type React from "react"
+
+import { useState } from "react"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
+import { InfoIcon } from "lucide-react"
+
+export function Footer() {
+  const [dialogOpen, setDialogOpen] = useState(false)
+
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault()
+    setDialogOpen(true)
+  }
+
+  return (
+    <>
+      <footer className="border-t mt-16 bg-gray-50">
+        <div className="mx-auto max-w-[1200px] px-8 py-12">
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+            {/* Links Section */}
+            <div>
+              <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider">Legal</h3>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <a href="#" onClick={handleLinkClick} className="text-gray-600 hover:text-gray-900">
+                    Privacy Policy
+                  </a>
+                </li>
+                <li>
+                  <a href="#" onClick={handleLinkClick} className="text-gray-600 hover:text-gray-900">
+                    Terms of Service
+                  </a>
+                </li>
+                <li>
+                  <a href="#" onClick={handleLinkClick} className="text-gray-600 hover:text-gray-900">
+                    Cookie Policy
+                  </a>
+                </li>
+                <li>
+                  <a href="#" onClick={handleLinkClick} className="text-gray-600 hover:text-gray-900">
+                    Accessibility Statement
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Support Section */}
+            <div>
+              <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider">Support</h3>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <a href="#" onClick={handleLinkClick} className="text-gray-600 hover:text-gray-900">
+                    Report a Problem
+                  </a>
+                </li>
+                <li>
+                  <a href="#" onClick={handleLinkClick} className="text-gray-600 hover:text-gray-900">
+                    Contact Support
+                  </a>
+                </li>
+                <li>
+                  <a href="#" onClick={handleLinkClick} className="text-gray-600 hover:text-gray-900">
+                    FAQ
+                  </a>
+                </li>
+                <li>
+                  <a href="#" onClick={handleLinkClick} className="text-gray-600 hover:text-gray-900">
+                    Help Center
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* About Section */}
+            <div>
+              <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider">About</h3>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <a href="#" onClick={handleLinkClick} className="text-gray-600 hover:text-gray-900">
+                    About the Election
+                  </a>
+                </li>
+                <li>
+                  <a href="#" onClick={handleLinkClick} className="text-gray-600 hover:text-gray-900">
+                    Security Measures
+                  </a>
+                </li>
+                <li>
+                  <a href="#" onClick={handleLinkClick} className="text-gray-600 hover:text-gray-900">
+                    Voting Process
+                  </a>
+                </li>
+                <li>
+                  <a href="#" onClick={handleLinkClick} className="text-gray-600 hover:text-gray-900">
+                    Accessibility
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Contact Section */}
+            <div>
+              <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider">Contact</h3>
+              <address className="not-italic text-sm text-gray-600">
+                <p>National Election Commission</p>
+                <p>Christiansborg 1</p>
+                <p>1218 Copenhagen K</p>
+                <p>Denmark</p>
+                <p className="mt-2">
+                  <a href="#" onClick={handleLinkClick} className="text-gray-600 hover:text-gray-900">
+                    Phone: +45 00 00 00 00
+                  </a>
+                </p>
+                <p>
+                  <a href="#" onClick={handleLinkClick} className="text-gray-600 hover:text-gray-900">
+                    contact@election.gov.dk
+                  </a>
+                </p>
+              </address>
+            </div>
+          </div>
+
+          <div className="mt-12 border-t border-gray-200 pt-8">
+            <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+              <div className="flex items-center space-x-4">
+                <img src="/logo.png?height=40&width=120&text=VOTE+LOGO" alt="Voting Portal Logo" className="h-10" />
+                <p className="text-sm text-gray-600">Official Danish Election Portal</p>
+              </div>
+              <p className="text-sm text-gray-500">
+                © {new Date().getFullYear()} National Election Commission. All rights reserved.
+              </p>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+      {/* Demo Feature Dialog */}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <InfoIcon className="h-5 w-5 text-blue-500" />
+              Demo Feature
+            </DialogTitle>
+            <DialogDescription className="pt-2">
+              This link is just for show and isn't implemented in this demo.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button onClick={() => setDialogOpen(false)}>Close</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
+  )
+}
+
+================
 File: components/help-dialog.tsx
 ================
 "use client"
@@ -1922,6 +2229,7 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
   const [dialogOpen, setDialogOpen] = useState(false)
   const [isPrerendered, setIsPrerendered] = useState(false)
   const dialogContentRef = useRef<HTMLDivElement>(null)
+  const initialOpenRef = useRef(true)
 
   // Create refs for each accordion item
   const itemRefs = useRef<Record<string, HTMLDivElement | null>>({})
@@ -1932,17 +2240,87 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
       title: "General Information",
       items: [
         {
-          id: "privacy",
-          title: "How is my privacy protected?",
+          id: "general",
+          title: "How do I vote online?",
           content: (
             <div className="space-y-2">
-              <p>Your privacy is protected through several measures:</p>
+              <p>
+                As a Danish citizen above the age 18, you are automatically eligible to vote in local and national elections.
+                You do not need to register anywhere.
+              </p>
+              <p>
+                You have the option to either vote in person at your local polling station or digitally via this portal.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: "difference",
+          title: "What are the differences between voting online or in person?",
+          content: (
+            <div className="space-y-2">
+              <p>
+                The choice to vote in person or digitally is entirely up to you. It is however important to remember some differences:
+              </p>
               <ul className="list-disc pl-6 space-y-1">
-                <li>Use incognito mode to prevent browser history</li>
-                <li>Vote in a private environment without surveillance</li>
-                <li>Your vote is encrypted and anonymized</li>
-                <li>No one can link your identity to your voting choices</li>
+                <li>Online voting allows you to change your vote, physical voting does not.</li>
+                <li>Physical votes are final. If you vote both online and physically, only your physical vote will count.</li>
+                <li>Online voting cannot guarantee your privacy from people around you. Physical voting is fully private.</li>
               </ul>
+              <p>
+                The online voting portal has numerous safety measures to protect you from coercion. For further information, 
+                read the Anti-Coercion Measures section below.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: "vote-multiple-times",
+          title: "Can I vote multiple times?",
+          content: (
+            <div className="space-y-2">
+              <p>
+                <b>Every citizen only has one vote.</b>
+              </p>
+              <p>
+                The digital voting system allows you to vote multiple times to change your vote. Only your last vote counts.
+                Casting multiple ballots does not result in multiple votes given to your selected party/candidate or to your selected position on an issue.
+              </p>
+              <p>
+                Casting a ballot both digitally and in person does not result in multiple votes given. Only your physical ballot will count in this scenario. 
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: "privacy",
+          title: "Are my votes private?",
+          content: (
+            <div className="space-y-2">
+              <p>Your voting privacy is protected through several measures:</p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>
+                  Your ballots are encrypted before they are sent over the network.
+                  This prevents hackers from seeing your choices even if they have access to your network activity.
+                </li>
+                <li>
+                  The system hides your ballot in the database by creating other fake ballots. This means that even in the event of a database breach,
+                  your vote can never be traced back to you.
+                </li>
+              </ul>
+              <p>It is however not possible to guarantee your privacy in some cases:</p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>
+                  There is somebody looking at your screen while you vote.
+                </li>
+                <li>
+                  Your computer has a virus which allows hackers to see your screen or computer activity.
+                </li>
+              </ul>
+              <p>
+                When voting, always make sure you are alone and have the most up-to-date version of your operating system and any security software you use.
+                If you are in doubt, you can vote in person at your local polling station instead.
+              </p>
             </div>
           ),
         },
@@ -1965,6 +2343,42 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
     {
       title: "Anti-Coercion Measures",
       items: [
+        {
+          id: "what-is-coercion",
+          title: "What is voter coercion?",
+          content: (
+            <div className="space-y-2">
+              <p>
+                Voter coercion occurs when someone forces or pressures you to vote in a particular way against your
+                will. This can happen through:
+              </p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>
+                  <strong>Direct threats:</strong> Someone threatening harm if you don't vote as they demand
+                </li>
+                <li>
+                  <strong>Intimidation:</strong> Creating fear or discomfort to influence your vote
+                </li>
+                <li>
+                  <strong>Monitoring:</strong> Someone watching over your shoulder as you vote to ensure you vote their
+                  way
+                </li>
+                <li>
+                  <strong>Family pressure:</strong> Relatives insisting you vote according to family preferences
+                </li>
+                <li>
+                  <strong>Financial leverage:</strong> Promising rewards or threatening financial consequences based on
+                  how you vote
+                </li>
+              </ul>
+              <p className="mt-2">
+                Online voting systems are particularly vulnerable to coercion because voting can happen outside the
+                privacy of an official voting booth. The anti-coercion measures in this system are designed to give you
+                ways to protect your true voting intentions even under pressure.
+              </p>
+            </div>
+          ),
+        },
         {
           id: "coercion-risk",
           title: "What if I'm being coerced to vote?",
@@ -2017,113 +2431,9 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
                 </li>
               </ul>
               <p>
-                No matter if you've voted before, voted in person, or haven't voted at all, the system will never
-                disclose any information about your past actions — it always appear as if you have not voted before.
+                No matter if you've voted before, voted in person, or haven't voted at all, <b>the system will never
+                disclose any information about your past actions — it will always appear as if you have not voted before. </b>
                 This allows you to plausibly claim or deny any past action you might have taken.
-              </p>
-            </div>
-          ),
-        },
-        {
-          id: "revoting",
-          title: "Can I change my vote?",
-          content: (
-            <div className="space-y-2">
-              <p>
-                Yes, you can change your vote at any time during the voting period. This is a security feature that:
-              </p>
-              <ul className="list-disc pl-6 space-y-1">
-                <li>Protects against coercion</li>
-                <li>Allows you to vote freely even if initially pressured</li>
-                <li>Only counts your final vote</li>
-              </ul>
-              <p>To change your vote, you'll need to identify your last valid ballot to confirm your identity.</p>
-              <p className="text-red-600 font-medium">
-                Important: If you fail to correctly identify your last valid ballot, the new ballot will not be valid.
-              </p>
-              <p>If you are being coerced, you can use this feature to intentionally invalidate the coerced ballot.</p>
-            </div>
-          ),
-        },
-        {
-          id: "ballot-verification",
-          title: "Why do I need to verify if I've voted before?",
-          content: (
-            <div className="space-y-2">
-              <p>This verification step is crucial for several security reasons:</p>
-              <ul className="list-disc pl-6 space-y-1">
-                <li>
-                  <strong>Identity verification:</strong> It ensures that only you can cast or change your vote.
-                </li>
-                <li>
-                  <strong>Anti-coercion protection:</strong> It protects you from coercion by allowing you to
-                  intentionally cast an invalid vote with plausible deniability.
-                </li>
-              </ul>
-              <p className="mt-2 text-red-600 font-medium">
-                Important: If you provide incorrect information about having previously voted or incorrectly identify
-                your last valid ballot, your new ballot will not be valid.
-              </p>
-              <p>If you are being coerced, you can use this feature to intentionally invalidate the coerced ballot.</p>
-            </div>
-          ),
-        },
-        {
-          id: "last-valid-ballot",
-          title: "What is the last valid ballot?",
-          content: (
-            <div className="space-y-2">
-              <p>
-                To protect you against coerction, the Online Voting Portal allows you to discreetly submit invalid
-                ballots. An invalid ballot is submitted when you provide incorrect information about having previously
-                voted or your last valid ballot. Conversely, a valid ballot is cast when you provide truthful
-                informaton.
-              </p>
-              <ul className="list-disc pl-6 space-y-1">
-                <li>Your first ballot is always valid — given you select you have not voted before</li>
-                <li>
-                  You can protect your first ballot under coercion by falsely claiming you have voted before and thus
-                  submitting an invalid ballot
-                </li>
-                <li>Once you have cast your first ballot, this is now your last valid ballot</li>
-                <li>
-                  If you choose to revote, select the last valid ballot to be able to submit a new valid ballot — this
-                  new ballot is now your last valid ballot
-                </li>
-                <li>
-                  If you are being coerced and submit an invalid ballot, this new ballot does <strong>not</strong> count
-                  as your last valid balot — when revoting, you must select the last valid ballot you submitted before
-                  the invalid ones submitted under coercion
-                </li>
-                <li>
-                  The system does not allow you to see what your last valid ballot is. This for your protection, as a
-                  potential coercer could also see this information
-                </li>
-              </ul>
-              <p>
-                If you are not sure what your last valid ballot is, you can vote in person before the election closes.
-                Physically cast ballots are final and cannot be changed.
-              </p>
-            </div>
-          ),
-        },
-        {
-          id: "many-ballots",
-          title: "Why am I seeing so many ballots?",
-          content: (
-            <div className="space-y-2">
-              <p>
-                For security and privacy reasons, your ballot is mixed with many other ballots. This makes it difficult
-                for anyone to identify which ballot is yours, protecting you from potential coercion.
-              </p>
-              <ul className="list-disc pl-6 space-y-1">
-                <li>Use the date and time filters to narrow down the list</li>
-                <li>Look for the unique visual pattern (identicon) associated with your ballot</li>
-                <li>If you voted recently, your ballot is likely to be among the newer ones</li>
-              </ul>
-              <p className="mt-2">
-                If you're having trouble finding your ballot, you can always vote in person at your local polling
-                station.
               </p>
             </div>
           ),
@@ -2141,6 +2451,218 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
             </div>
           ),
         },
+      ],
+    },
+    {
+      title: "Revoting",
+      items: [
+        {
+          id: "revoting",
+          title: "How does revoting work?",
+          content: (
+            <div className="space-y-2">
+              <p>The online voting portal allows you to recast your vote an unlimited number of times until the election closes.</p>
+              <p>
+                To be able to cast a new ballot, you must be able to recall all your previous valid ballots by their date and time cast.
+                The system will provide you with visual and lexical memory aids to help you remember your previous ballots.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: "revote-physical",
+          title: "Can I revote if I voted in person?",
+          content: (
+            <div className="space-y-2">
+              <p>
+                No. Physical votes are final and cannot be changed. If you vote both digitally and physically, only your physical vote will count.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: "memory-aids",
+          title: "What are the memory aids?",
+          content: (
+            <div className="space-y-2">
+              <p>Your ballot has two memory aids to help you identify it later if you need to revote:</p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>
+                  <strong>Word phrase:</strong> A unique two-word combination (e.g., "grit orient") that's generated
+                  from your ballot's information. This phrase is easier to remember than numbers or codes.
+                </li>
+                <li>
+                  <strong>Visual pattern (identicon):</strong> The colored square pattern is a visual identifier unique
+                  to your ballot. It helps you recognize your ballot at a glance when you need to verify it later.
+                </li>
+              </ul>
+              <p className="mt-2">
+                Both memory aids are generated based on your ballot's timestamp and ID, creating unique identifiers that
+                are consistent for your specific ballot. They help you find your ballot among many others if you need to
+                revote.
+              </p>
+              <p className="mt-2">
+                While these aids make identification easier, remembering the date and time of your vote is still the
+                most reliable way to identify your ballot.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: "ballot-verification-security",
+          title: "Why do I need to verify my voting history?",
+          content: (
+            <div className="space-y-2">
+              <p>The voting history verification step serves two critical security purposes:</p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>
+                  <strong>Identity verification:</strong> It ensures that only you can cast or change your vote by
+                  requiring knowledge that only you should have.
+                </li>
+                <li>
+                  <strong>Anti-coercion protection:</strong> It gives you a way to invalidate coerced votes without the
+                  coercer knowing.
+                </li>
+              </ul>
+              <p className="mt-2">
+                When you want to revote, you'll be shown a list of ballots that includes your previously cast ballots
+                mixed with many others. You need to select all of your previous valid ballots to verify your identity.
+              </p>
+              <p className="mt-2 text-red-600 font-medium">
+                Important: If you provide incorrect information about having previously voted or fail to identify all
+                your previous valid ballots, your new ballot will not be valid.
+              </p>
+              <p>
+                If you are being coerced, you can use this feature to intentionally invalidate the coerced ballot by
+                selecting the wrong ballots or claiming you haven't voted when you have (or vice versa).
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: "previous-ballots",
+          title: "How do I identify my previous ballots?",
+          content: (
+            <div className="space-y-2">
+              <p>
+                To protect your voting privacy, the system doesn't explicitly tell you which ballots are yours or which ones are valid. Instead,
+                you need to recognize your own ballots using:
+              </p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>The date and time when you cast your vote</li>
+                <li>The unique visual pattern (identicon) associated with your ballot</li>
+                <li>The word phrase generated for your ballot</li>
+              </ul>
+              <p className="mt-2">
+                When you cast a ballot, you'll see a receipt with this information. It's important to remember or note
+                these details if you plan to revote later.
+              </p>
+              <p className="mt-2">If you're having trouble identifying your previous ballots, you can:</p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>Use the date and time filters to narrow down the list</li>
+                <li>Look for the unique visual pattern and word phrase that match your ballot</li>
+              </ul>
+              <p className="mt-2">
+                If you're still unsure, you can vote in person at your local polling station. Physical votes are final
+                and cannot be changed.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: "valid-ballot",
+          title: "What are valid and invalid ballots?",
+          content: (
+            <div className="space-y-2">
+              <p>
+                A valid ballot is cast when you provide accurate information about your voting history for the given election.
+                Conversely, an invalid ballot is cast when you, intentionally or not, provide false information about your voting history.
+              </p>
+              <p className="mt-2 text-red-600 font-medium">
+                It is important that, when revoting, you only identify your previous valid ballots.
+              </p>
+              <p>Examples:</p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>
+                  If, for this election, this is your first time voting and you select you have not voted before, 
+                  your first cast ballot will always be valid.
+                </li>
+                <li>
+                  If you vote again later, select that you have voted before in this election, and correctly identify your previous ballot,
+                  your new ballot will be valid. If you wish to vote again for the third time later, you must correctly identify both previous ballots.
+                </li>
+                <li>
+                  If you have voted before in this election but select that this is your first time voting, your ballot will be invalid.
+                  Conversely, if you have not voted before in this election but select that you have and select any of the presented ballots, your ballot will be invalid.
+                </li>
+              </ul>
+            </div>
+          ),
+        },
+        {
+          id: "see-valid-ballot",
+          title: "Can I see if my ballot was valid or not?",
+          content: (
+            <div className="space-y-2">
+              <p>
+                The system protects you against potential coercion by maintaining your plausible deniability at all points.
+                This unfortunately means that there is no way for you to see if any of your ballots were valid or not.
+              </p>
+              <p>
+                <b>Your first ballot will always be valid</b>, provided you selected that you had not voted before when casting it.
+              </p>
+              <p>
+                If you are unsure about your previous votes in this election but wish to revote, you can still vote physically at you local polling station.
+                Physical votes always take priority over digital ones.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: "many-ballots",
+          title: "Why am I seeing so many ballots?",
+          content: (
+            <div className="space-y-2">
+              <p>
+                For security and privacy reasons, your ballot is mixed with many other ballots. This makes it difficult
+                for anyone to identify which ballots are yours, protecting you from potential coercion.
+              </p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>Use the date and time filters to narrow down the list</li>
+                <li>Look for the unique visual pattern and word phrase associated with your ballot</li>
+                <li>If you voted recently, your ballot is likely to be among the newer ones</li>
+              </ul>
+              <p className="mt-2">
+                If you're having trouble finding your ballot, you can always vote in person at your local polling
+                station.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: "see-previous-votes",
+          title: "Can I see how I voted?",
+          content: (
+            <div className="space-y-2">
+              <p>
+                The system protects you against potential coercion by maintaining your plausible deniability at all points.
+                This unfortunately means that there is no way for you to see your voting history.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: "cant-remember",
+          title: "What if I can't remember my previous ballots?",
+          content: (
+            <div className="space-y-2">
+              <p>
+                In the event you wish to change your vote but cannot recall your previous valid ballots, you can vote at your local polling station
+                in person. Physical votes are final and are always counted, regardless of if you voted online first.
+              </p>
+            </div>
+          ),
+        }
       ],
     },
     {
@@ -2226,11 +2748,23 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
   // Handle section changes
   useEffect(() => {
     if (dialogOpen && openSection) {
-      requestAnimationFrame(() => {
-        scrollToSection(openSection)
-      })
+      // Only auto-scroll if this is the initial opening with defaultOpenSection
+      if (initialOpenRef.current && defaultOpenSection === openSection) {
+        requestAnimationFrame(() => {
+          scrollToSection(openSection)
+        })
+      }
+      // Reset the flag after initial opening is handled
+      initialOpenRef.current = false
     }
-  }, [dialogOpen, openSection])
+  }, [dialogOpen, openSection, defaultOpenSection])
+
+  // Reset the initialOpen flag when dialog closes
+  useEffect(() => {
+    if (!dialogOpen) {
+      initialOpenRef.current = true
+    }
+  }, [dialogOpen])
 
   // Prepare dialog content for prerendering
   const dialogContent = (
@@ -2243,7 +2777,11 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
             collapsible
             className="w-full"
             value={section.items.some((item) => item.id === openSection) ? openSection : undefined}
-            onValueChange={setOpenSection}
+            onValueChange={(value) => {
+              // When user manually clicks an accordion item, don't trigger auto-scroll
+              initialOpenRef.current = false
+              setOpenSection(value)
+            }}
           >
             {section.items.map((item) => (
               <AccordionItem
@@ -2284,7 +2822,7 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
         </DialogTrigger>
         <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto" ref={dialogContentRef}>
           <DialogHeader>
-            <DialogTitle className="text-2xl">Help Center</DialogTitle>
+            <DialogTitle className="text-2xl">Help Centre</DialogTitle>
           </DialogHeader>
           {dialogContent}
         </DialogContent>
@@ -2479,6 +3017,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { AlertTriangle } from "lucide-react"
 import { HelpDialog } from "./help-dialog"
+import Image from "next/image"
 
 // In a real application, this would come from the authentication system
 const userInfo = {
@@ -2494,7 +3033,16 @@ export function TopBarAuth() {
     <header className="border-b bg-[#FFD700]">
       <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-8">
         <div className="flex items-center gap-4">
-          <div className="text-2xl font-bold">Logo goes here</div>
+          <div className="relative h-14 w-auto overflow-hidden flex items-center">
+            <Image
+              src="/logo.png?height=56&width=180&text=VOTE+LOGO"
+              alt="Voting Portal Logo"
+              width={240}
+              height={80}
+              className="object-contain"
+              priority
+            />
+          </div>
           <div className="text-xs leading-tight">
             <div className="font-medium">{userInfo.name}</div>
             <div className="text-gray-700">{userInfo.id}</div>
@@ -2545,13 +3093,23 @@ File: components/top-bar-public.tsx
 import Link from "next/link"
 import { Home } from "lucide-react"
 import { HelpDialog } from "./help-dialog"
+import Image from "next/image"
 
 export function TopBarPublic() {
   return (
     <header className="border-b bg-[#FFD700]">
       <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-8">
         <Link href="/" className="flex items-center gap-2">
-          <div className="text-2xl font-bold">Logo goes here</div>
+          <div className="relative h-18 w-auto overflow-hidden flex items-center">
+            <Image
+              src="/logo.png?height=84&width=240&text=VOTE+LOGO"
+              alt="Voting Portal Logo"
+              width={240}
+              height={80}
+              className="object-contain"
+              priority
+            />
+          </div>
         </Link>
         <div className="flex items-center gap-4">
           <HelpDialog />
@@ -3601,6 +4159,7 @@ export interface Ballot {
   timestamp: string
   votes: Vote[]
   identiconHash?: string
+  phrase?: string
 }
 
 // For verification, we only show timestamp and ID, not the actual votes
@@ -3609,6 +4168,7 @@ export interface PublicBallot {
   timestamp: string
   isSubmittedByUser?: boolean // Flag to identify user-submitted ballots internally
   identiconHash?: string
+  phrase?: string
 }
 
 // Define the ballot items
@@ -3702,7 +4262,8 @@ export function generateBallotId(timestamp: string, isUserBallot = false, index 
 }
 
 // Import the hash generation function directly to avoid circular dependencies
-import { generateBallotHash } from "@/lib/identicon" // Import from identicon.ts, not hash-utils.ts
+import { generateBallotHash } from "@/lib/identicon"
+import { generatePhrase } from "@/lib/word-phrases"
 
 // Helper function to get user submitted ballots from localStorage
 function getUserSubmittedBallots(): PublicBallot[] {
@@ -3721,20 +4282,19 @@ function getUserSubmittedBallots(): PublicBallot[] {
       return isWithinLastDays(ballotDate, 2)
     })
 
-    // Ensure all ballots have an identicon hash
+    // Ensure all ballots have an identicon hash and phrase
     const processedBallots = recentBallots.map((ballot) => {
       // Generate the identicon hash if it doesn't exist
       const finalHash = ballot.identiconHash || generateBallotHash({ timestamp: ballot.timestamp, id: ballot.id })
 
-      // Only log user ballots
-      if (ballot.isSubmittedByUser) {
-        console.log(`[USER BALLOT] ID: ${ballot.id}, Hash: ${finalHash}`)
-      }
+      // Generate phrase if it doesn't exist
+      const phrase = ballot.phrase || generatePhrase(finalHash)
 
       return {
         ...ballot,
         isSubmittedByUser: true,
         identiconHash: finalHash,
+        phrase,
       }
     })
 
@@ -3751,11 +4311,13 @@ export function saveUserBallot(ballot: PublicBallot): void {
     // Generate the identicon hash if it doesn't exist
     const finalHash = ballot.identiconHash || generateBallotHash({ timestamp: ballot.timestamp, id: ballot.id })
 
-    console.log(`[SAVING BALLOT] ID: ${ballot.id}, Hash: ${finalHash}`)
+    // Generate phrase if it doesn't exist
+    const phrase = ballot.phrase || generatePhrase(finalHash)
 
     const ballotWithHash = {
       ...ballot,
       identiconHash: finalHash,
+      phrase,
     }
 
     // Get existing ballots
@@ -3825,10 +4387,14 @@ export function generateRandomPublicBallots(count = 800, includeUserBallots = tr
         // Generate the identicon hash
         const identiconHash = generateBallotHash({ timestamp, id })
 
+        // Generate phrase
+        const phrase = generatePhrase(identiconHash)
+
         randomBallots.push({
           id,
           timestamp,
           identiconHash,
+          phrase,
         })
       }
     }
@@ -3842,14 +4408,6 @@ export function generateRandomPublicBallots(count = 800, includeUserBallots = tr
 
   // Sort all ballots by timestamp (newest first)
   allBallots.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
-
-  // Log only the number of user ballots
-  console.log(`[BALLOT COUNT] User ballots: ${userSubmittedBallots.length}, Total: ${allBallots.length}`)
-
-  // Log only user ballots for debugging
-  if (userSubmittedBallots.length > 0) {
-    console.log("[USER BALLOTS]", userSubmittedBallots)
-  }
 
   return allBallots
 }
@@ -3882,89 +4440,86 @@ return `${hours}:${minutes}`
 ================
 File: lib/identicon.ts
 ================
-// Simple identicon generator based on ballot timestamp and ID only (not voting choices)
+import crypto from 'crypto';
+
+// Expanded, colorblind-friendly palette (excluding black and white for background)
+const SAFE_COLORS = [
+    "#E69F00", // orange
+    "#56B4E9", // sky blue
+    "#009E73", // teal/green
+    "#F0E442", // yellow
+    "#0072B2", // strong blue
+    "#D55E00", // reddish orange
+    "#CC79A7", // pink
+    "#117733"  // forest green
+];
+
+// Deterministic SHA-256 hash of a ballot object
 export function generateBallotHash(ballot: { timestamp: string; id: string }): string {
-    // Create a string representation of the ballot using only timestamp and ID
-    // Ensure we're using the exact same format every time
-    const ballotString = `${ballot.timestamp}:${ballot.id}`
-  
-    // Only log for user ballots (those with IDs in the 5000+ range)
-    const isUserBallot = ballot.id.includes("ballot-5") && ballot.id.split("-")[1].startsWith("5")
-    if (isUserBallot) {
-      console.log(`[GENERATING HASH] Input: ${ballotString}`)
-    }
-  
-    // Simple hash function
-    let hash = 0
-    for (let i = 0; i < ballotString.length; i++) {
-      const char = ballotString.charCodeAt(i)
-      hash = (hash << 5) - hash + char
-      hash = hash & hash // Convert to 32bit integer
-    }
-  
-    // Convert to positive hex string
-    const result = Math.abs(hash).toString(16).padStart(8, "0")
-  
-    if (isUserBallot) {
-      console.log(`[HASH RESULT] ${result}`)
-    }
-  
-    return result
-  }
-  
-  // Generate a color from a hash
-  export function hashToColor(hash: string): string {
-    // Use first 6 characters of hash for color
-    return `#${hash.substring(0, 6)}`
-  }
-  
-  // Generate background and foreground colors from a hash
-  export function hashToColors(hash: string): { bg: string; fg: string } {
-    const bgColor = hashToColor(hash)
-  
-    // Generate a contrasting foreground color
-    const r = Number.parseInt(hash.substring(0, 2), 16)
-    const g = Number.parseInt(hash.substring(2, 4), 16)
-    const b = Number.parseInt(hash.substring(4, 6), 16)
-  
-    // Calculate brightness (simple formula)
-    const brightness = (r * 299 + g * 587 + b * 114) / 1000
-  
-    // Choose white or black based on background brightness
-    const fgColor = brightness > 128 ? "#000000" : "#FFFFFF"
-  
-    return { bg: bgColor, fg: fgColor }
-  }
-  
-  // Generate a simple grid-based identicon
-  export function generateIdenticon(hash: string, size = 5): { grid: boolean[][]; colors: { bg: string; fg: string } } {
-    const colors = hashToColors(hash)
-    const grid: boolean[][] = []
-  
-    // Use the hash to determine which cells are filled
+    const ballotString = `${ballot.timestamp}:${ballot.id}`; // No randomness
+    return crypto.createHash('sha256').update(ballotString).digest('hex');
+}
+
+// Deterministic background color from hash
+export function hashToColor(hash: string): string {
+    const index = parseInt(hash.substring(0, 2), 16) % SAFE_COLORS.length;
+    return SAFE_COLORS[index];
+}
+
+// Utility: Calculate relative luminance of a color
+function getLuminance(hex: string): number {
+    const rgb = hex.match(/\w\w/g)!.map(x => parseInt(x, 16) / 255);
+    const [r, g, b] = rgb.map(c => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4));
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+// Utility: Calculate contrast ratio between two colors
+function getContrast(hex1: string, hex2: string): number {
+    const lum1 = getLuminance(hex1);
+    const lum2 = getLuminance(hex2);
+    const brightest = Math.max(lum1, lum2);
+    const darkest = Math.min(lum1, lum2);
+    return (brightest + 0.05) / (darkest + 0.05);
+}
+
+// Choose high-contrast foreground color (black or white)
+export function hashToColors(hash: string): { bg: string; fg: string } {
+    const bg = hashToColor(hash);
+    const blackContrast = getContrast(bg, "#000000");
+    const whiteContrast = getContrast(bg, "#FFFFFF");
+
+    const fg = blackContrast >= whiteContrast ? "#000000" : "#FFFFFF";
+    return { bg, fg };
+}
+
+// Generate symmetrical identicon from hash
+export function generateIdenticon(
+    hash: string,
+    size = 5
+): { grid: boolean[][]; colors: { bg: string; fg: string } } {
+    const colors = hashToColors(hash);
+    const grid: boolean[][] = [];
+
     for (let i = 0; i < size; i++) {
-      const row: boolean[] = []
-      for (let j = 0; j < size; j++) {
-        // Use different parts of the hash for different positions
-        const position = i * size + j
-        const hexChar = hash[position % hash.length]
-        const value = Number.parseInt(hexChar, 16)
-  
-        // Fill the cell if the value is even
-        row.push(value % 2 === 0)
-      }
-      grid.push(row)
+        const row: boolean[] = [];
+        for (let j = 0; j < size; j++) {
+            const position = i * size + j;
+            const hexChar = hash[position % hash.length];
+            const value = parseInt(hexChar, 16);
+            row.push(value % 2 === 0);
+        }
+        grid.push(row);
     }
-  
-    // Make the pattern symmetrical (like GitHub identicons)
+
+    // Apply vertical mirroring for symmetry
     for (let i = 0; i < size; i++) {
-      for (let j = Math.ceil(size / 2); j < size; j++) {
-        grid[i][j] = grid[i][size - j - 1]
-      }
+        for (let j = Math.ceil(size / 2); j < size; j++) {
+            grid[i][j] = grid[i][size - j - 1];
+        }
     }
-  
-    return { grid, colors }
-  }
+
+    return { grid, colors };
+}
 
 ================
 File: lib/utils.ts
@@ -3975,6 +4530,2075 @@ import { twMerge } from "tailwind-merge"
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
+
+================
+File: lib/word-phrases.ts
+================
+import { wordList } from './wordlist';
+
+/**
+ * Generates a memorable phrase from a hash
+ * The phrase consists of two words
+ * @param hash - The hash to generate a phrase from
+ * @returns A two-word phrase
+ */
+export function generatePhrase(hash: string): string {
+  const index1 = Number.parseInt(hash.substring(0, 4), 16) % wordList.length;
+  const index2 = Number.parseInt(hash.substring(4, 8), 16) % wordList.length;
+  return `${wordList[index1]} ${wordList[index2]}`;
+}
+
+================
+File: lib/wordlist.ts
+================
+export const wordList = [ "abandon",
+"ability",
+"able",
+"about",
+"above",
+"absent",
+"absorb",
+"abstract",
+"absurd",
+"abuse",
+"access",
+"accident",
+"account",
+"accuse",
+"achieve",
+"acid",
+"acoustic",
+"acquire",
+"across",
+"act",
+"action",
+"actor",
+"actress",
+"actual",
+"adapt",
+"add",
+"addict",
+"address",
+"adjust",
+"admit",
+"adult",
+"advance",
+"advice",
+"aerobic",
+"affair",
+"afford",
+"afraid",
+"again",
+"age",
+"agent",
+"agree",
+"ahead",
+"aim",
+"air",
+"airport",
+"aisle",
+"alarm",
+"album",
+"alcohol",
+"alert",
+"alien",
+"all",
+"alley",
+"allow",
+"almost",
+"alone",
+"alpha",
+"already",
+"also",
+"alter",
+"always",
+"amateur",
+"amazing",
+"among",
+"amount",
+"amused",
+"analyst",
+"anchor",
+"ancient",
+"anger",
+"angle",
+"angry",
+"animal",
+"ankle",
+"announce",
+"annual",
+"another",
+"answer",
+"antenna",
+"antique",
+"anxiety",
+"any",
+"apart",
+"apology",
+"appear",
+"apple",
+"approve",
+"april",
+"arch",
+"arctic",
+"area",
+"arena",
+"argue",
+"arm",
+"armed",
+"armor",
+"army",
+"around",
+"arrange",
+"arrest",
+"arrive",
+"arrow",
+"art",
+"artefact",
+"artist",
+"artwork",
+"ask",
+"aspect",
+"assault",
+"asset",
+"assist",
+"assume",
+"asthma",
+"athlete",
+"atom",
+"attack",
+"attend",
+"attitude",
+"attract",
+"auction",
+"audit",
+"august",
+"aunt",
+"author",
+"auto",
+"autumn",
+"average",
+"avocado",
+"avoid",
+"awake",
+"aware",
+"away",
+"awesome",
+"awful",
+"awkward",
+"axis",
+"baby",
+"bachelor",
+"bacon",
+"badge",
+"bag",
+"balance",
+"balcony",
+"ball",
+"bamboo",
+"banana",
+"banner",
+"bar",
+"barely",
+"bargain",
+"barrel",
+"base",
+"basic",
+"basket",
+"battle",
+"beach",
+"bean",
+"beauty",
+"because",
+"become",
+"beef",
+"before",
+"begin",
+"behave",
+"behind",
+"believe",
+"below",
+"belt",
+"bench",
+"benefit",
+"best",
+"betray",
+"better",
+"between",
+"beyond",
+"bicycle",
+"bid",
+"bike",
+"bind",
+"biology",
+"bird",
+"birth",
+"bitter",
+"black",
+"blade",
+"blame",
+"blanket",
+"blast",
+"bleak",
+"bless",
+"blind",
+"blood",
+"blossom",
+"blouse",
+"blue",
+"blur",
+"blush",
+"board",
+"boat",
+"body",
+"boil",
+"bomb",
+"bone",
+"bonus",
+"book",
+"boost",
+"border",
+"boring",
+"borrow",
+"boss",
+"bottom",
+"bounce",
+"box",
+"boy",
+"bracket",
+"brain",
+"brand",
+"brass",
+"brave",
+"bread",
+"breeze",
+"brick",
+"bridge",
+"brief",
+"bright",
+"bring",
+"brisk",
+"broccoli",
+"broken",
+"bronze",
+"broom",
+"brother",
+"brown",
+"brush",
+"bubble",
+"buddy",
+"budget",
+"buffalo",
+"build",
+"bulb",
+"bulk",
+"bullet",
+"bundle",
+"bunker",
+"burden",
+"burger",
+"burst",
+"bus",
+"business",
+"busy",
+"butter",
+"buyer",
+"buzz",
+"cabbage",
+"cabin",
+"cable",
+"cactus",
+"cage",
+"cake",
+"call",
+"calm",
+"camera",
+"camp",
+"can",
+"canal",
+"cancel",
+"candy",
+"cannon",
+"canoe",
+"canvas",
+"canyon",
+"capable",
+"capital",
+"captain",
+"car",
+"carbon",
+"card",
+"cargo",
+"carpet",
+"carry",
+"cart",
+"case",
+"cash",
+"casino",
+"castle",
+"casual",
+"cat",
+"catalog",
+"catch",
+"category",
+"cattle",
+"caught",
+"cause",
+"caution",
+"cave",
+"ceiling",
+"celery",
+"cement",
+"census",
+"century",
+"cereal",
+"certain",
+"chair",
+"chalk",
+"champion",
+"change",
+"chaos",
+"chapter",
+"charge",
+"chase",
+"chat",
+"cheap",
+"check",
+"cheese",
+"chef",
+"cherry",
+"chest",
+"chicken",
+"chief",
+"child",
+"chimney",
+"choice",
+"choose",
+"chronic",
+"chuckle",
+"chunk",
+"churn",
+"cigar",
+"cinnamon",
+"circle",
+"citizen",
+"city",
+"civil",
+"claim",
+"clap",
+"clarify",
+"claw",
+"clay",
+"clean",
+"clerk",
+"clever",
+"click",
+"client",
+"cliff",
+"climb",
+"clinic",
+"clip",
+"clock",
+"clog",
+"close",
+"cloth",
+"cloud",
+"clown",
+"club",
+"clump",
+"cluster",
+"clutch",
+"coach",
+"coast",
+"coconut",
+"code",
+"coffee",
+"coil",
+"coin",
+"collect",
+"color",
+"column",
+"combine",
+"come",
+"comfort",
+"comic",
+"common",
+"company",
+"concert",
+"conduct",
+"confirm",
+"congress",
+"connect",
+"consider",
+"control",
+"convince",
+"cook",
+"cool",
+"copper",
+"copy",
+"coral",
+"core",
+"corn",
+"correct",
+"cost",
+"cotton",
+"couch",
+"country",
+"couple",
+"course",
+"cousin",
+"cover",
+"coyote",
+"crack",
+"cradle",
+"craft",
+"cram",
+"crane",
+"crash",
+"crater",
+"crawl",
+"crazy",
+"cream",
+"credit",
+"creek",
+"crew",
+"cricket",
+"crime",
+"crisp",
+"critic",
+"crop",
+"cross",
+"crouch",
+"crowd",
+"crucial",
+"cruel",
+"cruise",
+"crumble",
+"crunch",
+"crush",
+"cry",
+"crystal",
+"cube",
+"culture",
+"cup",
+"cupboard",
+"curious",
+"current",
+"curtain",
+"curve",
+"cushion",
+"custom",
+"cute",
+"cycle",
+"dad",
+"damage",
+"damp",
+"dance",
+"danger",
+"daring",
+"dash",
+"daughter",
+"dawn",
+"day",
+"deal",
+"debate",
+"debris",
+"decade",
+"december",
+"decide",
+"decline",
+"decorate",
+"decrease",
+"deer",
+"defense",
+"define",
+"defy",
+"degree",
+"delay",
+"deliver",
+"demand",
+"demise",
+"denial",
+"dentist",
+"deny",
+"depart",
+"depend",
+"deposit",
+"depth",
+"deputy",
+"derive",
+"describe",
+"desert",
+"design",
+"desk",
+"despair",
+"destroy",
+"detail",
+"detect",
+"develop",
+"device",
+"devote",
+"diagram",
+"dial",
+"diamond",
+"diary",
+"dice",
+"diesel",
+"diet",
+"differ",
+"digital",
+"dignity",
+"dilemma",
+"dinner",
+"dinosaur",
+"direct",
+"dirt",
+"disagree",
+"discover",
+"disease",
+"dish",
+"dismiss",
+"disorder",
+"display",
+"distance",
+"divert",
+"divide",
+"divorce",
+"dizzy",
+"doctor",
+"document",
+"dog",
+"doll",
+"dolphin",
+"domain",
+"donate",
+"donkey",
+"donor",
+"door",
+"dose",
+"double",
+"dove",
+"draft",
+"dragon",
+"drama",
+"drastic",
+"draw",
+"dream",
+"dress",
+"drift",
+"drill",
+"drink",
+"drip",
+"drive",
+"drop",
+"drum",
+"dry",
+"duck",
+"dumb",
+"dune",
+"during",
+"dust",
+"dutch",
+"duty",
+"dwarf",
+"dynamic",
+"eager",
+"eagle",
+"early",
+"earn",
+"earth",
+"easily",
+"east",
+"easy",
+"echo",
+"ecology",
+"economy",
+"edge",
+"edit",
+"educate",
+"effort",
+"egg",
+"eight",
+"either",
+"elbow",
+"elder",
+"electric",
+"elegant",
+"element",
+"elephant",
+"elevator",
+"elite",
+"else",
+"embark",
+"embody",
+"embrace",
+"emerge",
+"emotion",
+"employ",
+"empower",
+"empty",
+"enable",
+"enact",
+"end",
+"endless",
+"endorse",
+"enemy",
+"energy",
+"enforce",
+"engage",
+"engine",
+"enhance",
+"enjoy",
+"enlist",
+"enough",
+"enrich",
+"enroll",
+"ensure",
+"enter",
+"entire",
+"entry",
+"envelope",
+"episode",
+"equal",
+"equip",
+"era",
+"erase",
+"erode",
+"erosion",
+"error",
+"erupt",
+"escape",
+"essay",
+"essence",
+"estate",
+"eternal",
+"ethics",
+"evidence",
+"evil",
+"evoke",
+"evolve",
+"exact",
+"example",
+"excess",
+"exchange",
+"excite",
+"exclude",
+"excuse",
+"execute",
+"exercise",
+"exhaust",
+"exhibit",
+"exile",
+"exist",
+"exit",
+"exotic",
+"expand",
+"expect",
+"expire",
+"explain",
+"expose",
+"express",
+"extend",
+"extra",
+"eye",
+"eyebrow",
+"fabric",
+"face",
+"faculty",
+"fade",
+"faint",
+"faith",
+"fall",
+"false",
+"fame",
+"family",
+"famous",
+"fan",
+"fancy",
+"fantasy",
+"farm",
+"fashion",
+"fat",
+"fatal",
+"father",
+"fatigue",
+"fault",
+"favorite",
+"feature",
+"february",
+"federal",
+"fee",
+"feed",
+"feel",
+"female",
+"fence",
+"festival",
+"fetch",
+"fever",
+"few",
+"fiber",
+"fiction",
+"field",
+"figure",
+"file",
+"film",
+"filter",
+"final",
+"find",
+"fine",
+"finger",
+"finish",
+"fire",
+"firm",
+"first",
+"fiscal",
+"fish",
+"fit",
+"fitness",
+"fix",
+"flag",
+"flame",
+"flash",
+"flat",
+"flavor",
+"flee",
+"flight",
+"flip",
+"float",
+"flock",
+"floor",
+"flower",
+"fluid",
+"flush",
+"fly",
+"foam",
+"focus",
+"fog",
+"foil",
+"fold",
+"follow",
+"food",
+"foot",
+"force",
+"forest",
+"forget",
+"fork",
+"fortune",
+"forum",
+"forward",
+"fossil",
+"foster",
+"found",
+"fox",
+"fragile",
+"frame",
+"frequent",
+"fresh",
+"friend",
+"fringe",
+"frog",
+"front",
+"frost",
+"frown",
+"frozen",
+"fruit",
+"fuel",
+"fun",
+"funny",
+"furnace",
+"fury",
+"future",
+"gadget",
+"gain",
+"galaxy",
+"gallery",
+"game",
+"gap",
+"garage",
+"garbage",
+"garden",
+"garlic",
+"garment",
+"gas",
+"gasp",
+"gate",
+"gather",
+"gauge",
+"gaze",
+"general",
+"genius",
+"genre",
+"gentle",
+"genuine",
+"gesture",
+"ghost",
+"giant",
+"gift",
+"giggle",
+"ginger",
+"giraffe",
+"girl",
+"give",
+"glad",
+"glance",
+"glare",
+"glass",
+"glide",
+"glimpse",
+"globe",
+"gloom",
+"glory",
+"glove",
+"glow",
+"glue",
+"goat",
+"goddess",
+"gold",
+"good",
+"goose",
+"gorilla",
+"gospel",
+"gossip",
+"govern",
+"gown",
+"grab",
+"grace",
+"grain",
+"grant",
+"grape",
+"grass",
+"gravity",
+"great",
+"green",
+"grid",
+"grief",
+"grit",
+"grocery",
+"group",
+"grow",
+"grunt",
+"guard",
+"guess",
+"guide",
+"guilt",
+"guitar",
+"gun",
+"gym",
+"habit",
+"hair",
+"half",
+"hammer",
+"hamster",
+"hand",
+"happy",
+"harbor",
+"hard",
+"harsh",
+"harvest",
+"hat",
+"have",
+"hawk",
+"hazard",
+"head",
+"health",
+"heart",
+"heavy",
+"hedgehog",
+"height",
+"hello",
+"helmet",
+"help",
+"hen",
+"hero",
+"hidden",
+"high",
+"hill",
+"hint",
+"hip",
+"hire",
+"history",
+"hobby",
+"hockey",
+"hold",
+"hole",
+"holiday",
+"hollow",
+"home",
+"honey",
+"hood",
+"hope",
+"horn",
+"horror",
+"horse",
+"hospital",
+"host",
+"hotel",
+"hour",
+"hover",
+"hub",
+"huge",
+"human",
+"humble",
+"humor",
+"hundred",
+"hungry",
+"hunt",
+"hurdle",
+"hurry",
+"hurt",
+"husband",
+"hybrid",
+"ice",
+"icon",
+"idea",
+"identify",
+"idle",
+"ignore",
+"ill",
+"illegal",
+"illness",
+"image",
+"imitate",
+"immense",
+"immune",
+"impact",
+"impose",
+"improve",
+"impulse",
+"inch",
+"include",
+"income",
+"increase",
+"index",
+"indicate",
+"indoor",
+"industry",
+"infant",
+"inflict",
+"inform",
+"inhale",
+"inherit",
+"initial",
+"inject",
+"injury",
+"inmate",
+"inner",
+"innocent",
+"input",
+"inquiry",
+"insane",
+"insect",
+"inside",
+"inspire",
+"install",
+"intact",
+"interest",
+"into",
+"invest",
+"invite",
+"involve",
+"iron",
+"island",
+"isolate",
+"issue",
+"item",
+"ivory",
+"jacket",
+"jaguar",
+"jar",
+"jazz",
+"jealous",
+"jeans",
+"jelly",
+"jewel",
+"job",
+"join",
+"joke",
+"journey",
+"joy",
+"judge",
+"juice",
+"jump",
+"jungle",
+"junior",
+"junk",
+"just",
+"kangaroo",
+"keen",
+"keep",
+"ketchup",
+"key",
+"kick",
+"kid",
+"kidney",
+"kind",
+"kingdom",
+"kiss",
+"kit",
+"kitchen",
+"kite",
+"kitten",
+"kiwi",
+"knee",
+"knife",
+"knock",
+"know",
+"lab",
+"label",
+"labor",
+"ladder",
+"lady",
+"lake",
+"lamp",
+"language",
+"laptop",
+"large",
+"later",
+"latin",
+"laugh",
+"laundry",
+"lava",
+"law",
+"lawn",
+"lawsuit",
+"layer",
+"lazy",
+"leader",
+"leaf",
+"learn",
+"leave",
+"lecture",
+"left",
+"leg",
+"legal",
+"legend",
+"leisure",
+"lemon",
+"lend",
+"length",
+"lens",
+"leopard",
+"lesson",
+"letter",
+"level",
+"liar",
+"liberty",
+"library",
+"license",
+"life",
+"lift",
+"light",
+"like",
+"limb",
+"limit",
+"link",
+"lion",
+"liquid",
+"list",
+"little",
+"live",
+"lizard",
+"load",
+"loan",
+"lobster",
+"local",
+"lock",
+"logic",
+"lonely",
+"long",
+"loop",
+"lottery",
+"loud",
+"lounge",
+"love",
+"loyal",
+"lucky",
+"luggage",
+"lumber",
+"lunar",
+"lunch",
+"luxury",
+"lyrics",
+"machine",
+"mad",
+"magic",
+"magnet",
+"maid",
+"mail",
+"main",
+"major",
+"make",
+"mammal",
+"man",
+"manage",
+"mandate",
+"mango",
+"mansion",
+"manual",
+"maple",
+"marble",
+"march",
+"margin",
+"marine",
+"market",
+"marriage",
+"mask",
+"mass",
+"master",
+"match",
+"material",
+"math",
+"matrix",
+"matter",
+"maximum",
+"maze",
+"meadow",
+"mean",
+"measure",
+"meat",
+"mechanic",
+"medal",
+"media",
+"melody",
+"melt",
+"member",
+"memory",
+"mention",
+"menu",
+"mercy",
+"merge",
+"merit",
+"merry",
+"mesh",
+"message",
+"metal",
+"method",
+"middle",
+"midnight",
+"milk",
+"million",
+"mimic",
+"mind",
+"minimum",
+"minor",
+"minute",
+"miracle",
+"mirror",
+"misery",
+"miss",
+"mistake",
+"mix",
+"mixed",
+"mixture",
+"mobile",
+"model",
+"modify",
+"mom",
+"moment",
+"monitor",
+"monkey",
+"monster",
+"month",
+"moon",
+"moral",
+"more",
+"morning",
+"mosquito",
+"mother",
+"motion",
+"motor",
+"mountain",
+"mouse",
+"move",
+"movie",
+"much",
+"muffin",
+"mule",
+"multiply",
+"muscle",
+"museum",
+"mushroom",
+"music",
+"must",
+"mutual",
+"myself",
+"mystery",
+"myth",
+"naive",
+"name",
+"napkin",
+"narrow",
+"nasty",
+"nation",
+"nature",
+"near",
+"neck",
+"need",
+"negative",
+"neglect",
+"neither",
+"nephew",
+"nerve",
+"nest",
+"net",
+"network",
+"neutral",
+"never",
+"news",
+"next",
+"nice",
+"night",
+"noble",
+"noise",
+"nominee",
+"noodle",
+"normal",
+"north",
+"nose",
+"notable",
+"note",
+"nothing",
+"notice",
+"novel",
+"now",
+"nuclear",
+"number",
+"nurse",
+"nut",
+"oak",
+"obey",
+"object",
+"oblige",
+"obscure",
+"observe",
+"obtain",
+"obvious",
+"occur",
+"ocean",
+"october",
+"odor",
+"off",
+"offer",
+"office",
+"often",
+"oil",
+"okay",
+"old",
+"olive",
+"olympic",
+"omit",
+"once",
+"one",
+"onion",
+"online",
+"only",
+"open",
+"opera",
+"opinion",
+"oppose",
+"option",
+"orange",
+"orbit",
+"orchard",
+"order",
+"ordinary",
+"organ",
+"orient",
+"original",
+"orphan",
+"ostrich",
+"other",
+"outdoor",
+"outer",
+"output",
+"outside",
+"oval",
+"oven",
+"over",
+"own",
+"owner",
+"oxygen",
+"oyster",
+"ozone",
+"pact",
+"paddle",
+"page",
+"pair",
+"palace",
+"palm",
+"panda",
+"panel",
+"panic",
+"panther",
+"paper",
+"parade",
+"parent",
+"park",
+"parrot",
+"party",
+"pass",
+"patch",
+"path",
+"patient",
+"patrol",
+"pattern",
+"pause",
+"pave",
+"payment",
+"peace",
+"peanut",
+"pear",
+"peasant",
+"pelican",
+"pen",
+"penalty",
+"pencil",
+"people",
+"pepper",
+"perfect",
+"permit",
+"person",
+"pet",
+"phone",
+"photo",
+"phrase",
+"physical",
+"piano",
+"picnic",
+"picture",
+"piece",
+"pig",
+"pigeon",
+"pill",
+"pilot",
+"pink",
+"pioneer",
+"pipe",
+"pistol",
+"pitch",
+"pizza",
+"place",
+"planet",
+"plastic",
+"plate",
+"play",
+"please",
+"pledge",
+"pluck",
+"plug",
+"plunge",
+"poem",
+"poet",
+"point",
+"polar",
+"pole",
+"police",
+"pond",
+"pony",
+"pool",
+"popular",
+"portion",
+"position",
+"possible",
+"post",
+"potato",
+"pottery",
+"poverty",
+"powder",
+"power",
+"practice",
+"praise",
+"predict",
+"prefer",
+"prepare",
+"present",
+"pretty",
+"prevent",
+"price",
+"pride",
+"primary",
+"print",
+"priority",
+"prison",
+"private",
+"prize",
+"problem",
+"process",
+"produce",
+"profit",
+"program",
+"project",
+"promote",
+"proof",
+"property",
+"prosper",
+"protect",
+"proud",
+"provide",
+"public",
+"pudding",
+"pull",
+"pulp",
+"pulse",
+"pumpkin",
+"punch",
+"pupil",
+"puppy",
+"purchase",
+"purity",
+"purpose",
+"purse",
+"push",
+"put",
+"puzzle",
+"pyramid",
+"quality",
+"quantum",
+"quarter",
+"question",
+"quick",
+"quit",
+"quiz",
+"quote",
+"rabbit",
+"raccoon",
+"race",
+"rack",
+"radar",
+"radio",
+"rail",
+"rain",
+"raise",
+"rally",
+"ramp",
+"ranch",
+"random",
+"range",
+"rapid",
+"rare",
+"rate",
+"rather",
+"raven",
+"raw",
+"razor",
+"ready",
+"real",
+"reason",
+"rebel",
+"rebuild",
+"recall",
+"receive",
+"recipe",
+"record",
+"recycle",
+"reduce",
+"reflect",
+"reform",
+"refuse",
+"region",
+"regret",
+"regular",
+"reject",
+"relax",
+"release",
+"relief",
+"rely",
+"remain",
+"remember",
+"remind",
+"remove",
+"render",
+"renew",
+"rent",
+"reopen",
+"repair",
+"repeat",
+"replace",
+"report",
+"require",
+"rescue",
+"resemble",
+"resist",
+"resource",
+"response",
+"result",
+"retire",
+"retreat",
+"return",
+"reunion",
+"reveal",
+"review",
+"reward",
+"rhythm",
+"rib",
+"ribbon",
+"rice",
+"rich",
+"ride",
+"ridge",
+"rifle",
+"right",
+"rigid",
+"ring",
+"riot",
+"ripple",
+"risk",
+"ritual",
+"rival",
+"river",
+"road",
+"roast",
+"robot",
+"robust",
+"rocket",
+"romance",
+"roof",
+"rookie",
+"room",
+"rose",
+"rotate",
+"rough",
+"round",
+"route",
+"royal",
+"rubber",
+"rude",
+"rug",
+"rule",
+"run",
+"runway",
+"rural",
+"sad",
+"saddle",
+"sadness",
+"safe",
+"sail",
+"salad",
+"salmon",
+"salon",
+"salt",
+"salute",
+"same",
+"sample",
+"sand",
+"satisfy",
+"satoshi",
+"sauce",
+"sausage",
+"save",
+"say",
+"scale",
+"scan",
+"scare",
+"scatter",
+"scene",
+"scheme",
+"school",
+"science",
+"scissors",
+"scorpion",
+"scout",
+"scrap",
+"screen",
+"script",
+"scrub",
+"sea",
+"search",
+"season",
+"seat",
+"second",
+"secret",
+"section",
+"security",
+"seed",
+"seek",
+"segment",
+"select",
+"sell",
+"seminar",
+"senior",
+"sense",
+"sentence",
+"series",
+"service",
+"session",
+"settle",
+"setup",
+"seven",
+"shadow",
+"shaft",
+"shallow",
+"share",
+"shed",
+"shell",
+"sheriff",
+"shield",
+"shift",
+"shine",
+"ship",
+"shiver",
+"shock",
+"shoe",
+"shoot",
+"shop",
+"short",
+"shoulder",
+"shove",
+"shrimp",
+"shrug",
+"shuffle",
+"shy",
+"sibling",
+"sick",
+"side",
+"siege",
+"sight",
+"sign",
+"silent",
+"silk",
+"silly",
+"silver",
+"similar",
+"simple",
+"since",
+"sing",
+"siren",
+"sister",
+"situate",
+"six",
+"size",
+"skate",
+"sketch",
+"ski",
+"skill",
+"skin",
+"skirt",
+"skull",
+"slab",
+"slam",
+"sleep",
+"slender",
+"slice",
+"slide",
+"slight",
+"slim",
+"slogan",
+"slot",
+"slow",
+"slush",
+"small",
+"smart",
+"smile",
+"smoke",
+"smooth",
+"snack",
+"snake",
+"snap",
+"sniff",
+"snow",
+"soap",
+"soccer",
+"social",
+"sock",
+"soda",
+"soft",
+"solar",
+"soldier",
+"solid",
+"solution",
+"solve",
+"someone",
+"song",
+"soon",
+"sorry",
+"sort",
+"soul",
+"sound",
+"soup",
+"source",
+"south",
+"space",
+"spare",
+"spatial",
+"spawn",
+"speak",
+"special",
+"speed",
+"spell",
+"spend",
+"sphere",
+"spice",
+"spider",
+"spike",
+"spin",
+"spirit",
+"split",
+"spoil",
+"sponsor",
+"spoon",
+"sport",
+"spot",
+"spray",
+"spread",
+"spring",
+"spy",
+"square",
+"squeeze",
+"squirrel",
+"stable",
+"stadium",
+"staff",
+"stage",
+"stairs",
+"stamp",
+"stand",
+"start",
+"state",
+"stay",
+"steak",
+"steel",
+"stem",
+"step",
+"stereo",
+"stick",
+"still",
+"sting",
+"stock",
+"stomach",
+"stone",
+"stool",
+"story",
+"stove",
+"strategy",
+"street",
+"strike",
+"strong",
+"struggle",
+"student",
+"stuff",
+"stumble",
+"style",
+"subject",
+"submit",
+"subway",
+"success",
+"such",
+"sudden",
+"suffer",
+"sugar",
+"suggest",
+"suit",
+"summer",
+"sun",
+"sunny",
+"sunset",
+"super",
+"supply",
+"supreme",
+"sure",
+"surface",
+"surge",
+"surprise",
+"surround",
+"survey",
+"suspect",
+"sustain",
+"swallow",
+"swamp",
+"swap",
+"swarm",
+"swear",
+"sweet",
+"swift",
+"swim",
+"swing",
+"switch",
+"sword",
+"symbol",
+"symptom",
+"syrup",
+"system",
+"table",
+"tackle",
+"tag",
+"tail",
+"talent",
+"talk",
+"tank",
+"tape",
+"target",
+"task",
+"taste",
+"tattoo",
+"taxi",
+"teach",
+"team",
+"tell",
+"ten",
+"tenant",
+"tennis",
+"tent",
+"term",
+"test",
+"text",
+"thank",
+"that",
+"theme",
+"then",
+"theory",
+"there",
+"they",
+"thing",
+"this",
+"thought",
+"three",
+"thrive",
+"throw",
+"thumb",
+"thunder",
+"ticket",
+"tide",
+"tiger",
+"tilt",
+"timber",
+"time",
+"tiny",
+"tip",
+"tired",
+"tissue",
+"title",
+"toast",
+"tobacco",
+"today",
+"toddler",
+"toe",
+"together",
+"toilet",
+"token",
+"tomato",
+"tomorrow",
+"tone",
+"tongue",
+"tonight",
+"tool",
+"tooth",
+"top",
+"topic",
+"topple",
+"torch",
+"tornado",
+"tortoise",
+"toss",
+"total",
+"tourist",
+"toward",
+"tower",
+"town",
+"toy",
+"track",
+"trade",
+"traffic",
+"tragic",
+"train",
+"transfer",
+"trap",
+"trash",
+"travel",
+"tray",
+"treat",
+"tree",
+"trend",
+"trial",
+"tribe",
+"trick",
+"trigger",
+"trim",
+"trip",
+"trophy",
+"trouble",
+"truck",
+"true",
+"truly",
+"trumpet",
+"trust",
+"truth",
+"try",
+"tube",
+"tuition",
+"tumble",
+"tuna",
+"tunnel",
+"turkey",
+"turn",
+"turtle",
+"twelve",
+"twenty",
+"twice",
+"twin",
+"twist",
+"two",
+"type",
+"typical",
+"ugly",
+"umbrella",
+"unable",
+"unaware",
+"uncle",
+"uncover",
+"under",
+"undo",
+"unfair",
+"unfold",
+"unhappy",
+"uniform",
+"unique",
+"unit",
+"universe",
+"unknown",
+"unlock",
+"until",
+"unusual",
+"unveil",
+"update",
+"upgrade",
+"uphold",
+"upon",
+"upper",
+"upset",
+"urban",
+"urge",
+"usage",
+"use",
+"used",
+"useful",
+"useless",
+"usual",
+"utility",
+"vacant",
+"vacuum",
+"vague",
+"valid",
+"valley",
+"valve",
+"van",
+"vanish",
+"vapor",
+"various",
+"vast",
+"vault",
+"vehicle",
+"velvet",
+"vendor",
+"venture",
+"venue",
+"verb",
+"verify",
+"version",
+"very",
+"vessel",
+"veteran",
+"viable",
+"vibrant",
+"vicious",
+"victory",
+"video",
+"view",
+"village",
+"vintage",
+"violin",
+"virtual",
+"virus",
+"visa",
+"visit",
+"visual",
+"vital",
+"vivid",
+"vocal",
+"voice",
+"void",
+"volcano",
+"volume",
+"vote",
+"voyage",
+"wage",
+"wagon",
+"wait",
+"walk",
+"wall",
+"walnut",
+"want",
+"warfare",
+"warm",
+"warrior",
+"wash",
+"wasp",
+"waste",
+"water",
+"wave",
+"way",
+"wealth",
+"weapon",
+"wear",
+"weasel",
+"weather",
+"web",
+"wedding",
+"weekend",
+"weird",
+"welcome",
+"west",
+"wet",
+"whale",
+"what",
+"wheat",
+"wheel",
+"when",
+"where",
+"whip",
+"whisper",
+"wide",
+"width",
+"wife",
+"wild",
+"will",
+"win",
+"window",
+"wine",
+"wing",
+"wink",
+"winner",
+"winter",
+"wire",
+"wisdom",
+"wise",
+"wish",
+"witness",
+"wolf",
+"woman",
+"wonder",
+"wood",
+"wool",
+"word",
+"work",
+"world",
+"worry",
+"worth",
+"wrap",
+"wreck",
+"wrestle",
+"wrist",
+"write",
+"wrong",
+"yard",
+"year",
+"yellow",
+"you",
+"young",
+"youth",
+"zebra",
+"zero",
+"zone",
+"zoo"]
 
 ================
 File: next.config.ts
@@ -4020,8 +6644,9 @@ File: package.json
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
+    "fs": "^0.0.1-security",
     "lucide-react": "^0.475.0",
-    "next": "15.1.7",
+    "next": "^15.2.4",
     "next-auth": "^4.24.11",
     "react": "^19.0.0",
     "react-day-picker": "^8.10.1",
