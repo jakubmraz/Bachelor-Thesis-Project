@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button"
 import { AlertTriangle } from "lucide-react"
 import { HelpDialog } from "./help-dialog"
 import Image from "next/image"
+import { useTestRun } from "@/contexts/test-run-context"
 
 // In a real application, this would come from the authentication system
 const userInfo = {
@@ -25,6 +26,7 @@ const userInfo = {
 export function TopBarAuth() {
   const pathname = usePathname()
   const isVotingPage = pathname === "/voting"
+  const { isTestRunActive } = useTestRun()
 
   return (
     <header className="border-b bg-[#FFD700]">
@@ -50,7 +52,14 @@ export function TopBarAuth() {
           {isVotingPage ? (
             <Dialog>
               <DialogTrigger asChild>
-                <button className="hover:bg-yellow-400 px-2 py-1 rounded-md">Log Out</button>
+                <button
+                  className={`px-2 py-1 rounded-md ${
+                    isTestRunActive ? "hover:bg-yellow-400" : "opacity-50 cursor-not-allowed"
+                  }`}
+                  disabled={!isTestRunActive}
+                >
+                  Log Out
+                </button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
@@ -74,7 +83,14 @@ export function TopBarAuth() {
               </DialogContent>
             </Dialog>
           ) : (
-            <Link href="/logged-out" className="hover:bg-yellow-400 px-2 py-1 rounded-md">
+            <Link
+              href="/logged-out"
+              className={`px-2 py-1 rounded-md ${
+                isTestRunActive ? "hover:bg-yellow-400" : "opacity-50 cursor-not-allowed"
+              }`}
+              aria-disabled={!isTestRunActive}
+              onClick={(e) => !isTestRunActive && e.preventDefault()}
+            >
               Log Out
             </Link>
           )}
@@ -83,4 +99,3 @@ export function TopBarAuth() {
     </header>
   )
 }
-

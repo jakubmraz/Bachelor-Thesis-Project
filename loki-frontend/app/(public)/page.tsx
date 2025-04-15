@@ -4,8 +4,43 @@ import { ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import Image from "next/image"
+import { useState } from "react"
+import { useTestRun } from "@/contexts/test-run-context"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { CheckCircle2, Calendar } from "lucide-react"
+import { formatDateDanish } from "@/lib/date-utils"
 
 export default function Page() {
+  const [testStartDialogOpen, setTestStartDialogOpen] = useState(false)
+  const [testLoadDialogOpen, setTestLoadDialogOpen] = useState(false)
+  const [testRunId, setTestRunId] = useState("")
+  const [lastStartedTestRun, setLastStartedTestRun] = useState<number | null>(null)
+
+  const { beginTestRun, loadTestRun, isTestRunActive, testRuns, activeTestRun } = useTestRun()
+
+  const handleTestRunStart = async () => {
+    const newTestRunId = await beginTestRun()
+    setLastStartedTestRun(newTestRunId)
+    setTestStartDialogOpen(true)
+  }
+
+  const handleTestRunLoad = () => {
+    const numericId = Number.parseInt(testRunId, 10)
+    if (!isNaN(numericId)) {
+      loadTestRun(numericId)
+      setTestLoadDialogOpen(false)
+      setTestRunId("")
+    }
+  }
+
   return (
     <div className="flex flex-col items-center pt-8 relative min-h-[80vh]">
       {/* Hero Section */}
@@ -16,12 +51,23 @@ export default function Page() {
         </p>
         <div className="flex justify-center">
           <Link href="/login">
-            <Button size="lg" className="bg-[#FFD700] hover:bg-[#FFED4A] text-black">
+            <Button
+              size="lg"
+              className={
+                isTestRunActive
+                  ? "bg-[#FFD700] hover:bg-[#FFED4A] text-black"
+                  : "bg-gray-300 text-gray-600 cursor-not-allowed"
+              }
+              disabled={!isTestRunActive}
+            >
               <span>Login to Vote</span>
               <ChevronRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>
         </div>
+        {!isTestRunActive && (
+          <div className="mt-2 text-sm text-gray-500">Test run required to enable voting features</div>
+        )}
       </div>
 
       {/* Banner Image */}
@@ -79,8 +125,8 @@ export default function Page() {
                   </li>
                   <li>
                     <strong>Past Ballot Identification:</strong> The revoting mechanism requires you to identify your
-                    previously cast valid ballots in order for the newly-cast ballot to be valid. This helps ensure
-                    that only you can cast your own vote at any point.
+                    previously cast valid ballots in order for the newly-cast ballot to be valid. This helps ensure that
+                    only you can cast your own vote at any point.
                   </li>
                   <li>
                     <strong>Intentional Ballot Invalidation:</strong> If you find yourself in a situation where a
@@ -137,7 +183,128 @@ export default function Page() {
           </AccordionItem>
         </Accordion>
       </div>
+
+      {/* Test Run Controls Section - Added below the accordion */}
+      <div className="w-full max-w-2xl mt-8 border-t border-dashed border-gray-300 pt-6">
+        <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+          <span className="text-blue-500">Testing Mode</span>
+          <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">Development Only</span>
+        </h2>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          <Button
+            onClick={handleTestRunStart}
+            variant="outline"
+            className="bg-blue-50 border-blue-200 hover:bg-blue-100"
+          >
+            Begin Test Run
+          </Button>
+
+          <Button
+            onClick={() => setTestLoadDialogOpen(true)}
+            variant="outline"
+            className="bg-blue-50 border-blue-200 hover:bg-blue-100"
+          >
+            Load Test Run
+          </Button>
+        </div>
+
+        {/* Test Run Status */}
+        {isTestRunActive && activeTestRun && (
+          <div className="mt-4">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-blue-600" />
+                  <h3 className="font-semibold text-blue-800">Test Run #{activeTestRun.id} Active</h3>
+                </div>
+                <div className="text-sm text-blue-700 font-medium">
+                  {activeTestRun.ballots.length} ballot{activeTestRun.ballots.length !== 1 ? "s" : ""}
+                </div>
+              </div>
+              <div className="flex items-center text-sm text-blue-700">
+                <Calendar className="h-4 w-4 mr-2 flex-shrink-0" />
+                <span>
+                  {formatDateDanish(activeTestRun.electionStart)} - {formatDateDanish(activeTestRun.electionEnd)}
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="mt-4 text-sm text-blue-600">
+          {!isTestRunActive && (
+            <div className="bg-amber-50 text-amber-800 p-3 rounded border border-amber-200">
+              Start or load a test run to enable the voting features.
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Test Started Dialog */}
+      <Dialog open={testStartDialogOpen} onOpenChange={setTestStartDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <CheckCircle2 className="h-5 w-5 text-green-500" />
+              Test Successfully Began
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3">
+            <div>A new test run has been started with the following details:</div>
+            <div className="bg-gray-50 p-3 rounded border">
+              <div>
+                <strong>Test Run ID: {lastStartedTestRun}</strong>
+              </div>
+              <div className="text-sm text-gray-500 mt-1">
+                Election start time: 8:00 AM today
+                <br />
+                Election end time: +3 days from start
+              </div>
+            </div>
+            <div>
+              Noise ballots have been generated from the election start time until now. You can now proceed to vote.
+            </div>
+          </div>
+          <DialogFooter>
+            <Button onClick={() => setTestStartDialogOpen(false)}>Close</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Load Test Run Dialog */}
+      <Dialog open={testLoadDialogOpen} onOpenChange={setTestLoadDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Load Test Run</DialogTitle>
+            <DialogDescription>Enter the ID of the test run you want to load.</DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Input
+                type="number"
+                placeholder="Test Run ID"
+                value={testRunId}
+                onChange={(e) => setTestRunId(e.target.value)}
+              />
+
+              {testRuns.length > 0 && (
+                <div className="text-sm text-muted-foreground">
+                  Available test runs: {testRuns.map((run) => run.id).join(", ")}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setTestLoadDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleTestRunLoad}>Load Test Run</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
-

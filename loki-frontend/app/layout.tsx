@@ -13,6 +13,7 @@ const notoSans = Noto_Sans({
 export const metadata: Metadata = {
   title: "Online Voting Portal",
   description: "Secure platform for democratic decision-making",
+    generator: 'v0.dev'
 }
 
 export default function RootLayout({
@@ -29,3 +30,5 @@ export default function RootLayout({
   )
 }
 
+
+import './globals.css'

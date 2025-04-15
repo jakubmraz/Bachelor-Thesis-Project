@@ -2,17 +2,17 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { Check, ChevronRight, HelpCircle, Info, ArrowLeft, AlertTriangle } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Check, HelpCircle, ArrowLeft, AlertTriangle } from "lucide-react"
 import Link from "next/link"
 import { ballotItems, type Ballot, saveUserBallot, generateBallotId } from "@/lib/ballot-data"
 import { formatDateDanish, formatTimeDanish } from "@/lib/date-utils"
 import { useVote } from "@/contexts/vote-context"
-import { BallotIdenticon } from "@/components/ballot-identicon"
 import { generateBallotHash } from "@/lib/identicon"
 import { generatePhrase } from "@/lib/word-phrases"
 import { HelpDialog } from "@/components/help-dialog"
+import { useTestRun } from "@/contexts/test-run-context"
+import { BallotIdenticon } from "@/components/ballot-identicon"
 
 export default function NewVotingPage() {
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({})
@@ -23,6 +23,7 @@ export default function NewVotingPage() {
   const [identiconHash, setIdenticonHash] = useState("")
   const [phrase, setPhrase] = useState("")
   const { setVoteSubmitted } = useVote()
+  const { addBallotToActiveTestRun } = useTestRun()
 
   const handleOptionSelect = (proposalId: string, optionId: string) => {
     setSelectedOptions({
@@ -85,13 +86,18 @@ export default function NewVotingPage() {
     try {
       // Save to the submitted ballots list with the exact same ID and timestamp
       // that will be used to generate the identicon
-      saveUserBallot({
+      const publicBallot = {
         id: newBallotId,
         timestamp: timestamp,
         isSubmittedByUser: true,
         identiconHash: hash,
         phrase: generatedPhrase,
-      })
+      }
+
+      saveUserBallot(publicBallot)
+
+      // Also add to the active test run if one exists
+      addBallotToActiveTestRun(publicBallot)
     } catch (error) {
       console.error("Error saving ballot:", error)
     }
@@ -162,12 +168,14 @@ export default function NewVotingPage() {
                       <HelpDialog defaultOpenSection="memory-aids">
                         <button className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1">
                           <HelpCircle className="h-3 w-3" />
-                          <span>What's this?</span>
+                          <span>What are these?</span>
                         </button>
                       </HelpDialog>
                     </div>
                     <div className="flex items-center gap-3">
-                      <div className="font-medium"><b>{phrase}</b></div>
+                      <div className="font-medium">
+                        <b>{phrase}</b>
+                      </div>
                       <div>
                         {identiconHash ? (
                           <BallotIdenticon
@@ -203,7 +211,7 @@ export default function NewVotingPage() {
 
               <div className="bg-gray-50 p-4 rounded-md border border-gray-200 mt-4">
                 <div className="flex gap-3">
-                  <Info className="h-5 w-5 text-gray-600 mt-0.5 flex-shrink-0" />
+                  <AlertTriangle className="h-5 w-5 text-gray-600 mt-0.5 flex-shrink-0" />
                   <div>
                     <h3 className="font-semibold mb-1">Important: Remember Your Ballot Details</h3>
                     <p className="text-sm text-gray-600 mb-3">
@@ -227,12 +235,16 @@ export default function NewVotingPage() {
                 </div>
               </div>
             </CardContent>
-            <CardFooter className="justify-center">
-              <Link href="/logged-out">
-                <Button size="lg">Log Out and Return</Button>
-              </Link>
-            </CardFooter>
           </Card>
+
+          {/* Add the Finish and Log Out button */}
+          <div className="flex justify-center mt-8">
+            <Link href="/logged-out">
+              <Button size="lg" className="bg-gray-900">
+                Finish and Log Out
+              </Button>
+            </Link>
+          </div>
         </div>
       ) : currentStep < ballotItems.length ? (
         <>
@@ -253,7 +265,7 @@ export default function NewVotingPage() {
           <Card className="mb-8">
             <CardHeader>
               <CardTitle>{currentProposal.title}</CardTitle>
-              <CardDescription>{currentProposal.description}</CardDescription>
+              <p className="text-gray-500 mt-1">{currentProposal.description}</p>
             </CardHeader>
             <CardContent>
               <div className="grid gap-4">
@@ -281,28 +293,15 @@ export default function NewVotingPage() {
                 ))}
               </div>
             </CardContent>
-            <CardFooter className="flex justify-between">
-              <Button variant="outline" onClick={handlePrevious} disabled={currentStep === 0}>
-                Previous
-              </Button>
-              <Button onClick={handleNext} disabled={!isCurrentProposalSelected}>
-                {currentStep === ballotItems.length - 1 ? "Review" : "Next"}
-                <ChevronRight className="ml-2 h-4 w-4" />
-              </Button>
-            </CardFooter>
           </Card>
 
-          <div className="rounded-lg bg-gray-50 p-4">
-            <div className="flex items-start gap-3">
-              <Info className="mt-0.5 h-5 w-5 text-gray-500" />
-              <div>
-                <h3 className="font-semibold">Voting Information</h3>
-                <p className="text-sm text-gray-600">
-                  Your vote is anonymous and secure. You can navigate between questions using the buttons below each
-                  question.
-                </p>
-              </div>
-            </div>
+          <div className="flex justify-between">
+            <Button variant="outline" onClick={handlePrevious} disabled={currentStep === 0}>
+              Previous
+            </Button>
+            <Button onClick={handleNext} disabled={!isCurrentProposalSelected}>
+              {currentStep === ballotItems.length - 1 ? "Review" : "Next"}
+            </Button>
           </div>
         </>
       ) : (
@@ -312,63 +311,34 @@ export default function NewVotingPage() {
           <Card className="mb-8">
             <CardHeader>
               <CardTitle>Confirm Your Selections</CardTitle>
-              <CardDescription>Please review your votes before final submission</CardDescription>
+              <p className="text-gray-500 mt-1">Please review your votes before final submission</p>
             </CardHeader>
             <CardContent>
-              <Accordion type="single" collapsible className="w-full">
-                {ballotItems.map((item, index) => {
-                  const selectedOption = item.options.find((option) => option.id === selectedOptions[item.id])
+              <div className="space-y-4">
+                {ballotItems.map((item) => {
+                  const selectedOptionId = selectedOptions[item.id]
+                  const selectedOption = item.options.find((option) => option.id === selectedOptionId)
                   return (
-                    <AccordionItem key={item.id} value={item.id}>
-                      <AccordionTrigger className="hover:no-underline">
-                        <div className="flex items-center gap-4 text-left">
-                          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#FFD700] text-xs font-bold text-black">
-                            {index + 1}
-                          </div>
-                          <div>
-                            <div className="font-medium">{item.title}</div>
-                            <div className="text-sm font-normal text-gray-500">Selected: {selectedOption?.text}</div>
-                          </div>
-                        </div>
-                      </AccordionTrigger>
-                      <AccordionContent>
-                        <div className="pl-10">
-                          <p className="mb-2 text-gray-600">{item.description}</p>
-                          <Button variant="outline" size="sm" onClick={() => setCurrentStep(index)} className="mt-2">
-                            Change selection
-                          </Button>
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
+                    <div key={item.id} className="grid grid-cols-2 gap-2 text-sm border-b pb-4">
+                      <div className="font-medium">{item.title}</div>
+                      <div>{selectedOption?.text || "No selection"}</div>
+                    </div>
                   )
                 })}
-              </Accordion>
+              </div>
             </CardContent>
-            <CardFooter className="flex justify-between">
-              <Button variant="outline" onClick={() => setCurrentStep(ballotItems.length - 1)}>
-                Back to Questions
-              </Button>
-              <Button onClick={handleSubmit} disabled={!allProposalsAnswered} className="bg-gray-900 hover:bg-gray-800">
-                Submit Vote
-              </Button>
-            </CardFooter>
           </Card>
 
-          <div className="rounded-lg bg-gray-50 p-4">
-            <div className="flex items-start gap-3">
-              <HelpCircle className="mt-0.5 h-5 w-5 text-gray-500" />
-              <div>
-                <h3 className="font-semibold">Important Note</h3>
-                <p className="text-sm text-gray-600">
-                  Once submitted, your vote cannot be changed. Please ensure all selections reflect your intended
-                  choices.
-                </p>
-              </div>
-            </div>
+          <div className="flex justify-between">
+            <Button variant="outline" onClick={() => setCurrentStep(ballotItems.length - 1)}>
+              Back to Questions
+            </Button>
+            <Button onClick={handleSubmit} disabled={!allProposalsAnswered} className="bg-gray-900 hover:bg-gray-800">
+              Submit Vote
+            </Button>
           </div>
         </div>
       )}
     </div>
   )
 }
-

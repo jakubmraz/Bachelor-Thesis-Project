@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -15,9 +15,38 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog"
+import { useTestRun } from "@/contexts/test-run-context"
+import { formatDateDanish } from "@/lib/date-utils"
 
 export default function ElectionsPage() {
   const [dialogOpen, setDialogOpen] = useState(false)
+  const { isTestRunActive, activeTestRun } = useTestRun()
+
+  // Calculate days remaining until election end
+  const daysRemaining = useMemo(() => {
+    if (!activeTestRun) return 10 // Default value
+
+    const now = new Date()
+    const endDate = new Date(activeTestRun.electionEnd)
+    const diffTime = Math.abs(endDate.getTime() - now.getTime())
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+    return diffDays
+  }, [activeTestRun])
+
+  // Format dates for display
+  const electionDates = useMemo(() => {
+    if (!activeTestRun) {
+      return {
+        startDate: "2025-03-01",
+        endDate: "2025-06-15",
+      }
+    }
+
+    return {
+      startDate: activeTestRun.electionStart,
+      endDate: activeTestRun.electionEnd,
+    }
+  }, [activeTestRun])
 
   // In a real application, this would come from an API
   const activeElections = [
@@ -25,8 +54,8 @@ export default function ElectionsPage() {
       id: "general-2025",
       title: "2025 General Election",
       description: "Vote for the parliament and the next president.",
-      startDate: "2025-03-01",
-      endDate: "2025-06-15",
+      startDate: electionDates.startDate,
+      endDate: electionDates.endDate,
       status: "active",
     },
     // More elections would be listed here in a real application
@@ -76,13 +105,12 @@ export default function ElectionsPage() {
                 <div className="flex items-center text-sm text-muted-foreground mb-2">
                   <CalendarIcon className="h-4 w-4 mr-2" />
                   <span>
-                    {new Date(election.startDate).toLocaleDateString()} -{" "}
-                    {new Date(election.endDate).toLocaleDateString()}
+                    {formatDateDanish(election.startDate)} - {formatDateDanish(election.endDate)}
                   </span>
                 </div>
                 <div className="flex items-center text-sm text-muted-foreground">
                   <Clock className="h-4 w-4 mr-2" />
-                  <span>Closes in 10 days</span>
+                  <span>Closes in {daysRemaining} days</span>
                 </div>
               </CardContent>
               <CardFooter className="bg-gray-50 border-t py-4">
@@ -91,7 +119,7 @@ export default function ElectionsPage() {
                     {election.status === "active" ? "You can vote or modify your vote until the election closes" : ""}
                   </div>
                   <Link href="/voting">
-                    <Button>Enter Election</Button>
+                    <Button disabled={!isTestRunActive}>Enter Election</Button>
                   </Link>
                 </div>
               </CardFooter>
@@ -124,8 +152,7 @@ export default function ElectionsPage() {
                 <div className="flex items-center text-sm text-muted-foreground mb-2">
                   <CalendarIcon className="h-4 w-4 mr-2" />
                   <span>
-                    {new Date(election.startDate).toLocaleDateString()} -{" "}
-                    {new Date(election.endDate).toLocaleDateString()}
+                    {formatDateDanish(election.startDate)} - {formatDateDanish(election.endDate)}
                   </span>
                 </div>
               </CardContent>
@@ -179,4 +206,3 @@ export default function ElectionsPage() {
     </div>
   )
 }
-
