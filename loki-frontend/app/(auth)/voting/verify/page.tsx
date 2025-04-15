@@ -46,8 +46,7 @@ export default function VerifyPreviousVotePage() {
   const [page, setPage] = useState(1)
   const [selectedDates, setSelectedDates] = useState<string[]>([])
   const [selectedHours, setSelectedHours] = useState<string[]>([])
-  const [searchTerms, setSearchTerms] = useState<string[]>([])
-  const [searchInput, setSearchInput] = useState("")
+  const [searchTerm, setSearchTerm] = useState("")
   const [activeTab, setActiveTab] = useState("all")
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false)
 
@@ -122,19 +121,9 @@ export default function VerifyPreviousVotePage() {
   }, [previousBallots])
 
   // Handle search submission
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (searchInput.trim()) {
-      setSearchTerms((prev) => [...prev, searchInput.trim().toLowerCase()])
-      setSearchInput("")
-      setPage(1) // Reset to first page when filters change
-    }
-  }
-
-  // Remove a search term
-  const removeSearchTerm = (term: string) => {
-    setSearchTerms((prev) => prev.filter((t) => t !== term))
-    setPage(1) // Reset to first page when filters change
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value)
+    setPage(1) // Reset to first page when search changes
   }
 
   // Filter ballots based on selected dates, hours, and search terms
@@ -156,19 +145,13 @@ export default function VerifyPreviousVotePage() {
 
       // Check if ballot matches search terms
       const matchesSearch =
-        searchTerms.length === 0 ||
-        searchTerms.some((term) => {
-          // Search in phrase if available
-          if (ballot.phrase && ballot.phrase.toLowerCase().includes(term)) {
-            return true
-          }
-          // Search in ID (could be expanded to search in other fields)
-          return ballot.id.toLowerCase().includes(term)
-        })
+        searchTerm.trim() === "" ||
+        (ballot.phrase && ballot.phrase.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        ballot.id.toLowerCase().includes(searchTerm.toLowerCase())
 
       return matchesDate && matchesHour && matchesSearch
     })
-  }, [previousBallots, selectedDates, selectedHours, searchTerms])
+  }, [previousBallots, selectedDates, selectedHours, searchTerm])
 
   // Paginated ballots
   const paginatedBallots = useMemo(() => {
@@ -219,11 +202,11 @@ export default function VerifyPreviousVotePage() {
   const clearFilters = () => {
     setSelectedDates([])
     setSelectedHours([])
-    setSearchTerms([])
+    setSearchTerm("")
     setPage(1)
   }
 
-  const hasActiveFilters = selectedDates.length > 0 || selectedHours.length > 0 || searchTerms.length > 0
+  const hasActiveFilters = selectedDates.length > 0 || selectedHours.length > 0 || searchTerm.trim() !== ""
 
   return (
     <div className="pb-8 space-y-6">
@@ -334,18 +317,24 @@ export default function VerifyPreviousVotePage() {
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                <form onSubmit={handleSearchSubmit} className="flex items-center">
-                  <div className="relative">
-                    <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
-                    <Input
-                      type="text"
-                      placeholder="Search phrases"
-                      value={searchInput}
-                      onChange={(e) => setSearchInput(e.target.value)}
-                      className="pl-8 pr-4 h-10 w-[180px]"
-                    />
-                  </div>
-                </form>
+                <div className="relative">
+                  <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
+                  <Input
+                    type="text"
+                    placeholder="Search phrases"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    className="pl-8 pr-4 h-10 w-[180px]"
+                  />
+                  {searchTerm && (
+                    <button
+                      onClick={() => setSearchTerm("")}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  )}
+                </div>
 
                 <div className="ml-auto">
                   <HelpDialog defaultOpenSection="many-ballots">
@@ -374,12 +363,12 @@ export default function VerifyPreviousVotePage() {
                       </Badge>
                     ))}
 
-                    {searchTerms.map((term) => (
-                      <Badge key={term} variant="secondary" className="gap-1">
-                        {term}
-                        <X className="h-3 w-3 cursor-pointer" onClick={() => removeSearchTerm(term)} />
+                    {searchTerm && (
+                      <Badge variant="secondary" className="gap-1">
+                        {searchTerm}
+                        <X className="h-3 w-3 cursor-pointer" onClick={() => setSearchTerm("")} />
                       </Badge>
-                    ))}
+                    )}
                   </div>
                   <Button variant="ghost" onClick={clearFilters} className="gap-2 ml-2 shrink-0">
                     <X className="h-4 w-4" />
@@ -588,4 +577,3 @@ export default function VerifyPreviousVotePage() {
     </div>
   )
 }
-

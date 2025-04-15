@@ -44,7 +44,7 @@ export const ballotItems: BallotItem[] = [
       { id: "option-1-2", text: "New Liberal Party" },
       { id: "option-1-3", text: "Green Party" },
       { id: "option-1-4", text: "Christian Conservative Union" },
-      { id: "option-1-5", text: "CHANGE!" },
+      { id: "option-1-5", text: "'CHANGE!' Party" },
     ],
   },
   {
