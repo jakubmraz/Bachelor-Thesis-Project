@@ -23,21 +23,32 @@ export default function Page() {
   const [testLoadDialogOpen, setTestLoadDialogOpen] = useState(false)
   const [testRunId, setTestRunId] = useState("")
   const [lastStartedTestRun, setLastStartedTestRun] = useState<number | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   const { beginTestRun, loadTestRun, isTestRunActive, testRuns, activeTestRun } = useTestRun()
 
   const handleTestRunStart = async () => {
-    const newTestRunId = await beginTestRun()
-    setLastStartedTestRun(newTestRunId)
-    setTestStartDialogOpen(true)
+    setIsLoading(true)
+    try {
+      const newTestRunId = await beginTestRun()
+      setLastStartedTestRun(newTestRunId)
+      setTestStartDialogOpen(true)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
-  const handleTestRunLoad = () => {
+  const handleTestRunLoad = async () => {
     const numericId = Number.parseInt(testRunId, 10)
     if (!isNaN(numericId)) {
-      loadTestRun(numericId)
-      setTestLoadDialogOpen(false)
-      setTestRunId("")
+      setIsLoading(true)
+      try {
+        await loadTestRun(numericId)
+        setTestLoadDialogOpen(false)
+        setTestRunId("")
+      } finally {
+        setIsLoading(false)
+      }
     }
   }
 
@@ -196,16 +207,18 @@ export default function Page() {
             onClick={handleTestRunStart}
             variant="outline"
             className="bg-blue-50 border-blue-200 hover:bg-blue-100"
+            disabled={isLoading}
           >
-            Begin Test Run
+            {isLoading ? "Processing..." : "Begin Test Run"}
           </Button>
 
           <Button
             onClick={() => setTestLoadDialogOpen(true)}
             variant="outline"
             className="bg-blue-50 border-blue-200 hover:bg-blue-100"
+            disabled={isLoading}
           >
-            Load Test Run
+            {isLoading ? "Processing..." : "Load Test Run"}
           </Button>
         </div>
 
@@ -301,7 +314,9 @@ export default function Page() {
             <Button variant="outline" onClick={() => setTestLoadDialogOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={handleTestRunLoad}>Load Test Run</Button>
+            <Button onClick={handleTestRunLoad} disabled={isLoading}>
+              {isLoading ? "Processing..." : "Load Test Run"}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

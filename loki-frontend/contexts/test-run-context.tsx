@@ -16,11 +16,11 @@ interface TestRunContextType {
   activeTestRun: TestRun | null
   testRuns: TestRun[]
   beginTestRun: () => Promise<number>
-  loadTestRun: (id: number) => void
+  loadTestRun: (id: number) => Promise<void>
   endTestRun: () => void
   addBallotToActiveTestRun: (ballot: PublicBallot) => void
   isTestRunActive: boolean
-  refreshNoiseBallots: () => void
+  refreshNoiseBallots: () => Promise<void>
 }
 
 const TestRunContext = createContext<TestRunContextType | undefined>(undefined)
@@ -108,17 +108,29 @@ export function TestRunProvider({ children }: { children: ReactNode }) {
   }
 
   // Load an existing test run
-  const loadTestRun = (id: number) => {
+  const loadTestRun = async (id: number) => {
     const testRun = testRuns.find((run) => run.id === id)
     if (testRun) {
-      // Deactivate all test runs
+      // Generate noise ballots up to current time
+      const updatedBallots = await generateNoiseBallots(testRun.electionStart, testRun.ballots)
+
+      // Create updated test run with new ballots
+      const updatedTestRun = {
+        ...testRun,
+        ballots: updatedBallots,
+        isActive: true,
+      }
+
+      // Deactivate all test runs and activate the selected one
       const updatedTestRuns = testRuns.map((run) => ({
         ...run,
         isActive: run.id === id,
+        // If this is the run we're loading, update its ballots too
+        ballots: run.id === id ? updatedBallots : run.ballots,
       }))
 
       setTestRuns(updatedTestRuns)
-      setActiveTestRun({ ...testRun, isActive: true })
+      setActiveTestRun(updatedTestRun)
     }
   }
 
