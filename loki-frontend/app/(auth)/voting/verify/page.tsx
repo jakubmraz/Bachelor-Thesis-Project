@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useEffect, useMemo } from "react"
+import { useState, useEffect, useMemo, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { ArrowLeft, Check, ArrowRight, AlertTriangle, HelpCircle, Filter, X, Clock, Search } from "lucide-react"
@@ -38,6 +38,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
+import { useTestRun } from "@/contexts/test-run-context"
 
 export default function VerifyPreviousVotePage() {
   const [previousBallots, setPreviousBallots] = useState<PublicBallot[]>([])
@@ -46,30 +47,42 @@ export default function VerifyPreviousVotePage() {
   const [page, setPage] = useState(1)
   const [selectedDates, setSelectedDates] = useState<string[]>([])
   const [selectedHours, setSelectedHours] = useState<string[]>([])
-  const [searchTerms, setSearchTerms] = useState<string[]>([])
-  const [searchInput, setSearchInput] = useState("")
+  const [searchTerm, setSearchTerm] = useState("")
   const [activeTab, setActiveTab] = useState("all")
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false)
+  const [dataLoaded, setDataLoaded] = useState(false)
+
+  const { activeTestRun } = useTestRun()
 
   const ITEMS_PER_PAGE = 8
 
-  // Load ballots on component mount
+  // Load ballots only once when component mounts or when active test run changes
   useEffect(() => {
-    try {
-      // Clear any legacy storage
-      localStorage.removeItem("lastCastBallot")
+    if (dataLoaded) return
 
-      // Generate 800 ballots as a simulation (in reality there would be ~1000 for a 48h election)
-      // Include user ballots
-      const ballots = generateRandomPublicBallots(800, true)
+    try {
+      setIsLoading(true)
+
+      let ballots: PublicBallot[] = []
+      if (activeTestRun) {
+        // If a test run is active, use its ballots
+        ballots = [...activeTestRun.ballots]
+      } else {
+        // Fall back to generated ballots if no test run is active
+        ballots = generateRandomPublicBallots(800, true)
+      }
+
+      // Sort ballots by timestamp (newest first)
+      ballots.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
 
       setPreviousBallots(ballots)
+      setDataLoaded(true)
     } catch (error) {
       console.error("Error loading ballots:", error)
     } finally {
       setIsLoading(false)
     }
-  }, [])
+  }, [activeTestRun, dataLoaded])
 
   // Switch to "all" tab if no ballots are selected
   useEffect(() => {
@@ -78,7 +91,7 @@ export default function VerifyPreviousVotePage() {
     }
   }, [selectedBallotIds, activeTab])
 
-  // Extract unique dates from ballots
+  // Extract unique dates from ballots - memoized to prevent recalculation
   const availableDates = useMemo(() => {
     const dates = new Set<string>()
     previousBallots.forEach((ballot) => {
@@ -95,7 +108,7 @@ export default function VerifyPreviousVotePage() {
     })
   }, [previousBallots])
 
-  // Extract unique hour ranges from ballots
+  // Extract unique hour ranges from ballots - memoized to prevent recalculation
   const availableHours = useMemo(() => {
     const hours = new Map<string, number>()
 
@@ -122,20 +135,10 @@ export default function VerifyPreviousVotePage() {
   }, [previousBallots])
 
   // Handle search submission
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (searchInput.trim()) {
-      setSearchTerms((prev) => [...prev, searchInput.trim().toLowerCase()])
-      setSearchInput("")
-      setPage(1) // Reset to first page when filters change
-    }
-  }
-
-  // Remove a search term
-  const removeSearchTerm = (term: string) => {
-    setSearchTerms((prev) => prev.filter((t) => t !== term))
-    setPage(1) // Reset to first page when filters change
-  }
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value)
+    setPage(1) // Reset to first page when search changes
+  }, [])
 
   // Filter ballots based on selected dates, hours, and search terms
   const filteredBallots = useMemo(() => {
@@ -156,19 +159,13 @@ export default function VerifyPreviousVotePage() {
 
       // Check if ballot matches search terms
       const matchesSearch =
-        searchTerms.length === 0 ||
-        searchTerms.some((term) => {
-          // Search in phrase if available
-          if (ballot.phrase && ballot.phrase.toLowerCase().includes(term)) {
-            return true
-          }
-          // Search in ID (could be expanded to search in other fields)
-          return ballot.id.toLowerCase().includes(term)
-        })
+        searchTerm.trim() === "" ||
+        (ballot.phrase && ballot.phrase.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        ballot.id.toLowerCase().includes(searchTerm.toLowerCase())
 
       return matchesDate && matchesHour && matchesSearch
     })
-  }, [previousBallots, selectedDates, selectedHours, searchTerms])
+  }, [previousBallots, selectedDates, selectedHours, searchTerm])
 
   // Paginated ballots
   const paginatedBallots = useMemo(() => {
@@ -184,7 +181,7 @@ export default function VerifyPreviousVotePage() {
   // Total pages
   const totalPages = Math.max(1, Math.ceil(filteredBallots.length / ITEMS_PER_PAGE))
 
-  const toggleBallot = (ballotId: string) => {
+  const toggleBallot = useCallback((ballotId: string) => {
     setSelectedBallotIds((prev) => {
       if (prev.includes(ballotId)) {
         return prev.filter((id) => id !== ballotId)
@@ -192,9 +189,9 @@ export default function VerifyPreviousVotePage() {
         return [...prev, ballotId]
       }
     })
-  }
+  }, [])
 
-  const toggleDateFilter = (date: string) => {
+  const toggleDateFilter = useCallback((date: string) => {
     setSelectedDates((prev) => {
       if (prev.includes(date)) {
         return prev.filter((d) => d !== date)
@@ -203,9 +200,9 @@ export default function VerifyPreviousVotePage() {
       }
     })
     setPage(1) // Reset to first page when filters change
-  }
+  }, [])
 
-  const toggleHourFilter = (hourRange: string) => {
+  const toggleHourFilter = useCallback((hourRange: string) => {
     setSelectedHours((prev) => {
       if (prev.includes(hourRange)) {
         return prev.filter((h) => h !== hourRange)
@@ -214,16 +211,16 @@ export default function VerifyPreviousVotePage() {
       }
     })
     setPage(1) // Reset to first page when filters change
-  }
+  }, [])
 
-  const clearFilters = () => {
+  const clearFilters = useCallback(() => {
     setSelectedDates([])
     setSelectedHours([])
-    setSearchTerms([])
+    setSearchTerm("")
     setPage(1)
-  }
+  }, [])
 
-  const hasActiveFilters = selectedDates.length > 0 || selectedHours.length > 0 || searchTerms.length > 0
+  const hasActiveFilters = selectedDates.length > 0 || selectedHours.length > 0 || searchTerm.trim() !== ""
 
   return (
     <div className="pb-8 space-y-6">
@@ -334,18 +331,24 @@ export default function VerifyPreviousVotePage() {
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                <form onSubmit={handleSearchSubmit} className="flex items-center">
-                  <div className="relative">
-                    <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
-                    <Input
-                      type="text"
-                      placeholder="Search phrases"
-                      value={searchInput}
-                      onChange={(e) => setSearchInput(e.target.value)}
-                      className="pl-8 pr-4 h-10 w-[180px]"
-                    />
-                  </div>
-                </form>
+                <div className="relative">
+                  <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
+                  <Input
+                    type="text"
+                    placeholder="Search phrases"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    className="pl-8 pr-4 h-10 w-[180px]"
+                  />
+                  {searchTerm && (
+                    <button
+                      onClick={() => setSearchTerm("")}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  )}
+                </div>
 
                 <div className="ml-auto">
                   <HelpDialog defaultOpenSection="many-ballots">
@@ -374,12 +377,12 @@ export default function VerifyPreviousVotePage() {
                       </Badge>
                     ))}
 
-                    {searchTerms.map((term) => (
-                      <Badge key={term} variant="secondary" className="gap-1">
-                        {term}
-                        <X className="h-3 w-3 cursor-pointer" onClick={() => removeSearchTerm(term)} />
+                    {searchTerm && (
+                      <Badge variant="secondary" className="gap-1">
+                        {searchTerm}
+                        <X className="h-3 w-3 cursor-pointer" onClick={() => setSearchTerm("")} />
                       </Badge>
-                    ))}
+                    )}
                   </div>
                   <Button variant="ghost" onClick={clearFilters} className="gap-2 ml-2 shrink-0">
                     <X className="h-4 w-4" />
@@ -588,4 +591,3 @@ export default function VerifyPreviousVotePage() {
     </div>
   )
 }
-

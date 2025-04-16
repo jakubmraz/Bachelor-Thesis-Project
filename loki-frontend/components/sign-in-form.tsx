@@ -30,9 +30,7 @@ export function SignInForm() {
             </button>
           </div>
           <MaskedInput id="code" value={code} onChange={handleCodeChange} className="bg-white" />
-          <p className="mt-2 text-sm text-gray-500">
-            It doesn't matter if you use uppercase or lowercase letters.
-          </p>
+          <p className="mt-2 text-sm text-gray-500">It doesn't matter if you use uppercase or lowercase letters.</p>
         </div>
       </div>
 

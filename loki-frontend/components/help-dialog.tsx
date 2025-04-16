@@ -41,8 +41,8 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
           content: (
             <div className="space-y-2">
               <p>
-                As a Danish citizen above the age 18, you are automatically eligible to vote in local and national elections.
-                You do not need to register anywhere.
+                As a Danish citizen above the age 18, you are automatically eligible to vote in local and national
+                elections. You do not need to register anywhere.
               </p>
               <p>
                 You have the option to either vote in person at your local polling station or digitally via this portal.
@@ -56,16 +56,21 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
           content: (
             <div className="space-y-2">
               <p>
-                The choice to vote in person or digitally is entirely up to you. It is however important to remember some differences:
+                The choice to vote in person or digitally is entirely up to you. It is however important to remember
+                some differences:
               </p>
               <ul className="list-disc pl-6 space-y-1">
                 <li>Online voting allows you to change your vote, physical voting does not.</li>
-                <li>Physical votes are final. If you vote both online and physically, only your physical vote will count.</li>
-                <li>Online voting cannot guarantee your privacy from people around you. Physical voting is fully private.</li>
+                <li>
+                  Physical votes are final. If you vote both online and physically, only your physical vote will count.
+                </li>
+                <li>
+                  Online voting cannot guarantee your privacy from people around you. Physical voting is fully private.
+                </li>
               </ul>
               <p>
-                The online voting portal has numerous safety measures to protect you from coercion. For further information, 
-                read the Anti-Coercion Measures section below.
+                The online voting portal has numerous safety measures to protect you from coercion. For further
+                information, read the Anti-Coercion Measures section below.
               </p>
             </div>
           ),
@@ -79,11 +84,13 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
                 <b>Every citizen only has one vote.</b>
               </p>
               <p>
-                The digital voting system allows you to vote multiple times to change your vote. Only your last vote counts.
-                Casting multiple ballots does not result in multiple votes given to your selected party/candidate or to your selected position on an issue.
+                The digital voting system allows you to vote multiple times to change your vote. Only your last vote
+                counts. Casting multiple ballots does not result in multiple votes given to your selected
+                party/candidate or to your selected position on an issue.
               </p>
               <p>
-                Casting a ballot both digitally and in person does not result in multiple votes given. Only your physical ballot will count in this scenario. 
+                Casting a ballot both digitally and in person does not result in multiple votes given. Only your
+                physical ballot will count in this scenario.
               </p>
             </div>
           ),
@@ -96,26 +103,23 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
               <p>Your voting privacy is protected through several measures:</p>
               <ul className="list-disc pl-6 space-y-1">
                 <li>
-                  Your ballots are encrypted before they are sent over the network.
-                  This prevents hackers from seeing your choices even if they have access to your network activity.
+                  Your ballots are encrypted before they are sent over the network. This prevents hackers from seeing
+                  your choices even if they have access to your network activity.
                 </li>
                 <li>
-                  The system hides your ballot in the database by creating other fake ballots. This means that even in the event of a database breach,
-                  your vote can never be traced back to you.
+                  The system hides your ballot in the database by creating other fake ballots. This means that even in
+                  the event of a database breach, your vote can never be traced back to you.
                 </li>
               </ul>
               <p>It is however not possible to guarantee your privacy in some cases:</p>
               <ul className="list-disc pl-6 space-y-1">
-                <li>
-                  There is somebody looking at your screen while you vote.
-                </li>
-                <li>
-                  Your computer has a virus which allows hackers to see your screen or computer activity.
-                </li>
+                <li>There is somebody looking at your screen while you vote.</li>
+                <li>Your computer has a virus which allows hackers to see your screen or computer activity.</li>
               </ul>
               <p>
-                When voting, always make sure you are alone and have the most up-to-date version of your operating system and any security software you use.
-                If you are in doubt, you can vote in person at your local polling station instead.
+                When voting, always make sure you are alone and have the most up-to-date version of your operating
+                system and any security software you use. If you are in doubt, you can vote in person at your local
+                polling station instead.
               </p>
             </div>
           ),
@@ -227,8 +231,11 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
                 </li>
               </ul>
               <p>
-                No matter if you've voted before, voted in person, or haven't voted at all, <b>the system will never
-                disclose any information about your past actions — it will always appear as if you have not voted before. </b>
+                No matter if you've voted before, voted in person, or haven't voted at all,{" "}
+                <b>
+                  the system will never disclose any information about your past actions — it will always appear as if
+                  you have not voted before.{" "}
+                </b>
                 This allows you to plausibly claim or deny any past action you might have taken.
               </p>
             </div>
@@ -257,10 +264,14 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
           title: "How does revoting work?",
           content: (
             <div className="space-y-2">
-              <p>The online voting portal allows you to recast your vote an unlimited number of times until the election closes.</p>
               <p>
-                To be able to cast a new ballot, you must be able to recall all your previous valid ballots by their date and time cast.
-                The system will provide you with visual and lexical memory aids to help you remember your previous ballots.
+                The online voting portal allows you to recast your vote an unlimited number of times until the election
+                closes.
+              </p>
+              <p>
+                To be able to cast a new ballot, you must be able to recall all your previous valid ballots by their
+                date and time cast. The system will provide you with visual and lexical memory aids to help you remember
+                your previous ballots.
               </p>
             </div>
           ),
@@ -271,7 +282,8 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
           content: (
             <div className="space-y-2">
               <p>
-                No. Physical votes are final and cannot be changed. If you vote both digitally and physically, only your physical vote will count.
+                No. Physical votes are final and cannot be changed. If you vote both digitally and physically, only your
+                physical vote will count.
               </p>
             </div>
           ),
@@ -341,8 +353,8 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
           content: (
             <div className="space-y-2">
               <p>
-                To protect your voting privacy, the system doesn't explicitly tell you which ballots are yours or which ones are valid. Instead,
-                you need to recognize your own ballots using:
+                To protect your voting privacy, the system doesn't explicitly tell you which ballots are yours or which
+                ones are valid. Instead, you need to recognize your own ballots using:
               </p>
               <ul className="list-disc pl-6 space-y-1">
                 <li>The date and time when you cast your vote</li>
@@ -371,8 +383,9 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
           content: (
             <div className="space-y-2">
               <p>
-                A valid ballot is cast when you provide accurate information about your voting history for the given election.
-                Conversely, an invalid ballot is cast when you, intentionally or not, provide false information about your voting history.
+                A valid ballot is cast when you provide accurate information about your voting history for the given
+                election. Conversely, an invalid ballot is cast when you, intentionally or not, provide false
+                information about your voting history.
               </p>
               <p className="mt-2 text-red-600 font-medium">
                 It is important that, when revoting, you only identify your previous valid ballots.
@@ -380,16 +393,18 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
               <p>Examples:</p>
               <ul className="list-disc pl-6 space-y-1">
                 <li>
-                  If, for this election, this is your first time voting and you select you have not voted before, 
-                  your first cast ballot will always be valid.
+                  If, for this election, this is your first time voting and you select you have not voted before, your
+                  first cast ballot will always be valid.
                 </li>
                 <li>
-                  If you vote again later, select that you have voted before in this election, and correctly identify your previous ballot,
-                  your new ballot will be valid. If you wish to vote again for the third time later, you must correctly identify both previous ballots.
+                  If you vote again later, select that you have voted before in this election, and correctly identify
+                  your previous ballot, your new ballot will be valid. If you wish to vote again for the third time
+                  later, you must correctly identify both previous ballots.
                 </li>
                 <li>
-                  If you have voted before in this election but select that this is your first time voting, your ballot will be invalid.
-                  Conversely, if you have not voted before in this election but select that you have and select any of the presented ballots, your ballot will be invalid.
+                  If you have voted before in this election but select that this is your first time voting, your ballot
+                  will be invalid. Conversely, if you have not voted before in this election but select that you have
+                  and select any of the presented ballots, your ballot will be invalid.
                 </li>
               </ul>
             </div>
@@ -401,15 +416,17 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
           content: (
             <div className="space-y-2">
               <p>
-                The system protects you against potential coercion by maintaining your plausible deniability at all points.
-                This unfortunately means that there is no way for you to see if any of your ballots were valid or not.
+                The system protects you against potential coercion by maintaining your plausible deniability at all
+                points. This unfortunately means that there is no way for you to see if any of your ballots were valid
+                or not.
               </p>
               <p>
-                <b>Your first ballot will always be valid</b>, provided you selected that you had not voted before when casting it.
+                <b>Your first ballot will always be valid</b>, provided you selected that you had not voted before when
+                casting it.
               </p>
               <p>
-                If you are unsure about your previous votes in this election but wish to revote, you can still vote physically at you local polling station.
-                Physical votes always take priority over digital ones.
+                If you are unsure about your previous votes in this election but wish to revote, you can still vote
+                physically at you local polling station. Physical votes always take priority over digital ones.
               </p>
             </div>
           ),
@@ -441,8 +458,8 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
           content: (
             <div className="space-y-2">
               <p>
-                The system protects you against potential coercion by maintaining your plausible deniability at all points.
-                This unfortunately means that there is no way for you to see your voting history.
+                The system protects you against potential coercion by maintaining your plausible deniability at all
+                points. This unfortunately means that there is no way for you to see your voting history.
               </p>
             </div>
           ),
@@ -453,12 +470,13 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
           content: (
             <div className="space-y-2">
               <p>
-                In the event you wish to change your vote but cannot recall your previous valid ballots, you can vote at your local polling station
-                in person. Physical votes are final and are always counted, regardless of if you voted online first.
+                In the event you wish to change your vote but cannot recall your previous valid ballots, you can vote at
+                your local polling station in person. Physical votes are final and are always counted, regardless of if
+                you voted online first.
               </p>
             </div>
           ),
-        }
+        },
       ],
     },
     {
@@ -626,4 +644,3 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
     </>
   )
 }
-

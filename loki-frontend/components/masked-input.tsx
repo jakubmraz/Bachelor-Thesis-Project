@@ -3,8 +3,7 @@
 import * as React from "react"
 import { Input } from "@/components/ui/input"
 
-interface MaskedInputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "onChange"> {
+interface MaskedInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "onChange"> {
   value: string
   onChange: (value: string) => void
   groups?: number[]
@@ -25,13 +24,7 @@ function mapRawToFormatted(rawIndex: number, groups: number[]): number {
   return formattedIndex
 }
 
-export function MaskedInput({
-  value,
-  onChange,
-  groups = [4, 4, 4, 4, 4, 4],
-  className,
-  ...props
-}: MaskedInputProps) {
+export function MaskedInput({ value, onChange, groups = [4, 4, 4, 4, 4, 4], className, ...props }: MaskedInputProps) {
   const totalLength = groups.reduce((a, b) => a + b, 0)
   const inputRef = React.useRef<HTMLInputElement>(null)
 
