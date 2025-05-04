@@ -437,8 +437,10 @@ export function HelpDialog({ defaultOpenSection, triggerText = "Help", children 
           content: (
             <div className="space-y-2">
               <p>
-                For security and privacy reasons, your ballot is mixed with many other ballots. This makes it difficult
+                For security and privacy reasons, your ballot is mixed with many other decoy ballots. This makes it difficult
                 for anyone to identify which ballots are yours, protecting you from potential coercion.
+                <br/>
+                The decoy ballots are periodically created by the server for each user and will not count in the final election tally.
               </p>
               <ul className="list-disc pl-6 space-y-1">
                 <li>Use the date and time filters to narrow down the list</li>

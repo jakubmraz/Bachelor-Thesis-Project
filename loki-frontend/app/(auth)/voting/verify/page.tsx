@@ -5,7 +5,7 @@ import type React from "react"
 import { useState, useEffect, useMemo, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { ArrowLeft, Check, ArrowRight, AlertTriangle, HelpCircle, Filter, X, Clock, Search } from "lucide-react"
+import { ArrowLeft, Check, ArrowRight, Shield, HelpCircle, Filter, X, Clock, Search } from "lucide-react"
 import Link from "next/link"
 import { type PublicBallot, generateRandomPublicBallots } from "@/lib/ballot-data"
 import { formatDateDanish, formatTimeDanish } from "@/lib/date-utils"
@@ -236,13 +236,13 @@ export default function VerifyPreviousVotePage() {
           <h1 className="text-2xl font-bold">Identify Your Previous Ballots</h1>
           <div className="flex items-center gap-3">
             <HelpDialog defaultOpenSection="previous-ballots">
-              <button className="text-muted-foreground hover:text-foreground flex items-center gap-1">
+              <button className="text-blue-600 hover:text-blue-800 flex items-center gap-1">
                 <HelpCircle className="h-4 w-4" />
                 How do I identify my ballots?
               </button>
             </HelpDialog>
             <HelpDialog defaultOpenSection="ballot-verification-security">
-              <button className="text-muted-foreground hover:text-foreground flex items-center gap-1">
+              <button className="text-blue-600 hover:text-blue-800 flex items-center gap-1">
                 <HelpCircle className="h-4 w-4" />
                 Why is this necessary?
               </button>
@@ -250,21 +250,23 @@ export default function VerifyPreviousVotePage() {
           </div>
         </div>
         <p className="text-muted-foreground mb-4">
-          Please select ALL ballots that match your previous votes. This step helps ensure the security of your vote and
-          protects against coercion.
+          To protect your privacy, your previous ballots are mixed with decoy ballots. Please select ALL valid ballots that match your previous votes.
         </p>
 
-        <div className="rounded-lg border-2 border-red-200 bg-red-50 p-4 mb-6">
-          <div className="flex gap-3">
-            <AlertTriangle className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
-            <div>
-              <h3 className="font-semibold text-red-900 mb-1">Important Security Notice</h3>
-              <p className="text-sm text-red-800">
-                If you fail to identify all your previous ballots, your new vote will not be counted. This is a security
-                feature that protects against coerced voting.
-              </p>
+        <div className="rounded-lg border-2 bg-blue-50 border border-blue-200 p-4 mb-6">
+          <div className="flex items-start gap-2">
+              <Shield className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+              <div className="text-sm text-blue-800">
+                <p className="font-medium mb-1"><strong>Anti-Coercion Feature</strong></p>
+                <p>
+                  Your new vote will only be counted if you correctly identify all your previous valid ballots cast in this election.
+                  <br />
+                  This is to ensure no one can vote for you or coerce you into voting a certain way.
+                  <br />
+                  If you cannot remember your previous ballots, you can still revote once in person to override your digital vote.
+                </p>
+              </div>
             </div>
-          </div>
         </div>
       </div>
 
@@ -352,7 +354,7 @@ export default function VerifyPreviousVotePage() {
 
                 <div className="ml-auto">
                   <HelpDialog defaultOpenSection="many-ballots">
-                    <button className="text-muted-foreground hover:text-foreground flex items-center gap-1">
+                    <button className="text-blue-600 hover:text-blue-800 flex items-center gap-1">
                       <HelpCircle className="h-4 w-4" />
                       Why am I seeing so many ballots?
                     </button>
@@ -556,24 +558,24 @@ export default function VerifyPreviousVotePage() {
             <DialogContent className="max-w-md">
               <DialogHeader>
                 <DialogTitle className="flex items-center gap-2">
-                  <AlertTriangle className="h-5 w-5 text-red-600" />
+                  <Shield className="h-5 w-5 text-blue-600" />
                   Confirm Ballot Selection
                 </DialogTitle>
               </DialogHeader>
               <DialogDescription asChild>
                 <div className="space-y-4">
-                  <p>
-                    You have selected <strong>{selectedBallotIds.length}</strong> ballot
-                    {selectedBallotIds.length !== 1 ? "s" : ""}. Are you sure you wish to continue?
-                  </p>
-                  <div className="rounded-lg border-2 border-red-200 bg-red-50 p-3">
-                    <p className="text-sm text-red-800 font-medium">
-                      If you incorrectly identify your previous valid ballots, your new ballot will not be counted!
-                    </p>
-                  </div>
                   <p className="text-sm text-muted-foreground">
                     You're seeing this notification regardless of if your choices were correct or not.
                   </p>
+                  <p className="text-sm text-foreground">
+                    You have selected <strong>{selectedBallotIds.length}</strong> ballot
+                    {selectedBallotIds.length !== 1 ? "s" : ""}. Are you sure you wish to continue?
+                  </p>
+                  <div className="rounded-lg border-2 border-blue-200 bg-blue-50 p-3">
+                    <p className="text-sm text-blue-800 font-medium">
+                      Your new ballot will only be counted if you correctly identify your previous valid ballots. 
+                    </p>
+                  </div>
                 </div>
               </DialogDescription>
               <DialogFooter className="gap-2 sm:gap-0">

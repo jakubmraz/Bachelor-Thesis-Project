@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { AlertTriangle, HelpCircle } from "lucide-react"
+import { Shield, HelpCircle } from "lucide-react"
 import Link from "next/link"
 import { HelpDialog } from "@/components/help-dialog"
 
@@ -12,7 +12,7 @@ export default function VotingEntryPage() {
         <div className="flex items-center justify-between mb-2">
           <h1 className="text-2xl font-bold">Have you voted before in this election?</h1>
           <HelpDialog defaultOpenSection="ballot-verification-security">
-            <button className="text-muted-foreground hover:text-foreground flex items-center gap-1">
+            <button className="text-blue-600 hover:text-blue-800 flex items-center gap-1">
               <HelpCircle className="h-4 w-4" />
               Why is this necessary?
             </button>
@@ -22,11 +22,16 @@ export default function VotingEntryPage() {
           To make sure only you can cast your vote, please let us know if you have voted before in this election.
         </p>
 
-        <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
+        <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
           <div className="flex items-start gap-2">
-            <AlertTriangle className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
-            <div className="text-sm text-red-800">
-              Your ballot will only be counted if you provide the correct information about your voting history.
+            <Shield className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+            <div className="text-sm text-blue-800">
+              <p className="font-medium mb-1"><strong>Anti-Coercion Feature — every user sees this regardless of whether they've voted before or not</strong></p>
+              <p>
+                This security measure ensures that only you can modify your vote.
+                <br />
+                Your vote will only count if you correctly identify your voting history.
+              </p>
             </div>
           </div>
         </div>
