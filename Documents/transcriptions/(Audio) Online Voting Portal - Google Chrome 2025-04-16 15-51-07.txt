@@ -1,0 +1,75 @@
+I: So, imagine a major news scandal related to one of the candidates or issues has completely changed your mind. You now strongly want to change your vote, and your task now is to log back into the system and cast a new vote that reflects your changed preferences.
+
+T: Okay. So we log in, and we do the whole thing. And authentication. Go to the election, and I have voted before. And I remember which one I cast, which was that one. And we continue voting. Yes, yes, makes sense. And then I can, I assume, cast my new vote. So, yes. Then I cast the vote for the other dude. So I just re-voted.
+
+I: Did you feel like you knew what you were supposed to do at all points during the process?
+
+T: If I did it correctly, then yes.
+
+I: Did re-voting feel like an actual option that one may use, or something unusual?
+
+T: It felt useful.
+
+I: Okay. Was there ever a moment where you felt you needed something explained to you?
+
+T: No.
+
+I: Did the application do a good job of explaining things to you?
+
+T: Yeah.
+
+I: Did you make use of the built-in help section?
+
+T: No.
+
+I: Why not?
+
+T: Because I didn't feel it necessary.
+
+I: Was there anything unexpected during the experience?
+
+T: No.
+
+I: Was it easy for you to remember your previous ballot?
+
+T: Yeah.
+
+I: What helped you to remember it most?
+
+T: The date and time. The memory aids could be good as well.
+
+I: Okay. What do you think about the current memory aids overall?
+
+T: They're quite useful. I mean, the ease is very nice.
+
+I: What do you think about the re-voting mechanism overall?
+
+T: Also nice.
+
+I: Are you aware of the possibility to cast an invalid ballot?
+
+T: Yes.
+
+I: Okay. Do you think the website provides enough information about invalid ballots?
+
+T: I'd say so.
+
+I: Okay. How sure are you that you have cast a valid ballot?
+
+T: Pretty sure. Okay. Unless I didn't read something. I think I was correct there. I think so too. Let me just... Okay.
+
+I: So, now imagine the following situation, which is hypothetical but important for us to understand. Imagine you are trying to vote, but someone is coercing you. Maybe they are physically present, watching over your shoulder, or watching your screen remotely. They are telling you exactly how you must vote. Specifically, they insist that you must vote for the very first option listed for each question or issue on the ballot. Now, here's the critical part. You need to act normally while doing this, so you don't raise the coercer's suspicion. That means you cannot obviously click on or read any help sections or information buttons, especially anything related to coercion while they are watching. However, your secret goal is to make sure that when the election finally concludes, it's your own secretly intended vote, or the one you truly want, that actually gets counted, not the coerced vote you are about to cast.
+
+T: So, I assume that I already voted. Yeah. Okay. So, I log in and do the whole thing again. I say I've already voted, and then I choose my previous vote, which is not correct in this case. So, the ballot should not count. Choose all the options they want me to. And I submit. And that should be enough.
+
+I: Okay, thanks. Can you explain in your own words what you did?
+
+T: I just chose the ballot that wasn't my previous one.
+
+I: Okay. Do you know what that did? Yeah, that made the ballot invalid.
+
+T: Okay, okay.
+
+I: Does the website provide you with enough information even while you cannot access the help section?
+
+T: Yeah. Cool. Thanks.

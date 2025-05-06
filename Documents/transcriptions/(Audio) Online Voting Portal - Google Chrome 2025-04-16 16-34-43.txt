@@ -1,0 +1,78 @@
+I: So imagine a major news scandal related to one of the candidates or issues has completely changed your mind. You now strongly want to change your vote. Your task is now to log back into the system and cast a new vote that reflects your changed preferences.
+
+T: So, logging in, vote again. So after I meet ID, I'm selecting the election that is active. Since I voted before, I select the option for the... Yes, I voted before. And now I'm trying to identify my previous ballot. I have found my previous ballot and selected it, and I'm continuing to vote. So I'm changing my vote now. And I'm submitting the vote. Yes. Finishing and logging out.
+
+I: So did you feel like you knew what you were supposed to do at all points during the process?
+
+T: Yes. I think it was clear.
+
+I: Did revoting feel like a natural option that one may use or like something unusual?
+
+T: I find it difficult to map it to the normal voting process. So maybe in an online format it would become more likely to change your vote, since it's more accessible.
+
+I: Got it. Was there ever a moment where you felt you needed something explained to?
+
+T: Not really. I think the information about the memory tags were good enough.
+
+I: Did the application do a good job of explaining things to you?
+
+T: Yes.
+
+I: Did you make use of the built-in help section?
+
+T: Not this time.
+
+I: And why not?
+
+T: Since I checked the help function from before about the memory tags, I knew what I was looking for when I was selecting my vote. And then the rest of the process was quite straightforward.
+
+I: Was there anything unexpected during the experience?
+
+T: No, not really.
+
+I: Okay. Was it easy for you to remember your previous ballot?
+
+T: Easy enough, but I think out of the multitude of ballots that were suggested, it would be difficult to find the correct one, especially if the colors keep remaining the same. Like scrolling through the four pages to find my tag and having seen a lot of other orange tags around was a bit difficult.
+
+I: Got it. Was it easy for you to remember it?
+
+T: It's a cumulative color and the text that was attached, maybe not so much of a pattern.
+
+I: What do you think about the current memory aids overall?
+
+T: I think they're quite good, yes. Again, I think not a lot of focus is placed on the pattern.
+
+I: What do you think about the re-voting mechanism overall?
+
+T: I think it's quite straightforward. Maybe it would be nice to have a confirmation on another platform that, hey, your vote was registered successfully or not.
+
+I: Are you aware of the possibility to cast an invalid ballot?
+
+T: Yes.
+
+I: Do you think the website provides enough information about invalid ballots?
+
+T: Yes, the confirmation page was explicitly saying what happens with an invalid ballot.
+
+I: How sure are you that you have cast a valid ballot?
+
+T: I am quite sure since I selected the memory tag that I remembered.
+
+I: Do you want to do a heads up of thirds now? So let's just go back and let me just refresh the test. Imagine the following situation, which is hypothetical but important for us to understand. Imagine you are trying to vote, but someone is coercing you. Maybe they are physically present, watching over your shoulder, or watching your screen remotely. They are telling you exactly how you must vote. Specifically, they insist that you must vote for the very first option listed for each question or issue on the ballot. Now, the critical part is, you need to act normally while doing this, so you don't raise this coercive suspicion. That means you cannot obviously click on or read any help sections or information buttons,
+especially anything related to coercion while they are watching. However, your secret goal is to make sure that when the election finally concludes, it's your own secretly intended vote that actually gets counted, not the coerced vote you were about to cast. Go ahead.
+
+T: So I'm logging in to vote again. And since it's obvious that I voted before, I select the same option. However, this time I'm going for a different memory tag.
+
+I: Okay.
+
+T: And continuing to it as normal, redefining my votes. And then reviewing and submitting the vote.
+
+I: Okay. Cool. Can you explain in your own words what you just did? Which anti-coercion mechanism you used?
+
+T: Yes, I used the option that I have voted before, and I deliberately went for a different tag of mine to invalidate my vote and act as normal in front of the coercer.
+
+I: Does the website provide you with enough information even while you cannot access the help section about this?
+
+T: Yes, I think the confirmation prompt helps a lot with that. It reminds you that an incorrect selection of your tag comes as an invalid vote.
+
+I: Cool, thanks.
