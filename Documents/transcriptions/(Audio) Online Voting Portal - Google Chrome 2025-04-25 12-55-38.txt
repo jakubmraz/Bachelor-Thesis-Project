@@ -1,5 +1,51 @@
-So, okay, just to change the order, because I have been here before. Okay. So definitely I should better modify. If you want to vote for this election... Yes, I... Actually, now it's just asking me to click on this one because I have already been here, right? What happens if I do this? No, it's just... I guess it won't be counted. Okay. I have some data here. What was it? Salient. This is 20th. Yeah, this is confusing actually, right? I mean, I don't know if it's someone else's things, like these ballots or... I can filter, of course. But still, I can see the rest of the... Is it some... So I can see the others kind of ballots, I guess. Can I just ask, I mean, this... Yeah, you're right. Yeah. Maybe highlight it, not like in grey, but... Okay. Not even the black, but this is something important. It's like... Yeah, I guess I should... How do I identify my ballots? Yesterday. Yeah. Exactly, this is the... You can always vote in person at your local polling station. Yeah, but then how does it count? I mean, you kind of vote it, then you want to re-vote, you want to modify, then you come back to polling station, you just use like paper. Yeah, it's also explained actually. It's... I think if you scroll maybe here... You can vote at your local... I find on Bendau, always count it, regardless if you voted online first. Hmm, interesting. That's what it's the same. Can I see other information? Can you do it like that? Does it mean I have to choose all of them? I mean... You have to choose all your previous ballots. All the previous... Not only the last one. No. Okay. So that was... Can I actually... Yeah. Hmm. Yeah, this is confusing actually, right? I mean, because of this warning, now I'm in doubt. Did I... No, you did. No, no, but I mean, the feeling. Yeah. Because of all these warnings here. Yeah. Did I succeed? Maybe I should go to my local place and vote. Yeah, it's actually a big issue and there's no solution. The only thing I could think of was the local voting thing, which also... It wasn't in the design that they proposed. That's something I thought up. Yeah, I think if it's already have kind of integration with a VIT ID, for example, in online authorization service, maybe it can also have a kind of... What do you call the... Submission, like the notifying element, like it would notify you somewhere on your government email address, like e-box or here or somewhere else. Everything the website tells you also tells the coercer, potentially. It tells what? It tells the coercer. Anything it tells you, it potentially tells the coercer. Okay. So that's the issue. There's also a third scenario, but I don't know how pressed for time you are. It would be a short one. Yeah, that's fine. Okay. So the third scenario is, yeah, there's a coercer behind you. So imagine me, I guess. And yeah, I'm here. I'm telling you how to vote. I saw the, you know, I saw your vote or something, but I'm telling you, I have a... I'm threatening you and I'm telling you, you must re-vote and vote for the first candidate or the first option on the list. And you have to act normally while doing this, so you can't raise any suspicion. So you can't click on anything obvious that says anything about coercion or read any help sections or click any information button because I'm watching. So your secret goal is to make sure that your actual vote is the one in the system once it closes. So go ahead.
-I'm not really experienced with this system, right? So I don't want to cheat. Yeah, but is it like the first time you're coercing me or like, I mean... No, let's say I saw your vote. You already saw my vote that I voted for something else. So I can't choose this option.
-Okay, now I need to remember when I voted before. Yeah, that was just recently and I was yesterday. Yeah, I cast the date, I'll find my date. Yeah, but it was something like here, I guess.
-Okay, so can you explain just in your own words what your strategy was to achieve your goal of your actual vote being the last one? I was trying, yeah, I was trying to choose like run memory aids, I guess, and cast date and time. So that I knew that if I choose it, then the vote won't count, right? That's how I already know. Yeah, and this one would not count. And do you think, like, did you feel pretty confident doing that? Like, do you imagine yourself being confident about your ability to kind of evade the coercion in such a scenario? I guess, yeah, I guess, yeah.
-Yeah, in light of this, what do you think about the security features? Does it feel like a secure system? That's the system. Yeah, particularly with that one, right? But like overall. Yeah, yeah, I guess. I guess. Okay, nice. Yeah, I think that's pretty much it. That's all. Yep. Thanks.
+T: So, okay, just to change the order, because I have been here before. Okay. So definitely I should better modify. If you want to vote for this election... Yes, I... Actually, now it's just asking me to click on this one because I have already been here, right? What happens if I do this? No, it's just... I guess it won't be counted. Okay. I have some data here. What was it? Salient. This is 20th. Yeah, this is confusing actually, right? I mean, I don't know if it's someone else's things, like these ballots or... I can filter, of course. But still, I can see the rest of the... Is it some... So I can see the others kind of ballots, I guess. Can I just ask, I mean, this... Yeah, you're right. Yeah. Maybe highlight it, not like in grey, but... Okay. Not even the black, but this is something important. It's like...
+
+I: Yeah, I guess I should...
+
+T: How do I identify my ballots? Yesterday. Yeah. Exactly, this is the... You can always vote in person at your local polling station. Yeah, but then how does it count? I mean, you kind of vote it, then you want to re-vote, you want to modify, then you come back to polling station, you just use like paper.
+
+I: Yeah, it's also explained actually. It's... I think if you scroll maybe here... You can vote at your local...
+
+T: I find on [?], always count it, regardless if you voted online first. Hmm, interesting. That's what it's the same. Can I see other information? Can you do it like that? Does it mean I have to choose all of them? I mean... You have to choose all your previous ballots. All the previous... Not only the last one. No. Okay. So that was... Can I actually... Yeah. Hmm. Yeah, this is confusing actually, right? I mean, because of this warning, now I'm in doubt. Did I... No, you did. No, no, but I mean, the feeling. Yeah. Because of all these warnings here. Yeah. Did I succeed? Maybe I should go to my local place and vote.
+
+I: Yeah, it's actually a big issue and there's no solution. The only thing I could think of was the local voting thing, which also... It wasn't in the design that they proposed. That's something I thought up.
+
+T: Yeah, I think if it's already have kind of integration with a MitID, for example, in online authorization service, maybe it can also have a kind of... What do you call the... Submission, like the notifying element, like it would notify you somewhere on your government email address, like e-box or here or somewhere else.
+
+I: Everything the website tells you also tells the coercer, potentially.
+
+T: It tells what?
+
+I: It tells the coercer. Anything it tells you, it potentially tells the coercer.
+
+T: Okay. So that's the issue.
+
+I: There's also a third scenario, but I don't know how pressed for time you are. It would be a short one.
+
+T: Yeah, that's fine.
+
+I: Okay. So the third scenario is, yeah, there's a coercer behind you. So imagine me, I guess. And yeah, I'm here. I'm telling you how to vote. I saw the, you know, I saw your vote or something, but I'm telling you, I have a... I'm threatening you and I'm telling you, you must re-vote and vote for the first candidate or the first option on the list. And you have to act normally while doing this, so you can't raise any suspicion. So you can't click on anything obvious that says anything about coercion or read any help sections or click any information button because I'm watching. So your secret goal is to make sure that your actual vote is the one in the system once it closes. So go ahead.
+
+T: I'm not really experienced with this system, right? So I don't want to cheat. Yeah, but is it like the first time you're coercing me or like, I mean...
+
+I: No, let's say I saw your vote.
+
+T: You already saw my vote that I voted for something else. So I can't choose this option. Okay, now I need to remember when I voted before. Yeah, that was just recently and I was yesterday. Yeah, I cast the date, I'll find my date. Yeah, but it was something like here, I guess.
+
+I: Okay, so can you explain just in your own words what your strategy was to achieve your goal of your actual vote being the last one?
+
+T: I was trying, yeah, I was trying to choose like wrong memory aids, I guess, and cast date and time. So that I knew that if I choose it, then the vote won't count, right? That's how I already know.
+
+I: Yeah, and this one would not count. And do you think, like, did you feel pretty confident doing that? Like, do you imagine yourself being confident about your ability to kind of evade the coercion in such a scenario?
+
+T: I guess, yeah, I guess, yeah.
+
+I: Yeah, in light of this, what do you think about the security features? Does it feel like a secure system?
+
+T: Yeah, particularly with that one, right?
+
+I: But like overall.
+
+T: Yeah, yeah, I guess. I guess.
+
+I: Okay, nice. Yeah, I think that's pretty much it. That's all.
