@@ -1,0 +1,415 @@
+13:
+
+I: Alright, you have to log in and change your vote. Wait, wait, wait, wait, wait. Uh-huh. I need to actually load your user. I was test one, six. Number six, yes. Perfect.
+
+T: Okay, so I must admit now that the guy got is not well suited, right? Okay. I mean, I remember using this, remember me and whatever. Okay. So this is identify previous ballot. How do I identify my ballot? Why is it necessary? Okay. I forgot this. To protect your privacy, does it not explicitly tell you which ballots are yours or which ones are valid? So you don't need to recognize your own ballots. Does it mean that there are fake ballots as well? Interesting. The date and time when you catch your vote, the unique visual pattern identicon and the word phrase generated on your ballot. Okay. Do I need all of them? Okay, they are. Okay, what if it's not here? I guess there is another page, yeah?
+
+I: Yeah, it's one for pages.
+
+T: Okay, filter by time, search phrases. Okay. I think it was something to do with spring, later spring. I remember it was on an arrow going down. Let's just look for it. Yeah. Later spring, yeah. Perfect. What if I get it wrong? If I don't remember. I can always go.
+
+I: If you couldn't identify your previous valid ballots, your new ballot would not be counted.
+
+T: Okay, so if for example I'm coerced or someone's forcing me to vote, I can just do it on purpose, nice? Okay, perfect. I think I voted the Social Democrats. Let's go for the Green Party. Yeah, Christiane, Green Party. Next. Legislation of Fentanyl. Oh, yeah, I remember this. I don't want this. Okay, I'll vote for this asshole. I think I'll vote for this asshole. Another one to... Okay, century kangaroo. Okay, it's a kangaroo on the cross. Yeah, perfect. Nice. I think I may want to change the party though, because we were just voting on the president or also the party? Oh, okay. May I do it again?
+
+I: You may do it again.
+
+T: Okay, because maybe I just want to change the party, not the... Yeah, I put it before. Oh, nice. Are they auto-generated, the fake ones, at the moment? Yeah, it'll be important. You could identify... Okay, should I try this actually? Oh, can I select more than one?
+
+I: Yeah, select all your ballots.
+
+T: All the previous ones?
+
+I: Yeah.
+
+T: All of them? Oh, shit. Okay, this one as well. I think that's kind of annoying. I selected two? Yeah, I selected. Perfect. What if I fail to count the ballots? Do I have to go to the... Limit love. It's like a cup. Okay, one small...
+
+I: I can answer some questions later on.
+
+T: If you're going to re-vote later, you need to identify this ballot. Okay, so I will have to identify all three of them. Okay, fair enough. May I try messing up when voting, maybe? Most importantly... I mean, notify that this is wrong? Okay, and now the question is, does it actually count? So if I try to vote again, should I just count the folks on it as well? So identify four ballots, although my vote was not valid?
+
+I: No, this one did not count, and you should not select this one when you vote again.
+
+T: Yeah, I think that should be specified in case a person does it... Like a reminder if your vote is not valid, the ballot is not valid either. Because I would be confused if I had to remember this one as well. Or I would just directly go to the office to vote. Yeah, I mean, if you find yourself in a situation where you vote like five times... Yeah, it's kind of annoying. I mean, this is kind of explained, like you have to select... Yeah, yeah, identify all the ballots. Yeah, I think identify all the ballots can be kind of hustle. The thing is, actually, this doesn't say it. Because in here, it tells you actually... It tells you that you need to... Your valid ballots. It doesn't tell you which one are valid. So what's the freaking great text? You can't select previous valid ballots. Yeah, only the valid ones, okay. But yeah, it's here, but it's not here. And it should be.
+
+I: Good point. And yeah, also... Wait, did you say something like it should tell you something?
+
+T: Yeah, it was more regarding that. Because I think it's kind of hustle, like you have to go also for spring. They seem... It's important. They are generated on the spot, right? So I mean, because these are the last two I got. Last three. And it's kind of suspicious. So if someone wanted to force me to vote, and they knew about this system or they tried with different people, they would kind of see...
+
+I: What would they see?
+
+T: They would see that the last three ballots that I got, for example, or the last two ballots that I got, are the ones appearing here. So maybe having a mix, because this...
+
+I: Yeah, but they're sorted by time.
+
+T: Yeah, but I mean, when I voted, the second... So the first time today, I got the secondary category. And when I voted the second time, it was the limit low.
+
+I: Yeah, because they stored it by time. So every time they are... Sorry, every time they are generated a new one or a few minutes or... I think, at least in my code, it's like... Which one are we? Six. Six. So every time you press this, it generates... Yes, now I added a new one, actually. I think.
+
+T: Okay. Yeah. Okay, I see, I see. Then it's fine. So it like procedurally generates fake ballots. Yeah, yeah, I mean, I would just, maybe for future work, change the code so that the ballots are... Like, the position, I guess it's an array or a list, you shuffle them. Just for security reasons, I would say, but that's the only thing.
+
+I: Okay. What do you think about security?
+
+T: Just shuffling them, because I wouldn't feel comfortable knowing that, for example, I know these are the two ballots that I got. And maybe, like, I don't know.
+
+I: The thing is, even if you just voted, like, if the guy logs in and sees, like, ah, this is your vote, it doesn't tell him anything.
+
+T: Yeah, but usually I wouldn't do that. Usually what would happen, I feel, is like, I cast a ballot, and he would see, like, because this is chronological and it's every time I put my ID, right? Okay, so I enter my ID, I generate a new ballot, and then the person can... They can kind of know how it works. I don't know if I'm explaining myself. Again, so... I said that I wrote down, like, you say that your code right now, like, it's just for code... It's just practice. Yeah, so, I mean, I would say that... It would all update in the real scenario. Yeah, like, if I were to... May I log out?
+
+I: Yeah, sure.
+
+T: Okay. If I return to the front page, this is the...
+
+I: Yeah, this would not be here at all.
+
+T: Yeah, yeah. The ballots would kind of update automatically. Yeah, yeah, that's why... Okay, that's fine. I mean, it's just so nothing happens. Yeah, there's also, like, one time I think I saw, like, slavery something. Oh, yeah, delete some possibilities.
+
+I: Oh, it's from the Bitcoin words, I think. Ah. Word list.
+
+T: Abuse. No! Yeah, I think that's the only... I would say it's those, like... Yeah, but then, like, they're not that many words in the English language. Yeah, yeah, yeah.
+
+14:
+
+T: So you need to remember who I voted for before?
+
+I: Well, the system doesn't give you information of what you actually voted for. You need to identify your ballot based on the date and time.
+
+T: Based on the date and time? I don't remember that. This is from today. Is it going back? So it's going to be from 20th?
+
+I: Yes.
+
+T: But I don't know. I probably just... Oh, I don't know. I don't really understand this. What do you mean, select all ballots that match your previous votes? How could I know? Okay. If you... Yeah, exactly. Okay. I guess I should have paid more attention to this.
+
+I: Do you think it's the UI's fault?
+
+T: No, it's not. It's just that if I just vote, I do not really care for the exact time. I will remember the day, but I will not remember the hour. Especially if I was not aware that I should write it down. If I would know that, then, yeah, easier, but still some people might just forget. And then they are kind of screwed.
+
+I: Yeah, that's true. If you want to maybe look around to see what you can do in this scenario.
+
+T: Right now I can only finish and log out, as I can see. Right. Right. I guess I can again try. Oh, I can... This is like past results. I cannot just see my vote. But this is my vote, as I understand. So now I can be sure that it's changed. Is this a resolution? Can I then just try again?
+
+I: Try it again?
+
+T: It's because you need to select all ballots that match your previous votes. But maybe this is... Is this auto-generated every time you... No, this one is yours that you just cast, right? And let's see if it has the same...
+
+I: Yeah, these are not... They are persistent. They're tied to your quote-unquote account.
+
+T: Yeah, so that means that... Well, not really, because it's not repeated here.
+
+I: What do you mean? This? Is it?
+
+T: Yeah, it's the same ones. Shortcut? I actually have a note on my phone. I have here... And there wasn't any code sent again. No, they don't repeat.
+
+I: Yeah, so... The chance is really low.
+
+T: But as in... I have a note on my phone to see what your previous vote was, and I can see it there. What was it? Just out of curiosity. It was Chef or Jiggo. Chef or Jiggo. It's actually right next to the one you clicked. So I think it was correct.
+
+I: No, you didn't. You chose shortcut, I think, or open kidney, one of the blue ones.
+
+T: No, no, totally not, because I knew that it was at 2 p.m. and not 3. Because at 3 I was at the air camp. Yeah, I don't think it's just a correct vote. So this is working. I don't know what can be changed here. If this is the procedure that needs to be followed, then I guess it just must be... Well, people... Oh, yeah, I chose this one. So I didn't choose the correct one. But if this is an actual procedure that needs to be followed, then I guess people will know. And then they will just need to pay attention to that.
+
+I: You want to proceed to the questions?
+
+T: Yes.
+
+I: So did you feel like you knew what you were supposed to do at all points of the process?
+
+T: Well, I knew that. I couldn't really execute it.
+
+I: Yeah, of course. Did re-voting feel like a natural option that one may use, or like something unusual?
+
+T: I think it's a good idea to vote, I think. But I don't know if I would care enough to do it, because most of the time when I vote, it's just like... It doesn't really matter that much because some of the options are shit. But that's the difference of person.
+
+I: Do you think the application did a good job of explaining things to you?
+
+T: Yeah.
+
+I: Okay. But let me just ask, do you think the application did a good job of telling you that you should remember your vote?
+
+T: Yes, but I didn't pay attention to that at first. Now I just knew that it might be needed, that I just looked for it.
+
+I: I'm going to have a bunch of questions, like was it easy for you to remember your previous ballot? If yes, what helped you to remember it? If not, what would have helped you to remember it? But you said you didn't even try to remember it.
+
+T: Yeah, if I know that, I would just write it down. Yeah, of course. I don't think there is anything that could help me.
+
+I: I think what I did with Daniel, he got lucky with the picture because it was like an arrow pointing down. So then it was really easy for him to recall it, but it's just...
+
+T: I didn't even pay attention to the picture. But I guess if I could choose my own, that doesn't make sense.
+
+I: No, it needs to be deterministic. It needs to be anonymous. Are you aware of the possibility to cast an invalid ballot?
+
+T: Well, yes.
+
+I: Do you think the website provides enough information about invalid ballots?
+
+T: That it will not count as a vote, yeah.
+
+I: And how sure are you that you have cast a valid ballot?
+
+T: I don't know. How can I be sure ever, actually? Not unless I had this written down.
+
+I: Actually, the website provides kind of information what you can do in this scenario. If you want to look for it. It's actually in the help section.
+
+T: I cannot vote in person. But I already voted online. Right. So how does it work? Do they then...
+
+I: I guess I was kind of hoping that the description is good enough that you would know.
+
+T: No, because I voted digitally and they cannot show me which ballots are mine. And I also shouldn't even know which ballots are mine, exactly. That's how it is supposed to be anonymous. Does that make sense? So then... Then would it mean if I voted digitally and then I go physically, will my digital vote be just revoked? Okay, that makes sense. But then I guess I cannot re-vote again.
+
+I: No, you can't re-vote in physical elections anyway. Do you think these were good descriptions? Does it make sense?
+
+T: I would add, actually, I would add here the section, like the explanation that if I vote physically after voting digitally, my digital votes will be automatically deleted. That is like 100% clear. Yeah, to make it clear.
+
+I: Yeah, that makes sense. Right. There's also kind of a third scenario where I would go kind of, I would pretend to be the coerced and have you try one of the security measures. But yeah, you want to try that? Okay. So, yeah, basically imagine I'm sitting next to you, like I am right now, and I'm telling you that you need to log in and vote for the first option on every single question and kind of want you to try to use one of the security measures to make sure that it's your final vote that counts.
+
+T: I still need to know what I'd do. Yeah, re-voting makes sense.
+
+I: But also maybe just kind of if I'm already there coercing you, I wouldn't really like you reading this. If I'm already there coercing you, like I'm some bad guy, I wouldn't like to see you reading this.
+
+T: Yeah, of course. But then I guess I would just need to do all of that stuff and then I would be thinking about what can I do now after you're gone. But maybe that doesn't really make sense to go through right now. No, I guess not. Okay, so this is kind of unclear because it just says that I have options. But what options? Right. I guess I need to go to help.
+
+I: Yeah, yeah. Maybe that's an issue I need to, like if I'm going to bring it up, I should just expand on it anyway. Yeah, that makes sense.
+
+T: Okay, so now we can vote again.
+
+I: Sure.
+
+T: So I can just say that I already have voted, but I can re-vote if you really want to. So I will choose this and I will say that I have voted yesterday at about 1 p.m. and it would be this one. And I will vote for whatever you want. Which one?
+
+I: Just the first one.
+
+T: First one, okay. And then it's invalid.
+
+I: Yeah, just the quick question is kind of would you feel confident using this to...
+
+T: Okay, so if you asked me to lie, a lot of people are very bad at lying. Yeah, that's true. So if somebody is very bad at lying, then they should just go for re-voting after this. But again, this will require you to know that you can re-vote, but I guess you should know that.
+
+I: Yeah, I guess.
+
+T: So there are two options, one for good liars and one for bad liars.
+
+I: Yeah, it all hinges kind of information being presented and the way it is presented. So then, yeah, I guess the main task of the thesis is kind of designing it in a way where it gives you the most information in the best way. And yeah, actually, in the test that I've done, there's like a bunch that I've been told to change. It shouldn't be in red because it's kind of alarming to some people, I guess. And then maybe put this and have it being like blue and maybe bolded text. Like if you plan to re-vote later, it should be very highlighted.
+
+T: Yeah, yeah, this could be bigger. Just a bigger font, maybe.
+
+I: I guess, yeah, maybe I'll have a section in the thesis like kind of changes proposed after the testing. And yeah, I guess that's it for us for today. Thanks. Cool.
+
+15:
+
+I: Oh, there you go. So, yeah, your task is to log in and vote, and kind of maybe think out loud about what you're doing. And just for the record, I'm going to record your activity and the audio, but for the thesis, I'm only going to quote you anonymously. Is that okay?
+
+T: That's fine.
+
+I: Cool.
+
+T: Okay, so I'm clicking on the yellow button that says I can vote. Oh, I did that again. I see. There we go. Okay. I should choose incognito. Why is this important?
+
+I: Okay. Just for this specific test, I need to save a cookie for you so I don't actually use incognito.
+
+T: So I just press here?
+
+I: Yeah.
+
+T: I'll press to log in. Continue, because we don't log in with MitID. Okay, there we go. Enter. I'll wait and start voting. No, this is my first vote. Okay. I want to change. I want to vote for change. I like that. No, it shouldn't. Next. Just vote for the new person. I like Nancy. There we go. Okay, I press submit vote. Okay. Date and time. This is time. This is date. Okay, I guess that's it. So I just press here, finish, and log out.
+
+I: Yeah, and we're going to do the voting simulation tomorrow.
+
+T: Yes, okay. Cool. There we go. I'll just take a moment. I'm successfully logged out. Returning to front page. Okay, there we go. Do you want me to stop the timer?
+
+I: No.
+
+T: Okay.
+
+I: It's not a timer either. It's a recorder. Yeah, so, I mean, was everything clear?
+
+T: Everything... Yeah, I mean, the only thing was that I shouldn't go into inognito, but that's for the test. Yeah, yeah, yeah. So that makes sense.
+
+I: There's nothing I can do about that.
+
+T: No, exactly. But, yeah, I think...
+
+I: I mean, full disclosure, you've seen this part before, right?
+
+T: Yeah.
+
+I: So I think we'll get most of the things that I actually want to ask tomorrow when you do the revoting because you haven't seen that.
+
+T: Mm-hmm.
+
+I: And, yeah, so anything you want to add or, like, anything that surprised you, anything you need to explain?
+
+T: No, I don't think so.
+
+I: Okay, cool.
+
+T: I don't think there's anything I needed to explain either.
+
+I: Right, so... Maybe tomorrow when we have the re-voting, there will be more.
+
+T: Yeah, I think that will be much better.
+
+16:
+
+T: Okay, so all I need to do is just go in and change my vote. Okay, I'll log in. So I can go into my... I'm not gonna go into incognito. I'm gonna go into MitID. Gonna press continue. Hello? Oh, there we go. So... Now I need to see... I still need to enter this election, I guess. But now it will ask me if I have not voted or if I have voted. I have voted before. There we go. Now I need to find my vote. It's not today. It was just... Oh, there's so many people who voted, what the fuck. It's not in SDs. This one. Continue voting. Incorrect? What? No, I'm sure this is mine. Yes. Nice! Okay, now I can... I will vote for something else. I'm gonna find Green Party. No, I still don't agree with that. There you go. And I'm gonna change who I voted for. I'm gonna say yes, submit the vote. Now I got a new one I need to remember. Now it's green instead of blue. Okay, finish and log out. Okay, done. Return to front page.
+
+I: Do you feel like you knew what you were supposed to do at all points of the process?
+
+T: Yes.
+
+I: Did revoting feel like a natural option that anyone could use? Or like something unusual for, I don't know, some very specific people?
+
+T: It seems very natural the way that it's been put up, but not natural the way that I'm not used to being able to do that.
+
+I: That makes sense. Was there every moment where you felt you needed something explained to you?
+
+T: I was worried that it wasn't my... my... what's it called? Ballot? Or my vote? But of course it popped up to be like, are you sure? Because it makes sense that you're not sure. Like, you should be 100% sure, or you should at least think over it one more.
+
+I: Was there anything unexpected during the experience?
+
+T: No.
+
+I: Was it easy for you to remember your previous ballot?
+
+T: I think so, yeah. I hope I did it correctly.
+
+I: What helped you most to remember it?
+
+T: The dessert.
+
+I: Okay. So the keyword.
+
+T: Yes. And also the drawing. I remember it was blue.
+
+I: Ah, great. What do you think about the current memory aids overall?
+
+T: Huh?
+
+I: What do you think about the current memory aids overall, that being the keyword and the drawing?
+
+T: I think it's fine.
+
+I: Cool. What do you think about the rewording mechanism overall?
+
+T: I think it's good.
+
+I: Okay. Are you aware of the possibility to cast an invalid ballot?
+
+T: Yes, I am.
+
+I: Do you think the website provides enough information about it?
+
+T: I think so, yeah. With the pop-up as well.
+
+I: How sure are you that you have cast a valid ballot?
+
+T: Pretty sure. Like 95? But it's just because I'm unsure if I remember correctly.
+
+I: Yeah, you did actually.
+
+T: Nice.
+
+I: You want to do the third scenario as well?
+
+T: Yeah, sure.
+
+I: It's a hypothetical scenario. You have to imagine that I'm a coercer and I'm trying to coerce you to vote. So I'm here physically watching over your shoulder telling you to do something. So now the critical part is you can't really be obvious. You can't click on any help things or do anything about coercion because that obviously took me off. And I'm telling you that you need to vote for the first option in every category. But your goal is to make sure that at the end when we are done with this, it's your actual vote that counts and you can employ any strategy you think you can.
+
+T: Okay, so should I just start?
+
+I: Yeah, go for it.
+
+T: Okay, I'm logging in. Oh. Logging in. I'm logging in with my ID again. Continue. I'm going to see into this election. No, this is my first vote. And you want me to vote for all the first ones in this category? Submit my vote. There you go.
+
+I: Cool. Could you describe in your own words what you think you did to achieve your goal?
+
+T: I know I already voted before. So saying that, oh, this is my first time voting again, I will think that the system would recognize, no, you actually have voted before. So the first vote should be the one that counts. Or let's say that I'm now alone and I can go in and re-vote. I can also still do that, but I still right now think my first vote that I also just changed is the valid one.
+
+I: Okay, cool. Did you feel confident that the system wouldn't reveal anything about you if you clicked incorrectly? 
+
+T: Yes, I'm pretty sure. Like, the only thing it would do, even if I went in, is like, let's say that I pressed the wrong... No, yes, I voted before. Even here, you can't see that I am one of these votes. So yes.
+
+I: Okay. Cool. Thanks.
+
+17:
+
+I: And do you feel like you knew what you were supposed to do at all points of the process?
+
+T: For example, the one that I wanted to find my ballot, I couldn't because I don't know, maybe I didn't pay much attention. I just followed the next or continue or something. I think if there is an option to say, you cannot continue until you find your ballot to change it because I pressed that button that this is not my first time. So I shouldn't get to the next before I find my correct ballot.
+
+I: Yeah, but it's actually a deliberate choice because there's the security and usability trade-off. And it's really unfortunate that my laptop died here because there was actually a third scenario that we could have done together.
+
+T: Okay.
+
+I: And it's when somebody's, the thing that's trying to prevent is when somebody's behind you and they're telling you how to vote. And at that point, the application is designed so it doesn't reveal anything about you to anybody.
+
+T: And it's so that like, yeah, even if you don't select anything, it's true. Like there's no point where it can kind of damage you.
+
+I: Do you think the application did a good job of explaining things to you? 
+
+T: Yeah, but there are, as I said, there are a lot of description there. So I don't know really to pay attention to which of them. So I just briefly look at that and I try to go through the process.
+
+I: So like complicated?
+
+T: Yeah, sometimes. Because when I want to vote, I want to see what I want to select and then done. Not just read this, read this, or maybe you could have in more pages but less explanation. Maybe.
+
+I: Yeah, that makes sense.
+
+T: Because I am the lazy user. I just want to pick the one that I want from that page and go through it.
+
+I: Yeah, that makes sense. Was it easy to recognize your previous ballot or to find it?
+
+T: Yeah, it took a while, but still, because I had the exact time and date.
+
+I: And what do you think about the two memory aids that the system provides you with, the picture and the text? Do you think they're helpful?
+
+T: Yeah.
+
+I: Okay. Are you aware of the possibility to cast an invalid ballot?
+
+T: How? Can you? What exactly should I answer to this question?
+
+I: Oh, it's mostly the question is to see if the system did a good job of informing you about these things.
+
+T: Okay. Yeah. As I said, because I thought, okay, there aren't many ballots, so I tried to just scroll between pages. But sometimes if the position of that filter could help more, maybe, at the sides, so I see that, okay, this is easier to use.
+
+I: Got it. Do you think the website provides enough information about invalid ballots?
+
+T: In the case that you mentioned, if somebody's forcing someone to vote, so now I see why we shouldn't say that it is valid or it is not in the case that we want to change our vote. So afterward, we know. So that one is not valid anymore because I want to change it. So that was okay.
+
+I: Okay. And how sure are you that you have cast a valid ballot?
+
+T: Some questions are challenging to answer, but more or less, I think that was okay.
+
+I: Okay.
+
+T: Yeah.
+
+I: So you're sure that your ballot was valid?
+
+T: Yeah, based on the date, because we didn't have any other options. Yeah. But also when I opened that one, I couldn't see my vote, my previous one. If I could see, like, opening that ballot, it would be easier, maybe, because now we have just date and time.
+
+I: Yeah.
+
+T: So maybe a couple of people just voting at that time, if there is a case like this, then it will be difficult to understand. It's exactly mine or somebody else's. But if I open it and see what I voted, so maybe it helps more.
+
+I: Yeah, it's just something that's come up multiple times. Like, it's not other people's votes.
+
+T: Yeah, I mean, for example, I claim that this is my ballot, but that wasn't. So I tried to open the other people's.
+
+I: Yeah, but once again, it's not other people's votes. It's fake votes.
+
+T: Okay.
+
+I: So everybody has, like, kind of a list of just theirs, and you have your fake votes and your real votes.
+
+T: Okay. Now it makes sense.
+
+I: So it is in the wording. And do you think, since there wasn't any confusion at all, do you think I need to explain it better? Do you think there needs to be, like, because then I have to put in more disclaimers?
+
+T: Yeah, if the rest are fake, maybe you could just have it in one page. But is there a reason to just scroll between a lot of pages, a lot of ballots?
+
+I: Yeah, it's just, it needs to generate, I think, one every 10 minutes. So it goes up to 1,000, I think.
+
+T: Ah, okay.
+
+I: Yeah, and that's the guy who designed the system. It's on purpose.
