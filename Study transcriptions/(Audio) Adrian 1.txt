@@ -1,0 +1,31 @@
+I: Yes, alright, so I'm going to redo the script so that every single participant has the same exact scenario. So, you will be looking at a prototype of a new online voting system. The main goal is to see how easy and understandable the system is to use, and I'm looking for your honest feedback. That means that there are no right or wrong answers here. You are not being tested here, the system is. I'll be recording our session in screen and audio, and the recording is just for my internal research purposes and will be kept anonymous, but I will maybe quote you. So, as you use the system, I'd like you to try and think aloud as much as possible. That means saying out loud what you're looking at, what you're trying to do, and what you expect to happen, and what you think of what you see. This is very valuable for me to understand your thought process better. I'll be mostly observing, but I'll give you specific tasks to do. Note that once we begin, I will not answer your questions about the system. You are encouraged to use the tools and information the system provides you to find your answer. If you cannot find the answer, it is the fault of the system and it must be fixed. Can I just move this away? That's unfortunate. So, imagine this is a prototype for an online voting system that you need to use. It has some extra protection mechanisms built in, designed to help protect against voter coercion. That's when someone might try to force you to vote a certain way. One important feature is that you are able to vote multiple times to change your vote before the election officially closes. Now imagine that the election has started and your task is to use the system now to cast your votes for the candidates or issues presented.
+
+T: So, I see the available election is for two. The only one that is active is for this one, 2025. And I have not voted before. So, let's select. I've chosen my votes. Go to the next question. Next question. And I am reviewing. The answers are right, so I submit my vote.
+
+I: Okay, that's cool. So, before we talk about the experience, I have a quick logistical question. Would you be potentially willing and available for a short follow-up session, maybe 15 or 10 minutes, in about one or two days to test another aspect of the system?
+
+T: Yes.
+
+I: Cool. So, did you feel like you knew what you were supposed to do at all points of the process?
+
+T: Yes.
+
+I: Cool. It was quite clear. Was there ever a moment where you felt you needed something explained to you?
+
+T: No, not really.
+
+I: Did the application do a good job of explaining things to you?
+
+T: Yes, I looked at what the memory aids were, because that was sort of... I raised the question, but I could find the information on the platform.
+
+I: Cool.
+
+T: Did you make use of the built-in help section? Why or why not?
+
+I: Yes, for the memory aids, not the general help function, but to just understand what it was.
+
+T: Cool. Was there anything unexpected during the experience?
+
+I: No.
+
+T: Alright. Well, thanks. That's it for today.

@@ -1,0 +1,105 @@
+I: Yes, so just for the record, I'm going to record the screen and your audio, but if I quote you, it's going to be anonymous, just textify.
+
+T: Nice, got it.
+
+I: So here you go. Your task is to use the online system and vote.
+
+T: Okay, so my task is just to vote right now?
+
+I: Log in and vote, yeah.
+
+T: Okay, I can just go continue. Okay, this is a mock-up. Okay, let's see. Okay. Okay. Okay, so... Okay. Okay, cool.
+
+I: I'll just ask you, did you feel like you knew what you were supposed to do at all points of the process?
+
+T: Yes.
+
+I: And was there ever a moment where you felt like you needed something explained to you?
+
+T: No, just the flow of things represented, but it was quite clear, yes.
+
+I: Okay. And you think the application did a good job of explaining things to you?
+
+T: Yeah.
+
+I: I saw you didn't make use of the built-in help section, why not?
+
+T: Because maybe, but this is the test bias, I knew what I had to do.
+
+I: Got it. Was there anything unexpected during the experience?
+
+T: No, straightforward.
+
+I: Okay, cool. Let's try doing both scenarios at once.
+
+T: It's probably, I can't ask you much about remembering stuff, but, you know, let's see how it goes.
+
+I: All right, so second scenario is... Imagine a major news scandal related to one of the candidates or issues that's completely changed your mind, you now strongly want to change your vote. Your task now is to log back into the system and cast a new vote that reflects your changed preferences.
+
+T: Okay. So, let's do this. Cool. Yeah, okay.
+
+I: I mean, I heard you say you were kind of lost, what kind of was the thing that was surprising?
+
+T: Yeah, I think the first thing I didn't know was politics. But then I, like, maybe because I rushed the previous process, but I actually didn't, let's say, I didn't look for, I mean, I didn't remember that I needed to remember this. I didn't realize that I need to remember this in terms of re-voting, but I also didn't know that there was a possibility to re-vote before starting to vote. So maybe, maybe the issue is that it's me being a user of this system for the first time, and I didn't know that I can re-vote afterwards. So I think that was the issue, and maybe, and this is hard to actually blame on UX, I think this is more of the, how it works. So maybe, maybe it should be, you know, sometimes you have these wizards when you, for example, install something new for the first time. Maybe it should guide you through somehow, actually, when you press next, and maybe, let's say, the initial step, initial process is quite straightforward and easy, but then when you register, maybe there should be like a, the screen should go blur, like blurred a little bit, and you should highlight before going next, if it's the first entry, you should highlight the fact that if you want to re-vote, because that's a possibility, please remember this. So that is my thought, maybe I missed it because I rushed, but that would be my opinion.
+
+I: I just want to show it to you again, like the screen that we just talked about. Like this want mode, you change about it. 
+
+T: Yeah, like this, this is confusing in a way that it's red, it sounds like an, like it looks like an error that something happened, and it doesn't look like an info I should remember afterwards, so maybe this should be as a, maybe a different color, and maybe in a different place, maybe like if you go down, like this is quite cool, this is actually nice, and I think this one, this one creates confusion in terms of like, it looks like you made something bad, but actually, okay, so please take note of this information, I would change the color maybe, but this is a detail of course, like this is nice, this corresponds well because you go down, maybe it should also stand out a little bit more than the gray to catch the attention more, because before you press this one, or maybe you could leave it like this, remove this, click finish and logout, and then a pop-up could be, like a double confirmation could appear here.
+
+I: But maybe, the thing is, it's like, I had it like this, but then one of my supervisors was like, oh, it's not clear enough, you need to have something more in the area, right, add this shit, but then it starts confusing people, but it's also, it's good because then I can do like a final iteration with this presentation or something. Yeah, did you feel like you knew what you were supposed to do at all points of the voting process?
+
+T: Yeah, yeah, I mean, I think the first, let's go back here, okay, let's say I want to re-vote, log in to vote, yes, yes, log in, and here I would rather have something, because this looks like I'm here the first time, I think I'd rather have like available elections, past elections, and in the past, maybe it shouldn't be, maybe it could be depreciated somehow, that instead of available, you could have, for example, I don't know, yeah, maybe available is a good one, but then like past, or if you have this one here, if you already made the vote, you should have re-vote instead of enter election.
+
+I: Yeah, but it's on purpose that it doesn't do this actually, and yeah, we can explore that a little later.
+
+T: That would be my idea, but if that's justified, that's fine.
+
+I: Yeah, so did re-voting feel like an actual option that one may use during the election process, or like something unusual for weird people?
+
+T: Yeah, I think when you, like back home when you vote, you cannot re-vote, so, but then if that's provided, if this provides an option for this, then okay, but for me it felt weird because I would never, I would never know that you can re-elect, I mean re-
+
+I: Yeah, was there ever a moment where you felt you needed something explained to you?
+
+T: Not really.
+
+I: Okay. Yeah, same thing as before, kind of, was there anything unexpected during the experience? I guess we kind of touched on that, like re-voting. Was it easy for you to remember your previous ballot?
+
+T: No, because I didn't realize before, but this is again hard to actually, hard to tell who should be the one providing that info. Of course, UX of the app should somehow let you know, but I also maybe rushed it, and maybe that's the reason, because it was my first time doing this, so maybe.
+
+I: Got it. What do you think about the memory aids that the application provides you, as in the two words and the identicon?
+
+T: Again?
+
+I: What do you think about the memory aids the application provides you, as in these?
+
+T: Ah, okay, okay. I really, I think that's a tough question to answer on the one go, because it also, I think this would be very helpful on the second time, because when I understand the thing, so maybe my conclusion from this would be to create an instruction run before the real one, so someone actually understands what he has to go through and what is important to remember. So let's say, is it your first time voting? Okay, let me guide you through, for example. But if someone is doing the second program, sometime, I think it should be quite easy, and this is, yeah, this might be helpful if you know what to look for.
+
+I: Do you think like a video, maybe?
+
+T: Maybe like a video, or yeah, it could be a video actually.
+
+I: Okay. What do you think about the re-voting mechanism overall?
+
+T: I think this is very, this depends on human memory, which can be very tricky at the verification, like from understood, there are three days on which you can vote. So maybe given the time, it's okay, but let's say someone forgets, like doing this in a rush, how do you allow people who actually forgot, or maybe someone has like damage or whatever, like there are plenty of issues that can appear. How do you ensure that they can do it again, even though they're not, they're being the true, having the true identity?
+
+I: That's actually explored in here.
+
+T: Okay, let's see.
+
+I: So if you read this, do you think it provides you enough info about that?
+
+T: Okay, yeah, yeah, okay, sure. Okay, cool. Yeah, then I think that's an interesting idea, and if you explain it well before, it should be nice.
+
+I: Are you aware of the possibility to cast an invalid ballot?
+
+T: Yes, yes I am aware.
+
+I: Do you think the website provides enough information about invalid ballots?
+
+T: Yeah, it's quite, the description is quite extensive, so yeah, I think it looks like if I wanted to know, I would find it, so it's good.
+
+I: And how sure are you that you've cast a valid ballot?
+
+T: As you can see, I surrendered, so yeah, but there was again, I think, an issue of trying to, but I didn't really understand at the beginning that this can be done and how it works, but maybe that's because I rushed. Well, but I think like a lot of people are like, they have no, the expectation is log in, vote, and that's it, so they kind of rush through it, and the thing is, but they also, I don't think they would even need to vote if they don't really consider that, so like the complication is the thing that they would kind of ignore altogether, so that's, you know, how do you deal with that?
+
+I: Okay

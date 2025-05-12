@@ -1,0 +1,123 @@
+T: So you need to remember who I voted for before?
+
+I: Well, the system doesn't give you information of what you actually voted for. You need to identify your ballot based on the date and time.
+
+T: Based on the date and time? I don't remember that. This is from today. Is it going back? So it's going to be from 20th?
+
+I: Yes.
+
+T: But I don't know. I probably just... Oh, I don't know. I don't really understand this. What do you mean, select all ballots that match your previous votes? How could I know? Okay. If you... Yeah, exactly. Okay. I guess I should have paid more attention to this.
+
+I: Do you think it's the UI's fault?
+
+T: No, it's not. It's just that if I just vote, I do not really care for the exact time. I will remember the day, but I will not remember the hour. Especially if I was not aware that I should write it down. If I would know that, then, yeah, easier, but still some people might just forget. And then they are kind of screwed.
+
+I: Yeah, that's true. If you want to maybe look around to see what you can do in this scenario.
+
+T: Right now I can only finish and log out, as I can see. Right. Right. I guess I can again try. Oh, I can... This is like past results. I cannot just see my vote. But this is my vote, as I understand. So now I can be sure that it's changed. Is this a resolution? Can I then just try again?
+
+I: Try it again?
+
+T: It's because you need to select all ballots that match your previous votes. But maybe this is... Is this auto-generated every time you... No, this one is yours that you just cast, right? And let's see if it has the same...
+
+I: Yeah, these are not... They are persistent. They're tied to your quote-unquote account.
+
+T: Yeah, so that means that... Well, not really, because it's not repeated here.
+
+I: What do you mean? This? Is it?
+
+T: Yeah, it's the same ones. Shortcut? I actually have a note on my phone. I have here... And there wasn't any code sent again. No, they don't repeat.
+
+I: Yeah, so... The chance is really low.
+
+T: But as in... I have a note on my phone to see what your previous vote was, and I can see it there. What was it? Just out of curiosity. It was Chef or Jiggo. Chef or Jiggo. It's actually right next to the one you clicked. So I think it was correct.
+
+I: No, you didn't. You chose shortcut, I think, or open kidney, one of the blue ones.
+
+T: No, no, totally not, because I knew that it was at 2 p.m. and not 3. Because at 3 I was at the air camp. Yeah, I don't think it's just a correct vote. So this is working. I don't know what can be changed here. If this is the procedure that needs to be followed, then I guess it just must be... Well, people... Oh, yeah, I chose this one. So I didn't choose the correct one. But if this is an actual procedure that needs to be followed, then I guess people will know. And then they will just need to pay attention to that.
+
+I: You want to proceed to the questions?
+
+T: Yes.
+
+I: So did you feel like you knew what you were supposed to do at all points of the process?
+
+T: Well, I knew that. I couldn't really execute it.
+
+I: Yeah, of course. Did re-voting feel like a natural option that one may use, or like something unusual?
+
+T: I think it's a good idea to vote, I think. But I don't know if I would care enough to do it, because most of the time when I vote, it's just like... It doesn't really matter that much because some of the options are shit. But that's the difference of person.
+
+I: Do you think the application did a good job of explaining things to you?
+
+T: Yeah.
+
+I: Okay. But let me just ask, do you think the application did a good job of telling you that you should remember your vote?
+
+T: Yes, but I didn't pay attention to that at first. Now I just knew that it might be needed, that I just looked for it.
+
+I: I'm going to have a bunch of questions, like was it easy for you to remember your previous ballot? If yes, what helped you to remember it? If not, what would have helped you to remember it? But you said you didn't even try to remember it.
+
+T: Yeah, if I know that, I would just write it down. Yeah, of course. I don't think there is anything that could help me.
+
+I: I think what I did with Daniel, he got lucky with the picture because it was like an arrow pointing down. So then it was really easy for him to recall it, but it's just...
+
+T: I didn't even pay attention to the picture. But I guess if I could choose my own, that doesn't make sense.
+
+I: No, it needs to be deterministic. It needs to be anonymous. Are you aware of the possibility to cast an invalid ballot?
+
+T: Well, yes.
+
+I: Do you think the website provides enough information about invalid ballots?
+
+T: That it will not count as a vote, yeah.
+
+I: And how sure are you that you have cast a valid ballot?
+
+T: I don't know. How can I be sure ever, actually? Not unless I had this written down.
+
+I: Actually, the website provides kind of information what you can do in this scenario. If you want to look for it. It's actually in the help section.
+
+T: I cannot vote in person. But I already voted online. Right. So how does it work? Do they then...
+
+I: I guess I was kind of hoping that the description is good enough that you would know.
+
+T: No, because I voted digitally and they cannot show me which ballots are mine. And I also shouldn't even know which ballots are mine, exactly. That's how it is supposed to be anonymous. Does that make sense? So then... Then would it mean if I voted digitally and then I go physically, will my digital vote be just revoked? Okay, that makes sense. But then I guess I cannot re-vote again.
+
+I: No, you can't re-vote in physical elections anyway. Do you think these were good descriptions? Does it make sense?
+
+T: I would add, actually, I would add here the section, like the explanation that if I vote physically after voting digitally, my digital votes will be automatically deleted. That is like 100% clear. Yeah, to make it clear.
+
+I: Yeah, that makes sense. Right. There's also kind of a third scenario where I would go kind of, I would pretend to be the coerced and have you try one of the security measures. But yeah, you want to try that? Okay. So, yeah, basically imagine I'm sitting next to you, like I am right now, and I'm telling you that you need to log in and vote for the first option on every single question and kind of want you to try to use one of the security measures to make sure that it's your final vote that counts.
+
+T: I still need to know what I'd do. Yeah, re-voting makes sense.
+
+I: But also maybe just kind of if I'm already there coercing you, I wouldn't really like you reading this. If I'm already there coercing you, like I'm some bad guy, I wouldn't like to see you reading this.
+
+T: Yeah, of course. But then I guess I would just need to do all of that stuff and then I would be thinking about what can I do now after you're gone. But maybe that doesn't really make sense to go through right now. No, I guess not. Okay, so this is kind of unclear because it just says that I have options. But what options? Right. I guess I need to go to help.
+
+I: Yeah, yeah. Maybe that's an issue I need to, like if I'm going to bring it up, I should just expand on it anyway. Yeah, that makes sense.
+
+T: Okay, so now we can vote again.
+
+I: Sure.
+
+T: So I can just say that I already have voted, but I can re-vote if you really want to. So I will choose this and I will say that I have voted yesterday at about 1 p.m. and it would be this one. And I will vote for whatever you want. Which one?
+
+I: Just the first one.
+
+T: First one, okay. And then it's invalid.
+
+I: Yeah, just the quick question is kind of would you feel confident using this to...
+
+T: Okay, so if you asked me to lie, a lot of people are very bad at lying. Yeah, that's true. So if somebody is very bad at lying, then they should just go for re-voting after this. But again, this will require you to know that you can re-vote, but I guess you should know that.
+
+I: Yeah, I guess.
+
+T: So there are two options, one for good liars and one for bad liars.
+
+I: Yeah, it all hinges kind of information being presented and the way it is presented. So then, yeah, I guess the main task of the thesis is kind of designing it in a way where it gives you the most information in the best way. And yeah, actually, in the test that I've done, there's like a bunch that I've been told to change. It shouldn't be in red because it's kind of alarming to some people, I guess. And then maybe put this and have it being like blue and maybe bolded text. Like if you plan to re-vote later, it should be very highlighted.
+
+T: Yeah, yeah, this could be bigger. Just a bigger font, maybe.
+
+I: I guess, yeah, maybe I'll have a section in the thesis like kind of changes proposed after the testing. And yeah, I guess that's it for us for today. Thanks. Cool.

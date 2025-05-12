@@ -1,0 +1,29 @@
+I: Okay, so you will be looking at a prototype of a new online voting system. The main goal is to see how easy and understandable the system is to use. I'm looking for your honest feedback. This means that there are no right or wrong answers here. You are not being tested here. I'll be recording our session, screen and audio, but the recording is just for my internal research purposes and will be kept confidential, but I may quote you for the thesis paper. Is that okay with you? Yeah. As you use the system, I'd like you to try it and think out loud as much as possible. That means saying out loud what you're looking at, what you think you're trying to do, what do you expect to happen, and what you think of what you see. This is very valuable for me to understand your thought process better. And I'll be mostly observing, but I'll give you specific tasks to do. Note that once we begin, I will not answer your questions about the system. You are encouraged to use the tools and information that the system provides you to find your answer. If you cannot find the answer, it is the fault of the system and it must be fixed. So, this is a prototype for an online voting system that you need to use. There are some extra protection mechanisms built in, designed to help protect against voter coercion. That is when someone might try to force you to vote a certain way. One important feature is that you are able to e-vote multiple times to change your vote before the election fully closes. Now imagine the election has started, your task is to use the system now to cast your votes for the candidates or issues presented. So, go ahead. There's a mouse.
+
+T: I want to log in and here I have secure screen. Use incognito mode to protect your privacy. I don't use no record. I'll just go with the log in with mid-ID. This is just a picture. Sorry? This is just a picture. I'll just continue. So, that's available in the election. So, I want to enter the election here. Have you voted before in this election? No, this is my first vote. Your vote will only be counted if you provide correct information about your voting history. So, this is correct. So, it is my first vote because I'm 18. Nice. Cast your votes. Parliamentary elections. Vote for the party you wish to represent you in the parliament. I don't know. We'll go Social Democrats because they are the best in Slovakia. Next, cast your votes. Legalization of fentanyl should sail. Of course. Next, cast your presidential election. The first guy. And review. Okay. Confirm. Yeah. Everything looks just the way that I input it. So, fine. Vote successfully cast. Your vote information. If you plan to re-vote later, you'll need to identify this ballot by the date and time shown below. Okay, so I think that I need to remember this. Please take note of this information. So, I'll write it down. So, it's 10.04.
+
+I: Can I just ask you, before we talk about it, could you potentially be willing and available to do a short follow-up session in about one or two days to test the e-voting aspect of the system? Okay, perfect. So, did you feel like you knew what you were supposed to do at all points of the process?
+
+T: Yeah, I think it was pretty clear. So, like, yeah. Like, essentially it took me maybe like four or five clicks to log in and then to vote for the three different map parts. So, yeah, I think that everything was clear. And also, I like the red dialogues or the red information. So, yeah, I think that everything was clear.
+
+I: Was there ever a moment where you felt you needed something explained to you?
+
+T: No, not yet.
+
+I: Okay.
+
+T: Everything was clear.
+
+I: Did the application do a good job of explaining things to you?
+
+T: I would say so, yeah. Like, everything that I needed was there. So, yeah. No improvements.
+
+I: Did you make use of the built-in help section?
+
+T: No, I did not. I didn't need it. Because, I mean, I could just follow the instructions that were provided to me, like, just where they were. So, I didn't need to use the help.
+
+I: Was there anything unexpected during the experience?
+
+T: Maybe the mid-ID, but that's also, of course, not the point of the UI.
+
+I: All right. Well, that's about it for today.

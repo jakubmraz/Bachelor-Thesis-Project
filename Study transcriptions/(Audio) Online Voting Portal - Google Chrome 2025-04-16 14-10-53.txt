@@ -1,0 +1,45 @@
+I: So, you will be looking at a prototype of a new online voting system. The main goal is to see how easy and understandable the system is to use. I am looking for your honest feedback. This means that there are no right or wrong answers here. You are not being tested here. I'll be recording our session, screen and audio. This recording is just for my internal research purposes and will be kept anonymous, but I may quote you for the thesis. Is that okay? Cool. As you use the system, I'd like you to think and try to think out loud as much as possible. That means saying out loud what you're looking at, what you're trying to do, and what you expect to happen, and what you think of what you see. This is very valuable for me to understand your thought process better. I'll be mostly observing, but I'll give you specific tasks to do. Note that once we begin, I will not answer your questions about the system, but you are encouraged to use the tools and information of the system to find your answer. If you cannot find your answer, that's the fault of the system and needs to be fixed. Okay, so the first scenario. Imagine this is a prototype for an online voting system that you need to use. It has some extra protection mechanisms built in, designed to help protect against voter coercion. That's when someone might try to force you to vote a certain way. One important feature is that you are able to re-vote multiple times or change your vote before the election officially closes. Now, imagine the election has started. Your task is to use the system to cast your vote for the candidates or issues presented.
+
+T: I'm supposed to go and vote for a candidate? Let's see. I think I'll just read through... Before you vote, these informations... That makes sense. Yeah, okay, so that's one thing I didn't really understand, re-voting. So during the whole phase, you can keep changing your ballot? Okay. Ah, okay. Okay. Okay. 
+
+I: Don't click anything yet.
+
+T: Okay.
+
+I: Before we talk about that experience, I have a quick logistical question. Would you be potentially willing and available to do a short follow-up session, maybe 10 to 15 minutes in about one or two days, to test another aspect of the system?
+
+T: Sure.
+
+I: Cool, thanks. So, now the questions. Did you feel like you knew what you were supposed to do at all points of the process?
+
+T: Yeah.
+
+I: Was there ever a moment where you felt you needed something explained to you?
+
+T: Not necessarily, no.
+
+I: Okay. Did the application do a good job of explaining things to you?
+
+T: Yeah.
+
+I: Did you make use of the built-in help section? The first section, the one you see... It's this one, actually.
+
+T: Ah, no, I did not.
+
+I: Why not?
+
+T: I think everything was clear enough that I could get through.
+
+I: Okay. Was there anything unexpected during the experience?
+
+T: No.
+
+I: Okay. Cool. And so, the second scenario that we will continue with when we do the follow-up, it handles the re-voting, so you might want to remember your ballot.
+
+T: Okay. I just need to remember the date and time, right?
+
+I: Yeah.
+
+T: Cool.
+
+I: Thanks.
